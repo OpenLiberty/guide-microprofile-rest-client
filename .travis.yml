@@ -5,7 +5,7 @@ notifications:
   slack:
     template:
       - "Build:  <%{build_url}|#%{build_number}>"
-      - "Repository: %{repository_slug}@%{branch}"
+      - "Repo/Branch: %{repository_slug}@%{branch}"
       - "Author: %{author}" 
       - "Summary: %{result} in %{duration}"
       - "Commit (<%{compare_url}|%{commit}>): %{commit_message}"
