@@ -64,7 +64,7 @@ fi
 
 # sed -i -e 's/`\/src/`src/g' README.adoc
 git add *
-git revert --hard 5b36fbb
+git reset --hard 5b36fbb
 git push -f
 
 actualPaths=($(find "finish" -type f | cut -c8-))
