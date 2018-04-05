@@ -3,5 +3,8 @@ script:
 - bash script.sh
 notifications:
   slack:
+    template:
+      - "Build <%{build_url}|#%{build_number}> (<%{compare_url}|%{commit}>) of %{repository_slug}@%{branch} by %{author} %{result} in %{duration}"
+      - "Commit: %{commit_message}"
     rooms:
       secure: j6vntFJ+5dWAA9H40/SCt1OGXVUzwHujRCT2SeGOUGwsPuNdjbTmANYv752JKIj/1RvX51R/N6b6Vptdn23uk02I3H759Zcu0sd7YTqLX6n+gVjYRjJ6J9SLTOW7Es6kmtB0lPbqyqhnQq0AZmwv9n+iSwvrYb1c8oOvdWIYTput+8Ymr/1MIPIfJPoz3T1iae1ks60eflzUnFNEDV17HhavaFKtxEeGMXfTAFqavacPRBKFUWNoTj+JuhJEQVVZsAN71YvN9WNvSfpZggZP1t11ivDaYkLT5VcX3W3zBoBQnq0kZExO8Xvru5keLTfn2Ceh3paFxeAEuCXf6FSJTYfdN4Cha2hMRVX+rI3pNOkWBR26Krbli47P9xVdXYpSMdxsaYBW51yiyaLmXLbRJvCAtap1ih8x2YFz+dED8pUWXGsTBeY+2z6LWWXg/xyMh+HKD58TA2PaKxU2P+XWPm7PBXOmr9z/9tICZYXLKSIiIrWTGNrlE5Ugg13TzU88aUFNbGM7BUk1Us9GJutOJsRC8tR9k1SKzKbwoXw5NXqBZZwsgoFK3QZT/rgnere+jPQD53tHZ6BoGoLPTBR2NQTS9vgfMP0UhfVnBr09ZahVtjRxTykOg4eSWcQgAng2+RsTPjuz3LyqpcpFIcEmUkiDMrXw2qTf5KLUhpJ/UpY=
