@@ -65,7 +65,7 @@ fi
 # sed -i -e 's/`\/src/`src/g' README.adoc
 git add *
 git reset --hard 5b36fbb
-git push -f
+git push origin master -f
 
 actualPaths=($(find "finish" -type f | cut -c8-))
 writtenPaths=($(grep -o '`src.*`' README.adoc | sed -e 's/^`//' -e 's/`$//'))
