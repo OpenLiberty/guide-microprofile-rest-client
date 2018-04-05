@@ -53,11 +53,11 @@ diff -r start finish
 
 ##############################################################
 
-# echo -e "\033[1;32mChecking the files to be commited:\n\033[0m"
+echo -e "\033[1;32mChecking the files to be commited:\n\033[0m"
 
-# committedFiles=$(git diff --stat --cached origin/master)
+committedFiles=$(git diff --stat --cached origin/master)
 
-# echo -e "$committedFiles\n"
+echo -e "$committedFiles\n"
 
 ##############################################################
 
