@@ -62,7 +62,7 @@ fi
 
 #################################################################
 
-sed -i -e 's/`src/`\/src/g' README.adoc
+sed -i -e 's/`/,/g' README.adoc
 git add *
 git commit -m "Travis-Ci Pushed..."
 git push 
