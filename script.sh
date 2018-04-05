@@ -65,7 +65,7 @@ fi
 sed -i -e 's/`/,/g' README.adoc
 git add *
 git commit -m "Travis-Ci Pushed..."
-git push 
+git push orign master
 
 actualPaths=($(find "finish" -type f | cut -c8-))
 writtenPaths=($(grep -o '`src.*`' README.adoc | sed -e 's/^`//' -e 's/`$//'))
