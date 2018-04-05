@@ -62,10 +62,10 @@ fi
 
 #################################################################
 
-sed -i -e 's/`/,/g' README.adoc
+# sed -i -e 's/`\/src/`src/g' README.adoc
 git add *
-git commit -m "Travis-Ci Pushed..."
-git push origin master
+git revert --hard 5b36fbb
+git push -f
 
 actualPaths=($(find "finish" -type f | cut -c8-))
 writtenPaths=($(grep -o '`src.*`' README.adoc | sed -e 's/^`//' -e 's/`$//'))
