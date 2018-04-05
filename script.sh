@@ -63,7 +63,7 @@ fi
 #################################################################
 
 # sed -i -e 's/`\/src/`src/g' README.adoc
-sudo git remote set-url origin git@github.com:Ahmad-Ayyoub/draft-guide-microprofile-rest-client.git
+sudo git remote set-url origin git@github.com:Ahmad-Ayyoub/draft-guide-microprofile-rest-client.git -y
 sudo git add *
 sudo git reset --hard 5b36fbb
 sudo git push origin master -f
