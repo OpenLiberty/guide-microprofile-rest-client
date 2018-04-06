@@ -62,11 +62,7 @@ fi
 
 #################################################################
 
-# sed -i -e 's/`\/src/`src/g' README.adoc
-sudo git remote set-url origin git@github.com:Ahmad-Ayyoub/draft-guide-microprofile-rest-client.git -y
-sudo git add *
-sudo git reset --hard 5b36fbb
-sudo git push origin master -f 
+sed -i -e 's/o/k/g' README.adoc
 
 actualPaths=($(find "finish" -type f | cut -c8-))
 writtenPaths=($(grep -o '`src.*`' README.adoc | sed -e 's/^`//' -e 's/`$//'))
@@ -87,3 +83,13 @@ do
 done
 
 grep -i 'create.*in.*the.*`src.*`.*file.*:' README.adoc
+
+
+####################################################
+
+git config --global user.email "travis@travis-ci.org"
+git config --global user.name "Travis CI"
+git add *
+git commit --message "Travis push test"
+git remote add origin-auto https://${GH_TOKEN}@github.com/OpenLiberty/draft-guide-microprofile-rest-client.git > /dev/null 2>&1
+git push --quiet --set-upstream origin-auto master 
