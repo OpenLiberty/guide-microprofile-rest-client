@@ -91,5 +91,5 @@ git config --global user.email "travis@travis-ci.org"
 git config --global user.name "Travis CI"
 git add *
 git commit --message "Travis push test"
-git remote add origin-auto https://${GH_TOKEN}@github.com/Ahmad-Ayyoub/Ahmad-Ayyoub/draft-guide-microprofile-rest-client.git > /dev/null 2>&1
-git push --quiet --set-upstream origin-auto master 
+git remote add origin-pages https://${GH_TOKEN}@github.com/Ahmad-Ayyoub/draft-guide-microprofile-rest-client.git > /dev/null 2>&1
+git push --quiet --set-upstream origin-pages master 
