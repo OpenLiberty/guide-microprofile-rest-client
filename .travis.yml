@@ -16,7 +16,9 @@ env:
   global:
     secure: rQewRP5k2MMxOTGhniUmqVYBRdM9cv7YwQnMf/W7Ge2q+OyBAmzYzfrcS70IjoUYFYR2r597ojz63hytvoEb4y+igj9lBZ/76viti+LDpzMIjwBnH7OF36n84sUwDlCvSYGd2ZPEGeZvm3vd58ytn4KNCkVUPEKX5U0mOFvc5KfupDfT2kFKIabzHdDYvSk4UWnRK8TuU6gwhsiuRAB9pCJHOUcy6wHOq9VA7TWQFFctTK6C+Sb4pZliMhDWYAheevCSwRkcBCDXODZNBYXEQU52OyuE1W+huVGXBLdUzeKOUfXbZBzMa6aWVQRTrxLwKCo1KMvxn9p9W4fYHMNVDq4gIIAhb+sEsYjXO/EDjhuhXFqTjgIsVzWuGjvpZ9mrc0TfSg9bQVERE+O3tVeaYh7PwMbWAsKR/BbKFPcYp1du3OEmTU030wLR2twcVURUthNC6HJNE+qCddvPVigKjDn4JLs76YxVAjQoE1RJsAdW6BGz3kH6rVCC7wZEoi7akfEJzXspqPrMAUXF8qOG0DnPEoHq+wZ4AaaLcxNnKK8FbUUQJM6gZSiCYYeVkHgCf6nyz33+VI7Z7x4iX2DH3Bas16NsKb9Fx+8BdeGy+nXP6IfH70PYzuNwZmj/lkiP6bjpeEGlRIKWOpy13OFWckl2zd0a4Vi8JnQcf5cFgGA=
 after_success: |
+  echo "entered "
   if [ -n "$GITHUB_API_KEY" ]; then
+    echo "enteredif "
     cd "$TRAVIS_BUILD_DIR"
     # This generates a `web` directory containing the website.
     make web
@@ -28,4 +30,5 @@ after_success: |
     # This works because the API key can replace your password.
     git push -f -q https://Ahmad-Ayyoub:$GITHUB_API_KEY@github.com/Ahmad-Ayyoub/draft-guide-microprofile-rest-client &2>/dev/null
     cd "$TRAVIS_BUILD_DIR"
+    echo "done "
   fi
