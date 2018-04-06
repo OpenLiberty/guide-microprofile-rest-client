@@ -14,33 +14,50 @@ import javax.ws.rs.core.MediaType;
 
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 import org.eclipse.microprofile.rest.client.annotation.RegisterProvider;
-// import io.openliberty.guides.service.PlaylistResponseExceptionMapper;
+import io.openliberty.guides.service.PlaylistResponseExceptionMapper;
+
+// @Path("/playlist")
+// @Consumes(MediaType.APPLICATION_JSON)
+// @Dependent
+// @RegisterRestClient
+// public interface MusicPlaylistService {
+//
+//     @GET
+//     public List<String> getPlaylistNames();
+//
+//     @GET
+//     @Path("/{playlistName}")
+//     public String getPlaylist(@PathParam("playlistName") String name);
+//         // throws UnknownPlaylistException;
+//
+//     @POST
+//     @Path("/{playlistName}")
+//     public long newPlayList(@PathParam("playlistName") String name);
+//         // throws PlaylistAlreadyExistsException;
+//
+// }
+
+// @RegisterProvider(PlaylistResponseExceptionMapper.class)
 
 @Path("/playlist")
-@Consumes(MediaType.APPLICATION_JSON)
-@Dependent
-@RegisterRestClient
-public class MusicPlaylistService {
+@Consumes("application/json")
+public interface MusicPlaylistService {
 
     @GET
-    public String getPlaylistNames() {
-      return "lalal";
-    }
-
+    List<String> getPlaylistNames();
 
     @GET
     @Path("/{playlistName}")
-    public String getPlaylist(@PathParam("playlistName") String name){
-      return "lalal";
-    }
-        // throws UnknownPlaylistException;
+    List<Song> getPlaylist(@PathParam("playlistName") name)
+        throws UnknownPlaylistException;
 
     @POST
     @Path("/{playlistName}")
-    public void newPlayList(@PathParam("playlistName") String name, String playlist){
-    }
-        // throws PlaylistAlreadyExistsException;
+    long newPlayList(@PathParam("playlistName") name, List<Song> playlist)
+        throws PlaylistAlreadyExistsException;
 
+    @PUT
+    @Path("/{playlistName}")
+    long updatePlayList(@PathParam("playlistName") name, List<Song> playlist)
+        throws UnknownPlaylistException;
 }
-
-// @RegisterProvider(PlaylistResponseExceptionMapper.class)

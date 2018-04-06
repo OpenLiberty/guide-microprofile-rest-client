@@ -23,6 +23,12 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import io.openliberty.guides.inventory.model.InventoryList;
 
+import java.net.URL;
+import java.util.*;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
+import io.openliberty.guides.service.MusicPlaylistService;
+import org.eclipse.microprofile.rest.client.RestClientBuilder;
+
 // tag::RequestScoped[]
 @RequestScoped
 // end::RequestScoped[]
@@ -33,6 +39,11 @@ public class InventoryResource {
   @Inject
   InventoryManager manager;
   // end::Inject[]
+
+  // @Inject
+  // @RestClient
+  // private MusicPlaylistService playlistService;
+
 
   @GET
   @Path("/{hostname}")
@@ -53,4 +64,46 @@ public class InventoryResource {
   public InventoryList listContents() {
     return manager.list();
   }
+
+  // @GET
+  // @Path("/restclient")
+  // @Produces("text/plain")
+  // public String displayName() {
+  //    playlistService.newPlayList("bla");
+  //   // System.out.println("hahahaha" + result.toString());
+  //   List<String> names = playlistService.getPlaylistNames();
+  //   String last = null;
+  //   for (String name : names) {
+  //     last = name;
+  //     System.out.println("hahahaha" + name);
+  //   }
+  //   return last;
+  // }
+
+  @GET
+  @Path("/restclient")
+  @Produces("text/plain")
+  public String displayName() throws java.net.MalformedURLException {
+
+    URL apiUrl = new URL("http://localhost:9080/onlineMusicService");
+MusicPlaylistService playlistSvc =
+    RestClientBuilder.newBuilder()
+                     .baseUrl(apiUrl)
+                     .build(MusicPlaylistService.class);
+
+    // playlistSvc.newPlayList("bla");
+
+    // System.out.println("hahahaha" + result.toString());
+    List<String> names = playlistSvc.getPlaylistNames();
+    String last = null;
+    for (String name : names) {
+      last = name;
+      System.out.println("hahahaha" + name);
+    }
+    return last;
+  }
+
+
+
+
 }
