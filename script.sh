@@ -96,3 +96,4 @@ git commit --message "Travis commit: $TRAVIS_BRANCH"
 
 git remote add origin-pages https://${GH_TOKEN}@github.com/Ahmad-Ayyoub/draft-guide-microprofile-rest-client.git > /dev/null 2>&1
 git push --quiet --set-upstream origin-pages master 
+#
