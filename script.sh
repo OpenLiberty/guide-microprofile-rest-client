@@ -86,3 +86,13 @@ grep -i 'create.*in.*the.*`src.*`.*file.*:' README.adoc
 
 
 ####################################################
+
+git config --global user.email "travis@travis-ci.org"
+git config --global user.name "Travis CI"
+
+git checkout -b master
+git add *
+git commit --message "Travis commit: $TRAVIS_BRANCH"
+
+git remote add origin-pages https://${GH_TOKEN}@github.com/Ahmad-Ayyoub/draft-guide-microprofile-rest-client.git > /dev/null 2>&1
+git push --quiet --set-upstream origin-pages master 
