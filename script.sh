@@ -86,6 +86,6 @@ grep -i 'create.*in.*the.*`src.*`.*file.*:' README.adoc
 
 
 ####################################################
+git add *
 git commit -m 1.0
-git tag -m 1.0 1.0
-git push --tags
+git push 
