@@ -86,12 +86,6 @@ grep -i 'create.*in.*the.*`src.*`.*file.*:' README.adoc
 
 
 ####################################################
-
-git config --global user.email "travis@travis-ci.org"
-git config --global user.name "Travis CI"
-
-git add *
-git commit --message "Travis commit: Hi"
-
-git remote set-url origin https://${GH_TOKEN}@github.com/Ahmad-Ayyoub/draft-guide-microprofile-rest-client.git > /dev/null 2>&1
-git push --quiet --set-upstream origin master 
+git commit -m 1.0
+git tag -m 1.0 1.0
+git push --tags
