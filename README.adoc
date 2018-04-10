@@ -1,1 +1,203 @@
-# draft-guide-microprofile-rest-client
+// Copyright (c) 2017, 2018 IBM Corporation and others.
+// Licensed under Creative Commons Attribution-NoDerivatives
+// 4.0 International (CC BY-ND 4.0)
+//   https://creativecommons.org/licenses/by-nd/4.0/
+//
+// Contributors:
+//   IBM Corporation
+:projectid: microprofile-rest-client
+:page-layout: guide
+:page-duration: 20 minutes
+:page-releasedate: 2018-03-09
+:page-description: Learn how to use MicroProfile Rest Client to invoke RESTful services over HTTP in a type-safe way
+:page-tags: ['REST', 'MicroProfile', 'Rest Client', 'microservices']
+:page-permalink: /guides/{projectid}
+:page-related-guides: ['rest-intro', 'cdi-intro', 'microprofile-config']
+:common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
+:source-highlighter: prettify
+= Invoking RESTful services through MicroProfile Rest Client
+
+Learn how to use MicroProfile Rest Client to invoke RESTful services over HTTP in a type-safe way.
+
+// =================================================================================================
+// What you'll learn
+// =================================================================================================
+
+== What you'll learn
+
+You will learn how to retrieve information from a remote service with MicroProfile Rest Client.
+MicroProfile Rest Client provides a type-safe way to call RESTful services so that developers can
+focus more on the client models rather than how to connect with remote services while developing
+client applications.
+
+The application that you will be working with is an `inventory` service which retrieves and stores the system property information for different hosts.
+Whenever a request is made to the `inventory` service to retrieve the
+system properties of a particular host, the `inventory` service will create a client to invoke the `system`
+service on that host to get these system properties. The `system` service simulates a remote service in this application.
+
+You will learn how to create and register the client interface and handle exceptions through `ResponseExceptionMappers`.
+In addition, you will build the implementation of the RESTful client with two approaches: `RestClientBuilder`, or Contexts and Dependency Injection (CDI).
+
+// =================================================================================================
+// Getting Started
+// =================================================================================================
+
+include::{common-includes}/gitclone.adoc[]
+
+=== Try what you'll build
+
+The `finish` directory in the root of this guide contains the finished inventory application. Feel
+free to give it a try before you proceed.
+
+To try out the application, first navigate to the `finish` directory and then run the following
+Maven goals to build the application and run it inside Open Liberty:
+
+```
+mvn install liberty:start-server
+```
+
+After starting the application, you can access the following two microservices:
+
+* `http://localhost:9080/system/properties` retrieves the information for a specific host
+
+* `http://localhost:9080/inventory/systems` retrieves the information for a list of all previously registered hosts
+
+Once you are done checking out the application, stop the Open Liberty server:
+
+```
+mvn liberty:stop-server
+```
+
+Now, navigate back to the `start` directory to begin.
+
+// =================================================================================================
+// Writing the RESTful client interface
+// =================================================================================================
+== Writing the RESTful client interface
+
+The MicroProfile Rest Client API was added as a dependency to your `pom.xml` file. Look for the dependency with the `microprofile-rest-client-api` artifact ID.
+This feature allows you to use the MicroProfile Rest Client to invoke RESTful services over HTTP in a type-safe way.
+The `mpRestClient-1.0` feature is also enabled in the `src/main/liberty/config/server.xml` file.
+
+The code for the `system` service in the `src/main/java/io/openliberty/guides/system` directory is provided for you. It simulates a remote RESTful service that
+the `inventory` service tries to invoke.
+
+Now you need to create a RESTful client interface that represents this `system` service, call it the system client.
+Create a `src/main/java/io/openliberty/guides/inventory/client/SystemClient.java` file:
+[source, java, indent=0]
+----
+include::finish/src/main/java/io/openliberty/guides/inventory/client/SystemClient.java[tags=**;!copyright;]
+----
+
+Note that the service will automatically build and generate an implementation for the system client interface, because the JAX-RS annotations in this interface tells the RESTful service
+what to do. That allows the user to not have to worry about all of the boilerplate code (like setting up a client class, connecting to the remote server, invoking the right URI with the right parameters, etc.).
+
+When the `getProperties()` method gets invoked, the system client sends a GET request to the endpoint at `<baseUrl>/system/properties`.
+
+// =================================================================================================
+// Handling exceptions through ResponseExceptionMappers
+// =================================================================================================
+== Handling exceptions through ResponseExceptionMappers
+
+
+// =================================================================================================
+// Instantiating the client with CDI and Config
+// =================================================================================================
+== Instantiating the client with CDI and Config
+
+Now you need to instantiate the system client and use it in the `inventory` service. It is easy to do so using the CDI and MicroProfile Config approach.
+
+First, you need to configure the `baseUrl` of this system client using MicroProfile Config. The feature has been enabled for you in both `server.xml` and `pom.xml` files.
+Open the `finish/pom.xml` file, add a new config property called `<fullyQualifiedInterfaceName>/mp-rest/url` which in this case is `io.openliberty.guides.service.MusicPlaylistService/mp-rest/url` to the `<bootstrapProperties>` field and
+configure this property to the default base URL `http://localhost:9080/system/properties`. This configuration will be automatically picked up by the MicroProfile Config API.
+
+Then, update the `src/main/java/io/openliberty/guides/inventory/client/SystemClient.java` file with a few more annotations:
+[source, java, indent=0]
+----
+include::finish/src/main/java/io/openliberty/guides/inventory/client/SystemClient.java[tags=**;!copyright;]
+----
+
+`@Dependent` tells the service the scope of this interface.
+
+`@RegisterRestClient` registers this interface as a rest client.
+
+`@RegisterProvider()` adds any provider classes to this interface; you can add as many providers as necessary.
+
+Inject the system client to the `InventoryResource` class using CDI. Copy all the following code and replace the contents of the `src/main/java/io/openliberty/guides/inventory/InventoryResource.java` file:
+[source, java, indent=0]
+----
+include::finish/src/main/java/io/openliberty/guides/inventory/InventoryResource.java[tags=**;!copyright;]
+----
+
+`@RestClient` implies that CDI injects an instance of the `system` Rest Client to the service.
+
+Now you can invoke the `system` service by calling the `systemClient.getProperties()` method.
+
+// =================================================================================================
+// Instantiating the client with RestClientBuilder (OPTIONAL)
+// =================================================================================================
+== Instantiating the client with RestClientBuilder (OPTIONAL)
+
+
+// =================================================================================================
+// Building and running the application
+// =================================================================================================
+
+include::{common-includes}/mvnbuild.adoc[]
+
+Once the server is running, the following two microservices should be available to access:
+
+* `http://localhost:9080/system/properties`
+
+* `http://localhost:9080/inventory/systems`
+
+
+include::{common-includes}/mvnpackage.adoc[]
+
+
+// =================================================================================================
+// Testing the application
+// =================================================================================================
+
+== Testing the application
+
+Create a `src/test/java/it/io/openliberty/guides/client/RestClientTest.java` file and add the following code:
+
+[source, java, indent=0]
+----
+include::finish/src/test/java/it/io/openliberty/guides/client/RestClientTest.java[tags=test]
+----
+
+In addition, a few endpoint tests have been provided for you to test the basic functionality of the `inventory` and `system` services. If a test failure occurs, then you must have introduced a bug into the code.
+
+include::{common-includes}/mvnverify.adoc[]
+
+[source, role="no_copy"]
+----
+-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+Running it.io.openliberty.guides.config.RestClientTest.java
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.729 sec - in it.io.openliberty.guides.config.ConfigurationTest
+Running it.io.openliberty.guides.inventory.InventoryEndpointTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.477 sec - in it.io.openliberty.guides.inventory.InventoryEndpointTest
+Running it.io.openliberty.guides.system.SystemEndpointTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.013 sec - in it.io.openliberty.guides.system.SystemEndpointTest
+
+Results :
+
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
+
+----
+
+To see whether the tests detect a failure ......
+Re-run the Maven build. You will see a test failure occur.
+
+== Great work! You're done!
+
+You just built and tested a MicroProfile application with MicroProfile Rest Client and Open Liberty.
+
+Feel free to try one of the related guides. They demonstrate new technologies that you can learn and
+expand on top what you built in this guide.
+
+include::{common-includes}/finish.adoc[]
