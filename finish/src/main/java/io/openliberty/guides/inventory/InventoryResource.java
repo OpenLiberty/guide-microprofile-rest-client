@@ -40,10 +40,6 @@ public class InventoryResource {
   InventoryManager manager;
   // end::Inject[]
 
-  // @Inject
-  // @RestClient
-  // private MusicPlaylistService playlistService;
-
 
   @GET
   @Path("/{hostname}")
@@ -64,45 +60,6 @@ public class InventoryResource {
   public InventoryList listContents() {
     return manager.list();
   }
-
-  // @GET
-  // @Path("/restclient")
-  // @Produces("text/plain")
-  // public String displayName() {
-  //    playlistService.newPlayList("bla");
-  //   // System.out.println("hahahaha" + result.toString());
-  //   List<String> names = playlistService.getPlaylistNames();
-  //   String last = null;
-  //   for (String name : names) {
-  //     last = name;
-  //     System.out.println("hahahaha" + name);
-  //   }
-  //   return last;
-  // }
-
-  @GET
-  @Path("/restclient")
-  @Produces("text/plain")
-  public String displayName() throws java.net.MalformedURLException {
-
-    URL apiUrl = new URL("http://localhost:9080/onlineMusicService");
-MusicPlaylistService playlistSvc =
-    RestClientBuilder.newBuilder()
-                     .baseUrl(apiUrl)
-                     .build(MusicPlaylistService.class);
-
-    // playlistSvc.newPlayList("bla");
-
-    // System.out.println("hahahaha" + result.toString());
-    List<String> names = playlistSvc.getPlaylistNames();
-    String last = null;
-    for (String name : names) {
-      last = name;
-      System.out.println("hahahaha" + name);
-    }
-    return last;
-  }
-
 
 
 

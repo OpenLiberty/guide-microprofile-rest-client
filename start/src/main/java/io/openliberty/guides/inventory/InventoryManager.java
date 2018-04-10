@@ -23,9 +23,9 @@ import javax.enterprise.context.ApplicationScoped;
 public class InventoryManager {
 
   private InventoryList invList = new InventoryList();
-  private SystemClient systemClient = new SystemClient();
 
   public Properties get(String hostname) {
+    SystemClient systemClient = new SystemClient();
     systemClient.init(hostname);
 
     Properties properties = systemClient.getProperties();
