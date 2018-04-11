@@ -12,12 +12,20 @@
 // end::copyright[]
 package io.openliberty.guides.inventory;
 
+import java.util.Map;
 import java.util.Properties;
 
 import io.openliberty.guides.inventory.model.InventoryList;
 import io.openliberty.guides.inventory.rest.client.SystemClient;
+import io.openliberty.guides.inventory.rest.client.SystemResourceService;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+
+import org.eclipse.microprofile.config.Config;
+import org.eclipse.microprofile.config.ConfigProvider;
+import org.eclipse.microprofile.config.spi.ConfigSource;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 // tag::ApplicationScoped[]
 @ApplicationScoped
@@ -25,12 +33,17 @@ import javax.enterprise.context.ApplicationScoped;
 public class InventoryManager {
 
   private InventoryList invList = new InventoryList();
-  private SystemClient systemClient = new SystemClient();
+  @Inject
+  @RestClient
+  private SystemResourceService restClientService;
 
+  //private String url;
+  
   public Properties get(String hostname) {
-    systemClient.init(hostname);
 
-    Properties properties = systemClient.getProperties();
+    //systemClient.init(hostname);
+
+    Properties properties = restClientService.getProperties();
     if (properties != null) {
         invList.addToInventoryList(hostname, properties);
       }

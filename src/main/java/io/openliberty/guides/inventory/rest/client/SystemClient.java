@@ -12,6 +12,7 @@
 // end::copyright[]
 package io.openliberty.guides.inventory.rest.client;
 
+import javax.inject.Inject;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Invocation.Builder;
@@ -21,6 +22,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.eclipse.microprofile.rest.client.RestClientBuilder;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import java.util.Properties;
 import java.net.URI;
@@ -30,11 +32,14 @@ public class SystemClient {
 
   // Constants for building URI to the system service.
   private final int DEFAULT_PORT = Integer.valueOf(System.getProperty("default.http.port"));
-  private final String SYSTEM_PROPERTIES = "/system/properties";
+  private final String SYSTEM_PROPERTIES = "/system";
   private final String PROTOCOL = "http";
 
   private String url;
-  private SystemResourceService clientBuilder;
+  
+  @Inject
+  @RestClient
+  private SystemResourceService restClientService;
 
   // Used by the following guide(s): CDI, MP-METRICS, FAULT-TOLERANCE
   public void init(String hostname) {
@@ -49,12 +54,11 @@ public class SystemClient {
   // Helper method to set the attributes.
   private void initHelper(String hostname, int port) {
     this.url = buildUrl(PROTOCOL, hostname, port, SYSTEM_PROPERTIES);
-    this.clientBuilder = buildClientBuilder(this.url);
   }
 
   // Wrapper function that gets properties
   public Properties getProperties() {
-    return getPropertiesHelper(this.clientBuilder);
+    return getPropertiesHelper();
   }
 
   // tag::doc[]
@@ -81,32 +85,20 @@ public class SystemClient {
     }
   }
 
-  
-  // Method that creates the client builder
-  protected SystemResourceService buildClientBuilder(String urlString) {
-    try {
-      SystemResourceService systemService = RestClientBuilder.newBuilder()
-        .baseUrl(new URL(urlString))
-        .build(SystemResourceService.class);
-
-      return systemService;
-    } catch (Exception e) {
-      System.err.println("Exception thrown while building the client: " + e.getMessage());
-      return null;
-    }
-  }
-
   // Helper method that processes the request
-  protected Properties getPropertiesHelper(SystemResourceService clientBuilder) {
+  protected Properties getPropertiesHelper() {
+	Properties properties = null;
     try {
-      Properties properties = clientBuilder.getProperties();
+      System.out.println(restClientService);
+      properties = restClientService.getProperties();
+      System.out.println(restClientService);
       
     } catch (RuntimeException e) {
       System.err.println("Runtime exception: " + e.getMessage());
     } catch (Exception e) {
       System.err.println("Exception thrown while invoking the request: " + e.getMessage());
     }
-    return null;
+    return properties;
   }
 
 }

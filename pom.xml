@@ -2,7 +2,8 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.openliberty.guides</groupId>
   <artifactId>draft-guide-microprofile-rest-client</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>1.0.0-SNAPSHOT</version>
+  <packaging>war</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -24,6 +25,11 @@
     		<version>1.0</version>
     		<scope>provided</scope> 
     	</dependency>
+    	<dependency>
+    		<groupId>org.eclipse.microprofile.config</groupId>
+    		<artifactId>microprofile-config-api</artifactId>
+    		<version>1.2.1</version>
+		</dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -133,6 +139,7 @@
                     <bootstrapProperties>
                         <default.http.port>${testServerHttpPort}</default.http.port>
                         <default.https.port>${testServerHttpsPort}</default.https.port>
+                        <com.ibm.ws.logging.trace.specification>JCDI=all:com.ibm.ws.webbeans*=all:org.apache.webbeans*=all:org.jboss.weld*=all:com.ibm.ws.cdi*=all:org.eclipse.microprofile*=all:com.ibm.ws.microprofile*=all</com.ibm.ws.logging.trace.specification>
                     </bootstrapProperties>
                 </configuration>
                 <executions>
@@ -199,7 +206,7 @@
                             </includes>
                             <!-- tag::system-props[] -->
                             <systemPropertyVariables>
-                                <liberty.test.port>${testServerHttpPort}</liberty.test.port>
+                     			<liberty.test.port>${testServerHttpPort}</liberty.test.port>
                             </systemPropertyVariables>
                             <!-- end::system-props[] -->
                         </configuration>

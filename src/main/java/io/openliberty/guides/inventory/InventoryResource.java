@@ -12,6 +12,7 @@
 // end::copyright[]
 package io.openliberty.guides.inventory;
 
+import java.util.Map;
 import java.util.Properties;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -21,7 +22,13 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
+import org.eclipse.microprofile.config.Config;
+import org.eclipse.microprofile.config.ConfigProvider;
+import org.eclipse.microprofile.config.spi.ConfigSource;
+
 import io.openliberty.guides.inventory.model.InventoryList;
+import io.openliberty.guides.inventory.rest.client.SystemResourceService;
 
 // tag::RequestScoped[]
 @RequestScoped
@@ -29,15 +36,31 @@ import io.openliberty.guides.inventory.model.InventoryList;
 @Path("/systems")
 public class InventoryResource {
 
-  // tag::Inject[]
+  // tag::Inject
   @Inject
   InventoryManager manager;
-  // end::Inject[]
-
+  // end::Inject
+  
   @GET
   @Path("/{hostname}")
   @Produces(MediaType.APPLICATION_JSON)
   public Response getPropertiesForHost(@PathParam("hostname") String hostname) {
+	  
+	 String url = null;
+	 Map<String, String> configProps = null;
+	 Config config = ConfigProvider.getConfig();
+	 for(ConfigSource cs :config.getConfigSources()) {
+		 configProps = cs.getProperties();
+		 if(configProps.containsKey("io.openliberty.guides.inventory.rest.client.SystemResourceService/mp-rest/url")) {
+			 url = configProps.remove("io.openliberty.guides.inventory.rest.client.SystemResourceService/mp-rest/url");
+			 System.out.println("old url =" + url);
+	    }
+	    		
+	}
+	url = "http://" + hostname + ":9080/draft-guide-microprofile-rest-client/system";
+    System.out.println("New hostname url = " + url); 
+	configProps.put("io.openliberty.guides.inventory.rest.client.SystemResourceService/mp-rest/url", url);
+	
     Properties props = manager.get(hostname);
     if (props == null) {
       return Response.status(Response.Status.NOT_FOUND)
