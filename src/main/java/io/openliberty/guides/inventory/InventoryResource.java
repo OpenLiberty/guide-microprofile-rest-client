@@ -44,23 +44,8 @@ public class InventoryResource {
   @GET
   @Path("/{hostname}")
   @Produces(MediaType.APPLICATION_JSON)
-  public Response getPropertiesForHost(@PathParam("hostname") String hostname) {
-	  
-	 String url = null;
-	 Map<String, String> configProps = null;
-	 Config config = ConfigProvider.getConfig();
-	 for(ConfigSource cs :config.getConfigSources()) {
-		 configProps = cs.getProperties();
-		 if(configProps.containsKey("io.openliberty.guides.inventory.rest.client.SystemResourceService/mp-rest/url")) {
-			 url = configProps.remove("io.openliberty.guides.inventory.rest.client.SystemResourceService/mp-rest/url");
-			 System.out.println("old url =" + url);
-	    }
-	    		
-	}
-	url = "http://" + hostname + ":9080/draft-guide-microprofile-rest-client/system";
-    System.out.println("New hostname url = " + url); 
-	configProps.put("io.openliberty.guides.inventory.rest.client.SystemResourceService/mp-rest/url", url);
-	
+  public Response getPropertiesForHost(@PathParam("hostname") String hostname) {  
+	    
     Properties props = manager.get(hostname);
     if (props == null) {
       return Response.status(Response.Status.NOT_FOUND)
