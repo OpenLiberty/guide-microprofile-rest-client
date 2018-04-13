@@ -62,7 +62,7 @@ public class InventoryEndpointTest {
     this.testEmptyInventory();
     this.testHostRegistration();
     this.testSystemPropertiesMatch();
-    this.testUnknownHost();
+    //this.testUnknownHost();
   }
   // end::testSuite[]
 
@@ -162,7 +162,7 @@ public class InventoryEndpointTest {
    * <p>
    * Returns response information from the specified URL.
    * </p>
-   * 
+   *
    * @param url
    *          - target URL.
    * @return Response object with the response from the specified URL.
@@ -177,7 +177,7 @@ public class InventoryEndpointTest {
    * <p>
    * Asserts that the given URL has the correct response code of 200.
    * </p>
-   * 
+   *
    * @param url
    *          - target URL.
    * @param response
@@ -193,7 +193,7 @@ public class InventoryEndpointTest {
   /**
    * Asserts that the specified JVM system property is equivalent in both the
    * system and inventory services.
-   * 
+   *
    * @param propertyName
    *          - name of the system property to check.
    * @param hostname

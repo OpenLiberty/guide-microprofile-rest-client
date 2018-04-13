@@ -18,7 +18,6 @@ import java.util.Map;
 import java.util.Properties;
 
 import io.openliberty.guides.inventory.model.InventoryList;
-import io.openliberty.guides.inventory.rest.client.SystemClient;
 import io.openliberty.guides.inventory.rest.client.SystemResourceService;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -40,19 +39,20 @@ import javax.enterprise.context.ApplicationScoped;
 public class InventoryManager {
 
   private InventoryList invList = new InventoryList();
+
   @Inject
   @RestClient
   private SystemResourceService localRestClientService;
 
-  
+
   public Properties get(String hostname) {
 
 	  Properties properties = null;
-	  // If the request matches the System Service is running on the localhost use the Injected localRestClientService 
+	  // If the request matches the System Service is running on the localhost use the Injected localRestClientService
 	  // For all other host names use RestCLientBuilder to request properties from the remoteSystemService
 	  if(hostname.equals("localhost")) {
 		    properties = localRestClientService.getProperties();
-	  } 
+	  }
 	  else {
 		  String url = null;
 		  Map<String, String> configProps = null;
@@ -61,13 +61,13 @@ public class InventoryManager {
 		      configProps = cs.getProperties();
 		      if(configProps.containsKey(SystemResourceService.class.getName() + "/mp-rest/url")) {
 		         url = configProps.remove(SystemResourceService.class.getName() + "/mp-rest/url");
-		         System.out.println("old url =" + url);
+		         System.out.println("old url = " + url);
 		      }
-		                
+
 		    }
 		   String remoteURL = url.replaceAll("localhost", hostname);
 		   configProps.put(SystemResourceService.class.getName() + "/mp-rest/url", url);
-		    
+
 		   URL apiURL = null;
 		   try {
 			  apiURL = new URL(remoteURL);
@@ -75,20 +75,20 @@ public class InventoryManager {
 					  RestClientBuilder.newBuilder()
 					  					.baseUrl(apiURL)
 						                .build(SystemResourceService.class);
-					
+
 			  properties = remoteSystemService.getProperties();
 		  } catch (MalformedURLException e) {
-			  System.out.println("THe localHost url is invalid");
+			  System.out.println("The localHost url is invalid");
 			  e.printStackTrace();
 		  };
 	  }
 
-	  
+
 	  if (properties != null) {
 		  invList.addToInventoryList(hostname, properties);
 	  }
 	  return properties;
-	  
+
   }
 
   public InventoryList list() {
