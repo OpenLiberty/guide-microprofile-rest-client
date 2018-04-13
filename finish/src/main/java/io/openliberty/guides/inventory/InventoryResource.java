@@ -12,6 +12,8 @@
 // end::copyright[]
 package io.openliberty.guides.inventory;
 
+
+import java.util.Map;
 import java.util.Properties;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -21,12 +23,18 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
+import org.eclipse.microprofile.config.Config;
+import org.eclipse.microprofile.config.ConfigProvider;
+import org.eclipse.microprofile.config.spi.ConfigSource;
+
+import io.openliberty.guides.inventory.model.InventoryList;
+import io.openliberty.guides.inventory.rest.client.SystemResourceService;
 import io.openliberty.guides.inventory.model.InventoryList;
 
 import java.net.URL;
 import java.util.*;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
-import io.openliberty.guides.service.MusicPlaylistService;
 import org.eclipse.microprofile.rest.client.RestClientBuilder;
 
 // tag::RequestScoped[]
@@ -34,6 +42,7 @@ import org.eclipse.microprofile.rest.client.RestClientBuilder;
 // end::RequestScoped[]
 @Path("/systems")
 public class InventoryResource {
+	    
 
   // tag::Inject[]
   @Inject
@@ -60,7 +69,4 @@ public class InventoryResource {
   public InventoryList listContents() {
     return manager.list();
   }
-
-
-
 }

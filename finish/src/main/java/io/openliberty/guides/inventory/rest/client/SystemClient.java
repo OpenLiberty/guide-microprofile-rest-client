@@ -10,8 +10,9 @@
  *     IBM Corporation - Initial implementation
  *******************************************************************************/
 // end::copyright[]
-package io.openliberty.guides.inventory.client;
+package io.openliberty.guides.inventory.rest.client;
 
+import javax.inject.Inject;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Invocation.Builder;
@@ -19,18 +20,26 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+
+import org.eclipse.microprofile.rest.client.RestClientBuilder;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
+
 import java.util.Properties;
 import java.net.URI;
+import java.net.URL;
 
 public class SystemClient {
 
   // Constants for building URI to the system service.
   private final int DEFAULT_PORT = Integer.valueOf(System.getProperty("default.http.port"));
-  private final String SYSTEM_PROPERTIES = "/system/properties";
+  private final String SYSTEM_PROPERTIES = "/system";
   private final String PROTOCOL = "http";
 
   private String url;
-  private Builder clientBuilder;
+  
+  @Inject
+  @RestClient
+  private SystemResourceService restClientService;
 
   // Used by the following guide(s): CDI, MP-METRICS, FAULT-TOLERANCE
   public void init(String hostname) {
@@ -45,12 +54,11 @@ public class SystemClient {
   // Helper method to set the attributes.
   private void initHelper(String hostname, int port) {
     this.url = buildUrl(PROTOCOL, hostname, port, SYSTEM_PROPERTIES);
-    this.clientBuilder = buildClientBuilder(this.url);
   }
 
   // Wrapper function that gets properties
   public Properties getProperties() {
-    return getPropertiesHelper(this.clientBuilder);
+    return getPropertiesHelper();
   }
 
   // tag::doc[]
@@ -77,33 +85,20 @@ public class SystemClient {
     }
   }
 
-  // Method that creates the client builder
-  protected Builder buildClientBuilder(String urlString) {
-    try {
-      Client client = ClientBuilder.newClient();
-      Builder builder = client.target(urlString).request();
-      return builder.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON);
-    } catch (Exception e) {
-      System.err.println("Exception thrown while building the client: " + e.getMessage());
-      return null;
-    }
-  }
-
   // Helper method that processes the request
-  protected Properties getPropertiesHelper(Builder builder) {
+  protected Properties getPropertiesHelper() {
+	Properties properties = null;
     try {
-      Response response = builder.get();
-      if (response.getStatus() == Status.OK.getStatusCode()) {
-        return response.readEntity(Properties.class);
-      } else {
-        System.err.println("Response Status is not OK.");
-      }
+      System.out.println(restClientService);
+      properties = restClientService.getProperties();
+      System.out.println(restClientService);
+      
     } catch (RuntimeException e) {
       System.err.println("Runtime exception: " + e.getMessage());
     } catch (Exception e) {
       System.err.println("Exception thrown while invoking the request: " + e.getMessage());
     }
-    return null;
+    return properties;
   }
 
 }
