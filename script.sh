@@ -1,7 +1,8 @@
 #!/bin/bash
+sudo apt-get install maven
 cd finish
-mvn clean >/dev/null 2>&1
-mvn liberty:install-server >/dev/null 2>&1
+mvn clean 
+mvn liberty:install-server
 grep -i "runtime/"
 # echo $x
 # echo $x | cut -d'-' -f 2 | cut -d'/' -f 2
