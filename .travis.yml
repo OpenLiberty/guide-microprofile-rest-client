@@ -1,5 +1,4 @@
 language: bash
-install: true
 script: 
   - sudo apt-get install maven
   - bash script.sh
