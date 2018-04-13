@@ -1,6 +1,5 @@
 language: bash
 script: 
-  - sudo apt-get install maven
   - bash script.sh
 #notifications:
 #  slack:
