@@ -5,7 +5,11 @@
     <feature>jsonp-1.0</feature>
     <feature>cdi-1.2</feature>
     <feature>mpConfig-1.2</feature>
+<<<<<<< HEAD
     <feature>mpRestClient-1.0</feature>
+=======
+    <feature>mpRestClient-1.0</feature>  
+>>>>>>> master
   </featureManager>
 
   <httpEndpoint host="*" httpPort="${default.http.port}" httpsPort="${default.https.port}" id="defaultHttpEndpoint"/>
