@@ -136,3 +136,6 @@ for ((i = 0; i < ${#statuses[@]}; ++i)); do
     echo -e "\033[1;31m|______________[$number] Warning______________|\033[0m"
   fi
 done
+
+echo "$TRAVIS_EVENT_TYPE"
+echo "$TRAVIS_BRANCH"
