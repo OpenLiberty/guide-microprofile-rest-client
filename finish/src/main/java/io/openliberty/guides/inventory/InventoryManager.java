@@ -12,7 +12,6 @@
 // end::copyright[]
 package io.openliberty.guides.inventory;
 
-<<<<<<< HEAD
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
@@ -30,19 +29,16 @@ import org.eclipse.microprofile.config.ConfigProvider;
 import org.eclipse.microprofile.config.spi.ConfigSource;
 import org.eclipse.microprofile.rest.client.RestClientBuilder;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
-=======
 import java.util.Properties;
-import io.openliberty.guides.inventory.client.SystemClient;
 import io.openliberty.guides.inventory.model.InventoryList;
 import javax.enterprise.context.ApplicationScoped;
->>>>>>> master
+
 
 // tag::ApplicationScoped[]
 @ApplicationScoped
 // end::ApplicationScoped[]
 public class InventoryManager {
-<<<<<<< HEAD
-  
+
   private InventoryList invList = new InventoryList();
   @Inject
   @RestClient
@@ -93,21 +89,6 @@ public class InventoryManager {
 	  }
 	  return properties;
 	  
-=======
-
-  private InventoryList invList = new InventoryList();
-
-  public Properties get(String hostname) {
-    SystemClient systemClient = new SystemClient();
-    systemClient.init(hostname);
-
-    Properties properties = systemClient.getProperties();
-    if (properties != null) {
-        invList.addToInventoryList(hostname, properties);
-      }
-    return properties;
-
->>>>>>> master
   }
 
   public InventoryList list() {

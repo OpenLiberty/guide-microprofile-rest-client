@@ -12,10 +12,8 @@
 // end::copyright[]
 package io.openliberty.guides.inventory;
 
-<<<<<<< HEAD
+
 import java.util.Map;
-=======
->>>>>>> master
 import java.util.Properties;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -25,7 +23,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-<<<<<<< HEAD
 
 import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.config.ConfigProvider;
@@ -33,34 +30,20 @@ import org.eclipse.microprofile.config.spi.ConfigSource;
 
 import io.openliberty.guides.inventory.model.InventoryList;
 import io.openliberty.guides.inventory.rest.client.SystemResourceService;
-=======
 import io.openliberty.guides.inventory.model.InventoryList;
 
 import java.net.URL;
 import java.util.*;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
-import io.openliberty.guides.service.MusicPlaylistService;
 import org.eclipse.microprofile.rest.client.RestClientBuilder;
->>>>>>> master
 
 // tag::RequestScoped[]
 @RequestScoped
 // end::RequestScoped[]
 @Path("/systems")
 public class InventoryResource {
-
-<<<<<<< HEAD
-  // tag::Inject
-  @Inject
-  InventoryManager manager;
-  // end::Inject
-  
-  @GET
-  @Path("/{hostname}")
-  @Produces(MediaType.APPLICATION_JSON)
-  public Response getPropertiesForHost(@PathParam("hostname") String hostname) {  
 	    
-=======
+
   // tag::Inject[]
   @Inject
   InventoryManager manager;
@@ -71,7 +54,6 @@ public class InventoryResource {
   @Path("/{hostname}")
   @Produces(MediaType.APPLICATION_JSON)
   public Response getPropertiesForHost(@PathParam("hostname") String hostname) {
->>>>>>> master
     Properties props = manager.get(hostname);
     if (props == null) {
       return Response.status(Response.Status.NOT_FOUND)
@@ -87,10 +69,4 @@ public class InventoryResource {
   public InventoryList listContents() {
     return manager.list();
   }
-<<<<<<< HEAD
-=======
-
-
-
->>>>>>> master
 }
