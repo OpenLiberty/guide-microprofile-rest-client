@@ -1,7 +1,7 @@
 language: bash
 install: true
 script: 
-  - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+  - sudo apt-get install maven
   - bash script.sh
 #notifications:
 #  slack:
