@@ -1,6 +1,8 @@
 language: bash
-script:
-- bash script.sh
+install: true
+script: 
+  - ./mvnw clean install
+  - bash script.sh
 #notifications:
 #  slack:
 #    template:
