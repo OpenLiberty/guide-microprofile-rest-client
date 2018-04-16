@@ -4,26 +4,7 @@ cd finish
 mvn clean
 mavenOutput=$(mvn liberty:install-server)
 build=$(echo "$mavenOutput" | grep -i "runtime/" | cut -d'-' -f 2 | cut -d'/' -f 2 )
-IFS=' ' read -r -a array <<< "$build"
-echo "\033[1;34mOpenLiberty runtime:\033[0m ${array[0]}"
-echo "\033[1;34mOpenLiberty runtime:\033[0m ${array[1]}"
-echo "\033[1;34mOpenLiberty runtime:\033[0m ${array[2]}"
-echo "\033[1;34mOpenLiberty runtime:\033[0m ${array[3]}"
-echo "\033[1;34mOpenLiberty runtime:\033[0m ${array[4]}"
-echo "\033[1;34mOpenLiberty runtime:\033[0m ${array[5]}"
-echo "\033[1;34mOpenLiberty runtime:\033[0m ${array[6]}"
-echo "\033[1;34mOpenLiberty runtime:\033[0m ${array[7]}"
-echo "\033[1;34mOpenLiberty runtime:\033[0m ${array[8]}"
-IFS='\n' read -r -a array <<< "$build"
-echo "\033[1;34mOpenLiberty runtime:\033[0m ${array[0]}"
-echo "\033[1;34mOpenLiberty runtime:\033[0m ${array[1]}"
-echo "\033[1;34mOpenLiberty runtime:\033[0m ${array[2]}"
-echo "\033[1;34mOpenLiberty runtime:\033[0m ${array[3]}"
-echo "\033[1;34mOpenLiberty runtime:\033[0m ${array[4]}"
-echo "\033[1;34mOpenLiberty runtime:\033[0m ${array[5]}"
-echo "\033[1;34mOpenLiberty runtime:\033[0m ${array[6]}"
-echo "\033[1;34mOpenLiberty runtime:\033[0m ${array[7]}"
-echo "\033[1;34mOpenLiberty runtime:\033[0m ${array[8]}"
+build=$(echo "$build | grep -i "1")
 echo "\033[1;34mOpenLiberty runtime:\033[0m $build"
 cd ..
 #############################################################################################
