@@ -10,8 +10,8 @@ import javax.ws.rs.ext.Provider;
 import org.eclipse.microprofile.rest.client.ext.ResponseExceptionMapper;
 
 @Provider
-public class UnknownHostNameExceptionMapper implements ResponseExceptionMapper<UnknownHostNameException> {
-    Logger LOG = Logger.getLogger(UnknownHostNameExceptionMapper.class.getName());
+public class UnknownUrlExceptionMapper implements ResponseExceptionMapper<UnknownUrlException> {
+    Logger LOG = Logger.getLogger(UnknownUrlExceptionMapper.class.getName());
 
     @Override
     public boolean handles(int status, MultivaluedMap<String, Object> headers) {
@@ -20,8 +20,8 @@ public class UnknownHostNameExceptionMapper implements ResponseExceptionMapper<U
     }
 
     @Override
-    public UnknownHostNameException toThrowable(Response response) {
-        return new UnknownHostNameException();
+    public UnknownUrlException toThrowable(Response response) {
+        return new UnknownUrlException();
     }
 }
 // end::mapper[]

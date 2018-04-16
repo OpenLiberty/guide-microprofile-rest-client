@@ -21,6 +21,9 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+import java.net.UnknownHostException;
 
 @RequestScoped
 @Path("/properties")
@@ -29,6 +32,12 @@ public class SystemResource {
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   public Properties getProperties() {
+    // try {
+    //   Properties props = System.getProperties();
+    //   return Response.ok(props).build();
+    // } catch (UnknownHostException e){
+    //   return Response.status(Response.Status.NOT_FOUND).build();
+    // }
     return System.getProperties();
-  } 
+  }
 }

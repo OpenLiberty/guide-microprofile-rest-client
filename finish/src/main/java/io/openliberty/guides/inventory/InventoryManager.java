@@ -23,6 +23,7 @@ import io.openliberty.guides.inventory.client.SystemClient;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.ws.rs.core.Response;
 
 import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.config.ConfigProvider;
@@ -31,7 +32,7 @@ import org.eclipse.microprofile.rest.client.RestClientBuilder;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import io.openliberty.guides.inventory.model.InventoryList;
 import javax.enterprise.context.ApplicationScoped;
-import io.openliberty.guides.inventory.client.UnknownHostNameException;
+import io.openliberty.guides.inventory.client.UnknownUrlException;
 
 
 // tag::ApplicationScoped[]
@@ -54,8 +55,10 @@ public class InventoryManager {
 	  if(hostname.equals("localhost")) {
       try {
         properties = localRestClientService.getProperties();
-      } catch (UnknownHostNameException e) {
-        System.err.println("Unknown host name.");
+        // Response resp = localRestClientService.getProperties();
+        // properties = .getEntity(Properties.class);
+      } catch (UnknownUrlException e) {
+        System.err.println("The given URL is unreachable.");
 			  e.printStackTrace();
       }
 	  }
@@ -70,11 +73,12 @@ public class InventoryManager {
 						                .build(SystemClient.class);
 
 			  properties = remoteSystemService.getProperties();
-		  } catch (UnknownHostNameException e) {
-        System.err.println("Unknown host name.");
+        // properties = remoteSystemService.getProperties().getEntity(Properties.class);
+		  } catch (UnknownUrlException e) {
+        System.err.println("The given URL is unreachable.");
 			  e.printStackTrace();
       } catch (MalformedURLException e) {
-			  System.err.println("The url is invalid");
+			  System.err.println("The given URL is not formatted correctly.");
 			  e.printStackTrace();
 		  };
 	  }

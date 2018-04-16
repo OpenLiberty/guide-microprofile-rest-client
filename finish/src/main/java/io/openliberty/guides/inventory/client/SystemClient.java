@@ -15,13 +15,13 @@ import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 @Dependent
 @RegisterRestClient
 // tag::simple[]
-@RegisterProvider(UnknownHostNameExceptionMapper.class)
+@RegisterProvider(UnknownUrlExceptionMapper.class)
 @Path("/properties")
 public interface SystemClient {
 
 	  @GET
 	  @Produces(MediaType.APPLICATION_JSON)
-	  public Properties getProperties() throws UnknownHostNameException;
+	  public Properties getProperties() throws UnknownUrlException;
 }
 // end::simple[]
 // end::client[]

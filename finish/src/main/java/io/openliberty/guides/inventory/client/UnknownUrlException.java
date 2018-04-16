@@ -1,16 +1,16 @@
 // tag::exception[]
 package io.openliberty.guides.inventory.client;
 
-public class UnknownHostNameException extends Exception {
+public class UnknownUrlException extends Exception {
 
-    public UnknownHostNameException() {
+    public UnknownUrlException() {
         super();
     }
 
     /**
      * @param message
      */
-    public UnknownHostNameException(String message) {
+    public UnknownUrlException(String message) {
         super(message);
     }
 }

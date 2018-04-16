@@ -95,27 +95,27 @@ what to do. That allows you to not have to worry about all of the boilerplate co
 When the `getProperties()` method gets invoked, the `system` client sends a GET request to the endpoint at `<baseUrl>/system/properties`.
 
 `@RegisterProvider()` adds any provider classes to this interface; you can add as many providers as necessary.
-In this `system` client, you add a response exception mapper as a provider to map the `404 NOT FOUND` response code with the `UnknownHostNameException`, continue with the next section to see more details.
+In this `system` client, you add a response exception mapper as a provider to map the `404 NOT FOUND` response code with the `UnknownUrlException`, continue with the next section to see more details.
 
 // =================================================================================================
 // Handling exceptions through ResponseExceptionMappers
 // =================================================================================================
 == Handling exceptions through ResponseExceptionMappers
 
-In the previous section, the `getProperties()` method may throw an `UnknownHostNameException` if the response from the `system` service is `404 NOT FOUND`, and `@RegisterProvider(UnknownHostNameExceptionMapper.class)` registers the response exception mapper.
+In the previous section, the `getProperties()` method may throw an `UnknownUrlException` if the response from the `system` service is `404 NOT FOUND`, and `@RegisterProvider(UnknownUrlExceptionMapper.class)` registers the response exception mapper.
 You will implement the actual exception class and the mapper class to see how the this mechanism works.
 
-Create the `src/main/java/io/openliberty/guides/inventory/client/UnknownHostNameException.java` file and add the exception class code:
+Create the `src/main/java/io/openliberty/guides/inventory/client/UnknownUrlException.java` file and add the exception class code:
 [source, java, indent=0]
 ----
-include::finish/src/main/java/io/openliberty/guides/inventory/client/UnknownHostNameException.java[tags=exception]
+include::finish/src/main/java/io/openliberty/guides/inventory/client/UnknownUrlException.java[tags=exception]
 ----
 
-Now, you need to link this `UnknownHostNameException` class with the corresponding response code through a `ResponseExceptionMapper`.
-Create `src/main/java/io/openliberty/guides/inventory/client/UnknownHostNameExceptionMapper.java` file and add the mapper class code:
+Now, you need to link this `UnknownUrlException` class with the corresponding response code through a `ResponseExceptionMapper`.
+Create `src/main/java/io/openliberty/guides/inventory/client/UnknownUrlExceptionMapper.java` file and add the mapper class code:
 [source, java, indent=0]
 ----
-include::finish/src/main/java/io/openliberty/guides/inventory/client/UnknownHostNameExceptionMapper.java[tags=mapper]
+include::finish/src/main/java/io/openliberty/guides/inventory/client/UnknownUrlExceptionMapper.java[tags=mapper]
 ----
 
 The `handles()` method intercepts the HTTP response code, and the `toThrowable` method throws the mapped exception.
@@ -208,7 +208,7 @@ Create a `src/test/java/it/io/openliberty/guides/client/RestClientTest.java` fil
 
 [source, java, indent=0]
 ----
-include::finish/src/test/java/it/io/openliberty/guides/client/RestClientTest.java[tags=test]
+include::finish/src/test/java/it/io/openliberty/guides/client/RestClientTest.java[tags=testClass]
 ----
 
 In addition, a few endpoint tests have been provided for you to test the basic functionality of the `inventory` and `system` services. If a test failure occurs, then you must have introduced a bug into the code.
