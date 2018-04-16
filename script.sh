@@ -4,7 +4,7 @@ cd finish
 mvn clean
 mavenOutput=$(mvn liberty:install-server)
 build=$(echo "$mavenOutput" | grep -i "runtime/" | cut -d'-' -f 2 | cut -d'/' -f 2 )
-build=$(echo "$build | grep -i "1")
+build=$(echo "$build" | grep -i "1")
 echo "\033[1;34mOpenLiberty runtime:\033[0m $build"
 cd ..
 #############################################################################################
