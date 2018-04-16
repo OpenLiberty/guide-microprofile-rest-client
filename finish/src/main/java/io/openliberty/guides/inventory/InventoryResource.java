@@ -24,25 +24,14 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.eclipse.microprofile.config.Config;
-import org.eclipse.microprofile.config.ConfigProvider;
-import org.eclipse.microprofile.config.spi.ConfigSource;
-
 import io.openliberty.guides.inventory.model.InventoryList;
-import io.openliberty.guides.inventory.rest.client.SystemResourceService;
-import io.openliberty.guides.inventory.model.InventoryList;
-
-import java.net.URL;
-import java.util.*;
-import org.eclipse.microprofile.rest.client.inject.RestClient;
-import org.eclipse.microprofile.rest.client.RestClientBuilder;
 
 // tag::RequestScoped[]
 @RequestScoped
 // end::RequestScoped[]
 @Path("/systems")
 public class InventoryResource {
-	    
+
 
   // tag::Inject[]
   @Inject

@@ -1,4 +1,4 @@
-package io.openliberty.guides.inventory.rest.client;
+package it.io.openliberty.guides.client;
 
 import java.util.Properties;
 
@@ -14,7 +14,7 @@ import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 @Path("/properties")
 @Dependent
 @RegisterRestClient
-public interface SystemResourceService {
+public interface SystemClient {
 
 	  @GET
 	  @Produces(MediaType.APPLICATION_JSON)

@@ -10,6 +10,7 @@
  *     IBM Corporation - Initial implementation
  *******************************************************************************/
 // end::copyright[]
+// tag::manager[]
 package io.openliberty.guides.inventory;
 
 import java.net.MalformedURLException;
@@ -18,7 +19,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import io.openliberty.guides.inventory.model.InventoryList;
-import io.openliberty.guides.inventory.rest.client.SystemResourceService;
+import io.openliberty.guides.inventory.client.SystemClient;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -28,9 +29,9 @@ import org.eclipse.microprofile.config.ConfigProvider;
 import org.eclipse.microprofile.config.spi.ConfigSource;
 import org.eclipse.microprofile.rest.client.RestClientBuilder;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
-import java.util.Properties;
 import io.openliberty.guides.inventory.model.InventoryList;
 import javax.enterprise.context.ApplicationScoped;
+import io.openliberty.guides.inventory.client.UnknownHostNameException;
 
 
 // tag::ApplicationScoped[]
@@ -42,47 +43,41 @@ public class InventoryManager {
 
   @Inject
   @RestClient
-  private SystemResourceService localRestClientService;
+  private SystemClient localRestClientService;
 
 
   public Properties get(String hostname) {
 
 	  Properties properties = null;
-	  // If the request matches the System Service is running on the localhost use the Injected localRestClientService
-	  // For all other host names use RestCLientBuilder to request properties from the remoteSystemService
+	  // If the request matches the System Service running on the localhost, use the Injected localRestClientService
+	  // For all other host names, use RestCLientBuilder to request properties from the remoteSystemService
 	  if(hostname.equals("localhost")) {
-		    properties = localRestClientService.getProperties();
+      try {
+        properties = localRestClientService.getProperties();
+      } catch (UnknownHostNameException e) {
+        System.err.println("Unknown host name.");
+			  e.printStackTrace();
+      }
 	  }
 	  else {
-		  String url = null;
-		  Map<String, String> configProps = null;
-		  Config config = ConfigProvider.getConfig();
-		  for(ConfigSource cs :config.getConfigSources()) {
-		      configProps = cs.getProperties();
-		      if(configProps.containsKey(SystemResourceService.class.getName() + "/mp-rest/url")) {
-		         url = configProps.remove(SystemResourceService.class.getName() + "/mp-rest/url");
-		         System.out.println("old url = " + url);
-		      }
-
-		    }
-		   String remoteURL = url.replaceAll("localhost", hostname);
-		   configProps.put(SystemResourceService.class.getName() + "/mp-rest/url", url);
-
+       String remoteURL = "http://" + hostname + ":9080/system";
 		   URL apiURL = null;
 		   try {
 			  apiURL = new URL(remoteURL);
-			  SystemResourceService remoteSystemService =
+			  SystemClient remoteSystemService =
 					  RestClientBuilder.newBuilder()
 					  					.baseUrl(apiURL)
-						                .build(SystemResourceService.class);
+						                .build(SystemClient.class);
 
 			  properties = remoteSystemService.getProperties();
-		  } catch (MalformedURLException e) {
-			  System.out.println("The localHost url is invalid");
+		  } catch (UnknownHostNameException e) {
+        System.err.println("Unknown host name.");
+			  e.printStackTrace();
+      } catch (MalformedURLException e) {
+			  System.err.println("The url is invalid");
 			  e.printStackTrace();
 		  };
 	  }
-
 
 	  if (properties != null) {
 		  invList.addToInventoryList(hostname, properties);
@@ -95,3 +90,20 @@ public class InventoryManager {
     return invList;
   }
 }
+// end::manager[]
+
+//private void urlHelper() {
+  // String url = null;
+  // Map<String, String> configProps = null;
+  // Config config = ConfigProvider.getConfig();
+  // for(ConfigSource cs :config.getConfigSources()) {
+  //     configProps = cs.getProperties();
+  //     if(configProps.containsKey(SystemClient.class.getName() + "/mp-rest/url")) {
+  //        url = configProps.remove(SystemClient.class.getName() + "/mp-rest/url");
+  //        System.out.println("old url = " + url);
+  //     }
+  //
+  //   }
+  //  String remoteURL = url.replaceAll("localhost", hostname);
+  //  configProps.put(SystemClient.class.getName() + "/mp-rest/url", url);
+//}
