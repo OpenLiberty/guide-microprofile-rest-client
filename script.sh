@@ -1,7 +1,8 @@
 #!/bin/bash
-sudo apt-get install maven
+#############################################################################################
+sudo apt-get install maven >/dev/null 2>&1
 cd finish
-mvn clean
+mvn clean >/dev/null 2>&1
 mavenOutput=$(mvn liberty:install-server)
 build=$(echo "$mavenOutput" | grep -i "runtime/" | cut -d'-' -f 2 | cut -d'/' -f 2 | grep -m1 "1") 
 echo -e "\033[1;34mOpenLiberty runtime:\033[0m $build"
