@@ -3,7 +3,7 @@ sudo apt-get install maven
 cd finish
 mvn clean
 mavenOutput=$(mvn liberty:install-server)
-build=$(echo "$mavenOutput" | grep -i "runtime/" | cut -d'-' -f 2 | cut -d'/' -f 2 )
+build=$(echo "$mavenOutput")
 IFS='\n' read -r -a array <<< "$build"
 for element in "${array[@]}"
 do
