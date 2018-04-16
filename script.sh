@@ -2,7 +2,7 @@
 sudo apt-get install maven
 cd finish
 mvn clean
-#build=$(mvn liberty:install-server | grep -i "runtime/" | cut -d'-' -f 2 | cut -d'/' -f 2)
+mvn liberty:install-server
 cd ..
 echo -e "\033[1;34mOpenLiberty runtime:\033[0m $build\n"
 #############################################################################################
