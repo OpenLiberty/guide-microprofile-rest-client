@@ -3,8 +3,8 @@ sudo apt-get install maven
 cd finish
 mvn clean
 mavenOutput=$(mvn liberty:install-server)
-build=$(echo "$mavenOutput" | grep -i "runtime/" | cut -d'-' -f 2 | cut -d'/' -f 2 | grep -i "1") 
-echo -e "\033[1;34m\nOpenLiberty runtime:\033[0m 1$build"
+build=$(echo "$mavenOutput" | grep -i "runtime/" | cut -d'-' -f 2 | cut -d'/' -f 2 | grep -m1 "1") 
+echo -e "\033[1;34m\nOpenLiberty runtime:\033[0m 1$build\n"
 cd ..
 #############################################################################################
 echo -e "\033[1;32m[1] Checking the differences in start and finish folders ...\033[0m"
