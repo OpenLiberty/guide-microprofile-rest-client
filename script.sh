@@ -4,8 +4,9 @@ cd finish
 mvn clean
 mavenOutput=$(mvn liberty:install-server)
 build=$(echo "$mavenOutput" | grep -i "runtime/" | cut -d'-' -f 2 | cut -d'/' -f 2)
+echo -e "\n$build\n"
 cd ..
-echo -e "\033[1;34mOpenLiberty runtime:\033[0m $build\n"
+#echo -e "\033[1;34mOpenLiberty runtime:\033[0m $build\n"
 #############################################################################################
 echo -e "\033[1;32m[1] Checking the differences in start and finish folders ...\033[0m"
 status_1=0
