@@ -1,5 +1,6 @@
 #!/bin/bash
 sudo apt-get install maven
+pwd
 cd finish
 mvn clean
 mvn liberty:install-server
