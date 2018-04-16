@@ -1,8 +1,7 @@
 #!/bin/bash
 cd finish
 mvn clean
-grep -i "runtime/"
-build=$(mvn liberty:install-server | grep -i "runtime/" | cut -d'-' -f 2 | cut -d'/' -f 2)
+#build=$(mvn liberty:install-server | grep -i "runtime/" | cut -d'-' -f 2 | cut -d'/' -f 2)
 cd ..
 echo -e "\033[1;34mOpenLiberty runtime:\033[0m $build\n"
 #############################################################################################
