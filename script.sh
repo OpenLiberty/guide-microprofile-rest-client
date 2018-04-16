@@ -11,16 +11,15 @@ echo -e "\n"
 cd ..
 #############################################################################################
 echo -e "\033[1;32m[1] Checking the differences in start and finish folders ...\033[0m"
-echo -e "\n"
 status_1=0
 if ! diff -r start finish >/dev/null 2>&1; then
   echo -e "\033[1;31mWARNING:\033[0m"
   status_1=1
 fi
 diff -r start finish
+echo -e "\n"
 #############################################################################################
 echo -e "\033[1;32m[2] Checking uncreated folders in start folder ...\033[0m"
-echo -e "\n"
 status_2=$status_1
 result=($(diff -r start finish | sed -e 's/: /\//' | cut -c9-))
 for path in "${result[@]}"; do
@@ -33,9 +32,9 @@ for path in "${result[@]}"; do
 			echo -e "\033[1;31mWARNING:\033[0m The directory \033[1;34m$directory\033[0m is found in start folder: $path"
 		fi
 done
+echo -e "\n"
 #############################################################################################
 echo -e "\033[1;32m[3] Checking undesired phrases in README.adoc ...\033[0m"
-echo -e "\n"
 status_3=0
 declare -a words=('we ' 'you will' 'lets' 'let us' "let\'s" 'has been' 'have been' 'was')
 for word in "${words[@]}"
@@ -49,6 +48,7 @@ do
 	status_3=1
 	fi
 done
+echo -e "\n"
 #############################################################################################
 echo -e "\033[1;32m[4] Checking the path of the created files in README.adoc ...\033[0m"
 echo -e "\n"
@@ -104,7 +104,6 @@ do
 done
 #############################################################################################
 echo -e "\033[1;32m[5] Checking the format of creating the files in README.adoc ...\033[0m"
-echo -e "\n"
 status_5=0
 while read -r line ; do
 line=$(echo "$line" | tr '[:upper:]' '[:lower:]')
@@ -116,10 +115,9 @@ done < <(grep -i '`src.*`' README.adoc)
 if [ $status_5 -eq 1 ]; then
   echo -e "\033[1;34mFormat:\033[0m Create a <class/type> in the \`<path>\` file: ."
 fi
+echo -e "\n"
 #############################################################################################
 echo -e "\033[1;32m[6] Checking the location of pom.xml ...\033[0m"
-echo -e "\n"
-echo -e "\n"
 status_6=0
 OUTPUT=($(find . -name "pom.xml"))
 for file in "${OUTPUT[@]}"
@@ -134,6 +132,7 @@ do
       let status_6=1
 		fi
 done
+echo -e "\n"
 #############################################################################################
 echo -e "\033[1;32m[7] Running Acrolinx ...\033[0m"
 echo -e "\n"
