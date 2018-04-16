@@ -1,4 +1,8 @@
 #!/bin/bash
+#install maven
+# wget http://apache.mirror.rafal.ca/maven/maven-3/3.5.3/binaries/apache-maven-3.5.3-bin.tar.gz
+sudo apt-get install maven
+mvn -version
 cd finish
 mvn clean
 #build=$(mvn liberty:install-server | grep -i "runtime/" | cut -d'-' -f 2 | cut -d'/' -f 2)
