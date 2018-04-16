@@ -4,7 +4,7 @@ cd finish
 mvn clean
 mavenOutput=$(mvn liberty:install-server)
 build=$(echo "$mavenOutput" | grep -i "runtime/" | cut -d'-' -f 2 | cut -d'/' -f 2 | grep -m1 "1") 
-echo -e "\033[1;34m\nOpenLiberty runtime:\033[0m $build\n"
+echo -e "\033[1;34mOpenLiberty runtime:\033[0m $build"
 cd ..
 #############################################################################################
 echo -e "\033[1;32m[1] Checking the differences in start and finish folders ...\033[0m"
@@ -15,7 +15,7 @@ if ! diff -r start finish >/dev/null 2>&1; then
 fi
 diff -r start finish
 #############################################################################################
-echo -e "\033[1;32m\n[2] Checking uncreated folders in start folder ...\033[0m"
+echo -e "\033[1;32m[2] Checking uncreated folders in start folder ...\033[0m"
 status_2=$status_1
 result=($(diff -r start finish | sed -e 's/: /\//' | cut -c9-))
 for path in "${result[@]}"; do
@@ -29,7 +29,7 @@ for path in "${result[@]}"; do
 		fi
 done
 #############################################################################################
-echo -e "\033[1;32m\n[3] Checking undesired phrases in README.adoc ...\033[0m"
+echo -e "\033[1;32m[3] Checking undesired phrases in README.adoc ...\033[0m"
 status_3=0
 declare -a words=('we ' 'you will' 'lets' 'let us' "let\'s" 'has been' 'have been' 'was')
 for word in "${words[@]}"
@@ -44,7 +44,7 @@ do
 	fi
 done
 #############################################################################################
-echo -e "\033[1;32m\n[4] Checking the path of the created files in README.adoc ...\033[0m"
+echo -e "\033[1;32m[4] Checking the path of the created files in README.adoc ...\033[0m"
 status_4=0
 grep -i '`/src.*`' README.adoc | while read -r line ; do
   if [[ ! -z $line ]]; then
@@ -96,7 +96,7 @@ do
 	done
 done
 #############################################################################################
-echo -e "\033[1;32m\n[5] Checking the format of creating the files in README.adoc ...\033[0m"
+echo -e "\033[1;32m[5] Checking the format of creating the files in README.adoc ...\033[0m"
 status_5=0
 while read -r line ; do
 line=$(echo "$line" | tr '[:upper:]' '[:lower:]')
@@ -109,7 +109,7 @@ if [ $status_5 -eq 1 ]; then
   echo -e "\033[1;34mFormat:\033[0m Create a <class/type> in the \`<path>\` file: ."
 fi
 #############################################################################################
-echo -e "\033[1;32m\n[6] Checking the location of pom.xml ...\033[0m"
+echo -e "\033[1;32m[6] Checking the location of pom.xml ...\033[0m"
 status_6=0
 OUTPUT=($(find . -name "pom.xml"))
 for file in "${OUTPUT[@]}"
@@ -125,10 +125,10 @@ do
 		fi
 done
 #############################################################################################
-echo -e "\033[1;32m\n[7] Running Acrolinx ...\033[0m"
+echo -e "\033[1;32m[7] Running Acrolinx ...\033[0m"
 status_7=0
 ############################################################################################
-echo -e "\033[1;32m\n_______________[ SUMMARY ]_______________\033[0m"
+echo -e "\033[1;32m_______________[ SUMMARY ]_______________\033[0m"
 statuses=($status_1 $status_2 $status_3 $status_4 $status_5 $status_6 $status_7)
 for ((i = 0; i < ${#statuses[@]}; ++i)); do
   number=$(($i+1))
