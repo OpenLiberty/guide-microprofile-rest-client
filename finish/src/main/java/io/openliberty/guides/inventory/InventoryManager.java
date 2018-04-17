@@ -24,16 +24,14 @@ import io.openliberty.guides.inventory.model.InventoryList;
 import io.openliberty.guides.inventory.client.SystemClient;
 import io.openliberty.guides.inventory.client.UnknownUrlException;
 
-// tag::ApplicationScoped[]
 @ApplicationScoped
-// end::ApplicationScoped[]
 public class InventoryManager {
 
 	private InventoryList invList = new InventoryList();
 
 	@Inject
 	@RestClient
-	private SystemClient localRestClientService;
+	private SystemClient defaultRestClient;
 
 	public Properties get(String hostname) {
 
@@ -56,22 +54,21 @@ public class InventoryManager {
 
 	private Properties getPropertiesWithDefaultHostName() {
 		try {
-			return localRestClientService.getProperties();
+			return defaultRestClient.getProperties();
 		} catch (UnknownUrlException e) {
 			System.err.println("The given URL is unreachable.");
 			e.printStackTrace();
 			return null;
 		}
 	}
-
+  // tag::builder[]
 	private Properties getPropertiesWithGivenHostName(String hostname) {
-		String remoteURL = "http://" + hostname + ":9080/system";
-		URL apiURL = null;
+		String customURLString = "http://" + hostname + ":9080/system";
+		URL customURL = null;
 		try {
-			apiURL = new URL(remoteURL);
-			SystemClient remoteSystemService = RestClientBuilder.newBuilder().baseUrl(apiURL).build(SystemClient.class);
-
-			return remoteSystemService.getProperties();
+			customURL = new URL(customURLString);
+			SystemClient customRestClient = RestClientBuilder.newBuilder().baseUrl(customURL).build(SystemClient.class);
+			return customRestClient.getProperties();
 
 		} catch (UnknownUrlException e) {
 			System.err.println("The given URL is unreachable.");
@@ -80,9 +77,9 @@ public class InventoryManager {
 			System.err.println("The given URL is not formatted correctly.");
 			e.printStackTrace();
 		}
-		;
 		return null;
 	}
+  // end::builder[]
 }
 
 // end::manager[]
