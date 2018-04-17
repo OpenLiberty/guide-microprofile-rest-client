@@ -142,20 +142,24 @@ First, configure the default base URL of this `system` client using MicroProfile
 Create a configuration file `src/main/webapp/META-IF/microprofile-config.properties` and add a new config property `<fullyQualifiedInterfaceName>/mp-rest/url`, which in this case is `io.openliberty.guides.inventory.client.SystemClient/mp-rest/url`.
 Configure this property to the default base URL `http://localhost:9080/system`:
 
-[source, java, indent=0, role="no_copy"]
+[source, java, indent=0]
 ----
 include::finish/src/main/webapp/META-INF/microprofile-config.properties[tags=config]
 ----
 
 This configuration will be automatically picked up by the MicroProfile Config API.
 
-Then, add two more annotations to the `src/main/java/io/openliberty/guides/inventory/client/SystemClient.java` file:
+Then, add two more annotations to the `src/main/java/io/openliberty/guides/inventory/client/SystemClient.java` file so that the interface annotations looks like the following:
+[source, java, indent=0, role="no_copy"]
+----
+include::finish/src/main/java/io/openliberty/guides/inventory/client/SystemClient.java[tags=annotations]
+----
 
 `@Dependent` tells the service the scope of this interface.
 
 `@RegisterRestClient` registers this interface as a RESTful client.
 
-Inject the `system` client to the `InventoryResource` class using CDI. Copy all the following code and replace the contents of the `src/main/java/io/openliberty/guides/inventory/InventoryManager.java` file:
+Inject the client called `defaultRestClient` to the `InventoryManager` class using CDI. Copy all the following code and replace the contents of the `src/main/java/io/openliberty/guides/inventory/InventoryManager.java` file:
 [source, java, indent=0]
 ----
 include::finish/src/main/java/io/openliberty/guides/inventory/InventoryManager.java[tags=manager]
@@ -163,7 +167,8 @@ include::finish/src/main/java/io/openliberty/guides/inventory/InventoryManager.j
 
 `@Inject` and `@RestClient` implies that CDI injects an instance of the `system` client to the `inventory` service.
 
-Now you can invoke the `system` service by calling the `localRestClientService.getProperties()` method.
+If the parameter `hostname` is `localhost`, then the service runs the `getPropertiesWithDefaultHostName()` helper function to fetch system properties.
+It invokes the `system` service by calling the `defaultRestClient.getProperties()` method.
 
 // =================================================================================================
 // Building the client with RestClientBuilder
@@ -172,15 +177,15 @@ Now you can invoke the `system` service by calling the `localRestClientService.g
 
 The `inventory` service may also provide a different host name rather than the default `localhost`, so you will set the host name as a variable and build the client using the `RestClientBuilder`.
 
-Copy all the following code and replace the contents of the `src/main/java/io/openliberty/guides/inventory/InventoryManager.java` file:
-[source, java, indent=0]
+Take a look at the `getPropertiesWithGivenHostName()` method in the `src/main/java/io/openliberty/guides/inventory/InventoryManager.java` file:
+[source, java, indent=0, role="no_copy"]
 ----
-include::finish/src/main/java/io/openliberty/guides/inventory/InventoryManager.java[tags=manager]
+include::finish/src/main/java/io/openliberty/guides/inventory/InventoryManager.java[tags=builder]
 ----
 
-The `get()` method provides the host name as a parameter. If the host name is not `localhost`, it first assembles the base URL consisted of the new host name, then, instantiates a `RestClientBuilder` with this new URL, and builds the `system` client.
+The host name is provided as a parameter. This method first assembles the base URL consisted of the new host name, then, instantiates a `RestClientBuilder` with this new URL, and builds the `system` client.
 
-Similarly, you will invoke the `system` service by calling the `remoteSystemService.getProperties()` method.
+Similarly, you will invoke the `system` service by calling the `customRestClient.getProperties()` method.
 
 // =================================================================================================
 // Building and running the application
@@ -232,7 +237,6 @@ Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.377 sec - in i
 Running it.io.openliberty.guides.inventory.InventoryEndpointTest
 Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.379 sec - in it.io.openliberty.guides.inventory.InventoryEndpointTest
 Running it.io.openliberty.guides.client.RestClientTest
-9.108.121.240
 Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.121 sec - in it.io.openliberty.guides.client.RestClientTest
 
 Results :
