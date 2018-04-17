@@ -1,6 +1,4 @@
-language: 
-  - bash
-  - java
+language: java
 script: 
   - bash script.sh
 #notifications:
