@@ -50,40 +50,13 @@ public class InventoryManager {
   public Properties get(String hostname) {
 
 	  Properties properties = null;
-	  // If the request matches the System Service running on the localhost, use the Injected localRestClientService
-	  // For all other host names, use RestCLientBuilder to request properties from the remoteSystemService
 	  if(hostname.equals("localhost")) {
-      try {
-        properties = localRestClientService.getProperties();
-        // Response resp = localRestClientService.getProperties();
-        // properties = .getEntity(Properties.class);
-      } catch (UnknownUrlException e) {
-        System.err.println("The given URL is unreachable.");
-			  e.printStackTrace();
-      }
-	  }
-	  else {
-       String remoteURL = "http://" + hostname + ":9080/system";
-		   URL apiURL = null;
-		   try {
-			  apiURL = new URL(remoteURL);
-			  SystemClient remoteSystemService =
-					  RestClientBuilder.newBuilder()
-					  					.baseUrl(apiURL)
-						                .build(SystemClient.class);
-
-			  properties = remoteSystemService.getProperties();
-        // properties = remoteSystemService.getProperties().getEntity(Properties.class);
-		  } catch (UnknownUrlException e) {
-        System.err.println("The given URL is unreachable.");
-			  e.printStackTrace();
-      } catch (MalformedURLException e) {
-			  System.err.println("The given URL is not formatted correctly.");
-			  e.printStackTrace();
-		  };
+      properties = getPropertiesWithDefaultHostName();
+	  } else {
+      properties = getPropertiesWithGivenHostName(hostname);
 	  }
 
-	  if (properties != null) {
+    if (properties != null) {
 		  invList.addToInventoryList(hostname, properties);
 	  }
 	  return properties;
@@ -93,9 +66,59 @@ public class InventoryManager {
   public InventoryList list() {
     return invList;
   }
+
+  private Properties getPropertiesWithDefaultHostName(){
+    try {
+      return localRestClientService.getProperties();
+    } catch (UnknownUrlException e) {
+      System.err.println("The given URL is unreachable.");
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+   private Properties getPropertiesWithGivenHostName(String hostname) {
+     String remoteURL = "http://" + hostname + ":9080/system";
+     URL apiURL = null;
+     try {
+      apiURL = new URL(remoteURL);
+      SystemClient remoteSystemService =
+          RestClientBuilder.newBuilder()
+                    .baseUrl(apiURL)
+                          .build(SystemClient.class);
+
+      return remoteSystemService.getProperties();
+
+    } catch (UnknownUrlException e) {
+      System.err.println("The given URL is unreachable.");
+      e.printStackTrace();
+    } catch (MalformedURLException e) {
+      System.err.println("The given URL is not formatted correctly.");
+      e.printStackTrace();
+    };
+    return null;
+   }
 }
+
 // end::manager[]
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// If the request matches the System Service running on the localhost, use the Injected localRestClientService
+// For all other host names, use RestCLientBuilder to request properties from the remoteSystemService
 //private void urlHelper() {
   // String url = null;
   // Map<String, String> configProps = null;
@@ -110,4 +133,8 @@ public class InventoryManager {
   //   }
   //  String remoteURL = url.replaceAll("localhost", hostname);
   //  configProps.put(SystemClient.class.getName() + "/mp-rest/url", url);
+
+  // Response resp = localRestClientService.getProperties();
+  // properties = .getEntity(Properties.class);
+    // properties = remoteSystemService.getProperties().getEntity(Properties.class);
 //}

@@ -21,174 +21,86 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
-import it.io.openliberty.guides.client.SystemClient;
-import org.eclipse.microprofile.rest.client.RestClientBuilder;
-import java.util.Properties;
-import java.net.MalformedURLException;
-import java.net.URL;
+import javax.ws.rs.client.WebTarget;
 
 import org.apache.cxf.jaxrs.provider.jsrjsonp.JsrJsonpProvider;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 public class RestClientTest {
 
   private static String port;
-  private static String baseUrl;
 
   private Client client;
-  private RestClientBuilder builder;
 
-  private final String SYSTEM_PROPERTIES = "system/properties";
   private final String INVENTORY_SYSTEMS = "inventory/systems";
 
   @BeforeClass
   public static void oneTimeSetup() {
     port = System.getProperty("liberty.test.port");
-    baseUrl = "http://localhost:" + port + "/";
   }
 
   @Before
   public void setup() {
-    // client = ClientBuilder.newClient();
-    // client.register(JsrJsonpProvider.class);
-
-    
-   //  try {
-   //   URL apiURL = new URL(baseUrl);
-   //   builder = RestClientBuilder.newBuilder().baseUrl(apiURL);
-   // } catch (MalformedURLException e) {
-   //   System.err.println("The url is invalid");
-   //   e.printStackTrace();
-   // };
+    client = ClientBuilder.newClient();
+    client.register(JsrJsonpProvider.class);
   }
-  //
-  // @After
-  // public void teardown() {
-  //   client.close();
-  // }
 
-  // tag::tests[]
-  // tag::testSuite[]
+  @After
+  public void teardown() {
+    client.close();
+  }
+
   @Test
   public void testSuite() {
-    // this.testHostRegistration();
-    // this.testRestClient();
+    this.testDefaultLocalhost();
+    this.testRestClientBuilder();
   }
-  // end::testSuite[]
 
-  // tag::testHostRegistration[]
-  public void testHostRegistration() {
-    this.visitLocalhost();
+  public void testDefaultLocalhost() {
+    String hostname = "localhost";
 
-    Response response = this.getResponse(baseUrl + INVENTORY_SYSTEMS);
-    this.assertResponse(baseUrl, response);
+    String url = "http://localhost:" + port + "/" + INVENTORY_SYSTEMS + "/" + hostname;
+
+    JsonObject obj = fetchProperties(url);
+
+    assertEquals("The system property for the local and remote JVM should match",
+                 System.getProperty("os.name"),
+                 obj.getString("os.name"));
+  }
+
+  public void testRestClientBuilder() {
+    String hostname = null;
+    try{
+      hostname = InetAddress.getLocalHost().getHostAddress();
+      System.out.println(hostname);
+    } catch (UnknownHostException e) {
+      System.out.println("Unknown Host.");
+    }
+
+    String url = "http://localhost:" + port + "/" + INVENTORY_SYSTEMS + "/" + hostname;
+
+    JsonObject obj = fetchProperties(url);
+
+    assertEquals("The system property for the local and remote JVM should match",
+                 System.getProperty("os.name"),
+                 obj.getString("os.name"));
+  }
+
+  private JsonObject fetchProperties(String url) {
+    WebTarget target = client.target(url);
+    Response response = target.request().get();
+
+    assertEquals("Incorrect response code from " + url, 200, response.getStatus());
 
     JsonObject obj = response.readEntity(JsonObject.class);
-
-    int expected = 1;
-    int actual = obj.getInt("total");
-    assertEquals("The inventory should have one entry for localhost", expected,
-                 actual);
-
-    boolean localhostExists = obj.getJsonArray("systems").getJsonObject(0)
-                                 .get("hostname").toString()
-                                 .contains("localhost");
-    assertTrue("A host was registered, but it was not localhost",
-               localhostExists);
-
     response.close();
-  }
-  // end::testHostRegistration[]
-
-  public void testRestClient() {
-    // String remoteURL = "http://localhost:9080/system";
-    Properties properties = null;
-
-     SystemClient remoteSystemServiceClient = builder.build(SystemClient.class);
-     properties = remoteSystemServiceClient.getProperties();
-
-   String wlp = properties.getProperty("wlp.server.name");
-   assertEquals("The wlp server name should be default server", "defaultServer",
-                wlp);
-
+    return obj;
   }
 
-
-  // end::testUnknownHost[]
-  // end::tests[]
-  // tag::helpers[]
-  // tag::javadoc[]
-  /**
-   * <p>
-   * Returns response information from the specified URL.
-   * </p>
-   *
-   * @param url
-   *          - target URL.
-   * @return Response object with the response from the specified URL.
-   */
-  // end::javadoc[]
-  private Response getResponse(String url) {
-    return client.target(url).request().get();
-  }
-
-  // tag::javadoc[]
-  /**
-   * <p>
-   * Asserts that the given URL has the correct response code of 200.
-   * </p>
-   *
-   * @param url
-   *          - target URL.
-   * @param response
-   *          - response received from the target URL.
-   */
-  // end::javadoc[]
-  private void assertResponse(String url, Response response) {
-    assertEquals("Incorrect response code from " + url, 200,
-                 response.getStatus());
-  }
-
-  // tag::javadoc[]
-  /**
-   * Asserts that the specified JVM system property is equivalent in both the
-   * system and inventory services.
-   *
-   * @param propertyName
-   *          - name of the system property to check.
-   * @param hostname
-   *          - name of JVM's host.
-   * @param expected
-   *          - expected name.
-   * @param actual
-   *          - actual name.
-   */
-  // end::javadoc[]
-  private void assertProperty(String propertyName, String hostname,
-      String expected, String actual) {
-    assertEquals("JVM system property [" + propertyName + "] "
-        + "in the system service does not match the one stored in "
-        + "the inventory service for " + hostname, expected, actual);
-  }
-
-  // tag::javadoc[]
-  /**
-   * Makes a simple GET request to inventory/localhost.
-   */
-  // end::javadoc[]
-  private void visitLocalhost() {
-    Response response = this.getResponse(baseUrl + SYSTEM_PROPERTIES);
-    this.assertResponse(baseUrl, response);
-    response.close();
-
-    Response targetResponse = client.target(baseUrl + INVENTORY_SYSTEMS
-        + "/localhost").request().get();
-    targetResponse.close();
-  }
-  // end::helpers[]
 }
 // end::testClass[]

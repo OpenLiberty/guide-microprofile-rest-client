@@ -29,6 +29,7 @@ You will learn how to retrieve information from a remote service with MicroProfi
 MicroProfile Rest Client provides a type-safe way to call RESTful services so that you can
 focus more on the client models rather than how to connect with remote services while developing
 client applications.
+//simplicity of code!!!
 
 The application that you will be working with is an `inventory` service which retrieves and stores the system property information for different hosts.
 Whenever a request is made to the `inventory` service to retrieve the
@@ -36,7 +37,7 @@ system properties of a particular host, the `inventory` service will create a cl
 service on that host to get these system properties. The `system` service simulates a remote service in this application.
 
 You will learn how to create and register the client interface and handle exceptions through `ResponseExceptionMappers`.
-In addition, you will build the implementation of the RESTful client with two approaches: `RestClientBuilder`, or Contexts and Dependency Injection (CDI).
+In addition, you will build the implementation of the RESTful client with two approaches: Contexts and Dependency Injection (CDI) or `RestClientBuilder`.
 
 // =================================================================================================
 // Getting Started
@@ -76,6 +77,8 @@ Now, navigate back to the `start` directory to begin.
 == Writing the RESTful client interface
 
 The MicroProfile Rest Client API was added as a dependency to your `pom.xml` file. Look for the dependency with the `microprofile-rest-client-api` artifact ID.
+This added dependency provides the library that your code requires to implement the MicroProfile Rest Client interface.
+
 The `mpRestClient-1.0` feature is also enabled in the `src/main/liberty/config/server.xml` file. This feature allows you to use the MicroProfile Rest Client to invoke RESTful services over HTTP in a type-safe way.
 
 The code for the `system` service in the `src/main/java/io/openliberty/guides/system` directory is provided for you. It simulates a remote RESTful service that
@@ -86,7 +89,7 @@ Copy all the following code and replace the contents of the `src/main/java/io/op
 
 [source, java, indent=0]
 ----
-include::finish/src/main/java/io/openliberty/guides/inventory/client/SystemClient.java[tags=simple]
+include::finish/src/main/java/io/openliberty/guides/inventory/client/SystemClient.java[tags=client]
 ----
 
 Note that the service will automatically build and generate an implementation for the `system` client interface, because the JAX-RS annotations in this interface tells the RESTful service
@@ -100,10 +103,10 @@ In this `system` client, you add a response exception mapper as a provider to ma
 // =================================================================================================
 // Handling exceptions through ResponseExceptionMappers
 // =================================================================================================
-== Handling exceptions through ResponseExceptionMappers
+=== Handling exceptions through ResponseExceptionMappers
 
-In the previous section, the `getProperties()` method may throw an `UnknownUrlException` if the response from the `system` service is `404 NOT FOUND`, and `@RegisterProvider(UnknownUrlExceptionMapper.class)` registers the response exception mapper.
-You will implement the actual exception class and the mapper class to see how the this mechanism works.
+In the `system` client interface, the `getProperties()` method may throw an `UnknownUrlException` if the response from the `system` service is `404 NOT FOUND`, and `@RegisterProvider(UnknownUrlExceptionMapper.class)` registers the response exception mapper.
+Implement the actual exception class and the mapper class to see how the this mechanism works.
 
 Create the `src/main/java/io/openliberty/guides/inventory/client/UnknownUrlException.java` file and add the exception class code:
 [source, java, indent=0]
@@ -131,9 +134,9 @@ You will define the default base URL with host name as `localhost` using MicroPr
 Then, you will set the base URL as a variable with the host name as a parameter, and build the RESTful `system` client using the `RestClientBuilder` method.
 
 // =================================================================================================
-// Building the client with CDI and Config
+// Injecting the client with CDI and Config
 // =================================================================================================
-=== Building the client with CDI and Config
+=== Injecting the client with CDI and Config
 
 First, configure the default base URL of this `system` client using MicroProfile Config. The feature has been enabled for you in both `server.xml` and `pom.xml` files.
 Create a configuration file `src/main/webapp/META-IF/microprofile-config.properties` and add a new config property `<fullyQualifiedInterfaceName>/mp-rest/url`, which in this case is `io.openliberty.guides.inventory.client.SystemClient/mp-rest/url`.
@@ -146,11 +149,7 @@ include::finish/src/main/webapp/META-INF/microprofile-config.properties[tags=con
 
 This configuration will be automatically picked up by the MicroProfile Config API.
 
-Then, update the `src/main/java/io/openliberty/guides/inventory/client/SystemClient.java` file with a few more annotations:
-[source, java, indent=0]
-----
-include::finish/src/main/java/io/openliberty/guides/inventory/client/SystemClient.java[tags=client]
-----
+Then, add two more annotations to the `src/main/java/io/openliberty/guides/inventory/client/SystemClient.java` file:
 
 `@Dependent` tells the service the scope of this interface.
 
@@ -189,11 +188,13 @@ Similarly, you will invoke the `system` service by calling the `remoteSystemServ
 
 include::{common-includes}/mvnbuild.adoc[]
 
-Once the server is running, the following two microservices should be available to access:
+Once the server is running, try to fetch your system properties by two approaches:
 
-* `http://localhost:9080/system/properties` retrieves the system property information for a specific host (in this case, the `localhost`)
+1. Visit `http://localhost:9080/inventory/systems/localhost`. It retrieves the system property information for `localhost` by invoking the `http://localhost:9080/system/properties` client.
 
-* `http://localhost:9080/inventory/systems/{hostname}` retrieves the system property information for a specific host with `{hostname}` by invoking the `http://{hostname}:9080/system/properties` client
+2. Get your internal IP address first. One easy way to get your IP is to type the following command in your terminal:
+`ifconfig | grep "inet " | grep -Fv 127.0.0.1 | awk '{print $2}'`.
+Then visit `http://localhost:9080/inventory/systems/{ip_address}` to retrieve your system properties by invoking the `http://{ip_address}:9080/system/properties` client.
 
 include::{common-includes}/mvnpackage.adoc[]
 
@@ -211,7 +212,13 @@ Create a `src/test/java/it/io/openliberty/guides/client/RestClientTest.java` fil
 include::finish/src/test/java/it/io/openliberty/guides/client/RestClientTest.java[tags=testClass]
 ----
 
-In addition, a few endpoint tests have been provided for you to test the basic functionality of the `inventory` and `system` services. If a test failure occurs, then you must have introduced a bug into the code.
+Each test case tests one of the methods for instantiating a RESTful client.
+
+The `testDefaultLocalhost()` test fetches and compares system properties from the URL `http://localhost:9080/inventory/systems/localhost`.
+
+The `testRestClientBuilder()` test first gets your IP address. Then, use your IP address as the host name to fetch your system properties and compare them.
+
+In addition, a few endpoint tests have been provided for you to test the basic functionality of the `inventory` and `system` services. If a test failure occurs, you might have introduced a bug into the code.
 
 include::{common-includes}/mvnverify.adoc[]
 
@@ -220,24 +227,24 @@ include::{common-includes}/mvnverify.adoc[]
 -------------------------------------------------------
  T E S T S
 -------------------------------------------------------
-Running it.io.openliberty.guides.config.RestClientTest.java
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.729 sec - in it.io.openliberty.guides.config.ConfigurationTest
-Running it.io.openliberty.guides.inventory.InventoryEndpointTest
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.477 sec - in it.io.openliberty.guides.inventory.InventoryEndpointTest
 Running it.io.openliberty.guides.system.SystemEndpointTest
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.013 sec - in it.io.openliberty.guides.system.SystemEndpointTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.377 sec - in it.io.openliberty.guides.system.SystemEndpointTest
+Running it.io.openliberty.guides.inventory.InventoryEndpointTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.379 sec - in it.io.openliberty.guides.inventory.InventoryEndpointTest
+Running it.io.openliberty.guides.client.RestClientTest
+9.108.121.240
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.121 sec - in it.io.openliberty.guides.client.RestClientTest
 
 Results :
 
 Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
-
 ----
 
 == Great work! You're done!
 
 You just built and tested a MicroProfile application with MicroProfile Rest Client and Open Liberty.
 
-Feel free to try one of the related guides. They demonstrate new technologies that you can learn and
-expand on top what you built in this guide.
+Feel free to try one of the related guides. They demonstrate additional technologies that you can learn and
+expand on what you built in this guide.
 
 include::{common-includes}/finish.adoc[]
