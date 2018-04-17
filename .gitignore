@@ -1,3 +1,12 @@
 target/
 finish/target/
 temp/
+.classpath
+.factorypath
+.project
+.settings/
+finish/.gitignore
+start/.gitignore
+.apt_generated/
+finish/src/main/webapp/META-INF/MANIFEST.MF
+start/src/main/webapp/META-INF/MANIFEST.MF

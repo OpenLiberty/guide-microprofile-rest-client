@@ -10,26 +10,22 @@
  *     IBM Corporation - Initial implementation
  *******************************************************************************/
 // end::copyright[]
-// tag::client[]
+// tag::exception[]
 package io.openliberty.guides.inventory.client;
 
-import java.util.Properties;
-import javax.enterprise.context.Dependent;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import org.eclipse.microprofile.rest.client.annotation.RegisterProvider;
-import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
+public class UnknownUrlException extends Exception {
 
-@Dependent
-@RegisterRestClient
-@RegisterProvider(UnknownUrlExceptionMapper.class)
-@Path("/properties")
-public interface SystemClient {
+	private static final long serialVersionUID = 1L;
 
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	public Properties getProperties() throws UnknownUrlException;
+	public UnknownUrlException() {
+		super();
+	}
+
+	/**
+	 * @param message
+	 */
+	public UnknownUrlException(String message) {
+		super(message);
+	}
 }
-// end::client[]
+// end::exception[]
