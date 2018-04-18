@@ -31,10 +31,9 @@ focus more on the client models rather than how to connect with remote services 
 client applications.
 //simplicity of code!!!
 
-The application that you will be working with is an `inventory` service which retrieves and stores the system property information for different hosts.
-Whenever a request is made to the `inventory` service to retrieve the
-system properties of a particular host, the `inventory` service will create a client to invoke the `system`
-service on that host to get these system properties. The `system` service simulates a remote service in this application.
+The application that you will be working with is an `inventory` service, which retrieves and stores the system property information for different hosts.
+Whenever a request is made to retrieve the system properties of a particular host, the `inventory` service will create a client to invoke the `system`
+service on that host. The `system` service simulates a remote service in this application.
 
 You will learn how to create and register the client interface and handle exceptions through `ResponseExceptionMappers`.
 In addition, you will build the implementation of the RESTful client with two approaches: Contexts and Dependency Injection (CDI) or `RestClientBuilder`.
@@ -92,7 +91,7 @@ Copy all the following code and replace the contents of the `src/main/java/io/op
 include::finish/src/main/java/io/openliberty/guides/inventory/client/SystemClient.java[tags=client]
 ----
 
-Note that the service will automatically build and generate an implementation for the `system` client interface, because the JAX-RS annotations in this interface tells the RESTful service
+Note that the service will automatically build and generate an implementation for the `system` client interface, because the JAX-RS annotations in this interface tell the RESTful service
 what to do. That allows you to not have to worry about all of the boilerplate code (like setting up a client class, connecting to the remote server, invoking the right URI with the right parameters, etc.).
 
 When the `getProperties()` method gets invoked, the `system` client sends a GET request to the endpoint at `<baseUrl>/system/properties`.
@@ -106,7 +105,7 @@ In this `system` client, you add a response exception mapper as a provider to ma
 === Handling exceptions through ResponseExceptionMappers
 
 In the `system` client interface, the `getProperties()` method may throw an `UnknownUrlException` if the response from the `system` service is `404 NOT FOUND`, and `@RegisterProvider(UnknownUrlExceptionMapper.class)` registers the response exception mapper.
-Implement the actual exception class and the mapper class to see how the this mechanism works.
+Implement the actual exception class and the mapper class to see how this mechanism works.
 
 Create the `src/main/java/io/openliberty/guides/inventory/client/UnknownUrlException.java` file and add the exception class code:
 [source, java, indent=0]
@@ -149,7 +148,7 @@ include::finish/src/main/webapp/META-INF/microprofile-config.properties[tags=con
 
 This configuration will be automatically picked up by the MicroProfile Config API.
 
-Then, add two more annotations to the `src/main/java/io/openliberty/guides/inventory/client/SystemClient.java` file so that the interface annotations looks like the following:
+Then, add two more annotations to the `src/main/java/io/openliberty/guides/inventory/client/SystemClient.java` file so that the interface annotations look like the following:
 [source, java, indent=0, role="no_copy"]
 ----
 include::finish/src/main/java/io/openliberty/guides/inventory/client/SystemClient.java[tags=annotations]
