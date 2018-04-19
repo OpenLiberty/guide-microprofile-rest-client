@@ -25,16 +25,19 @@ Learn how to use MicroProfile Rest Client to invoke RESTful microservices over H
 
 == What you'll learn
 
-You will learn how to build a MicroProfile Rest Client to access remote REST Services to retrieve information.
-MicroProfile Rest Client provides a type-safe way to call RESTful services so that you can focus more on the client models rather than how to connect with remote services while developing
-client applications.
+You will learn how to build a MicroProfile Rest Client to access remote REST Services.
+MicroProfile Rest Client provides a type-safe way to call RESTful services so that you can focus more on the client services rather than how to connect with remote services.
 
-The application that you will be working with is an `inventory` service, which retrieves and stores the system property information for different hosts.
+The application that you will be working with is an `inventory` service, which fetches and stores the system property information for different hosts.
 Whenever a request is made to retrieve the system properties of a particular host, the `inventory` service will create a client to invoke the `system`
 service on that host. The `system` service simulates a remote service in this application.
 
 You will learn how to create and register the client interface and handle exceptions through `ResponseExceptionMappers`.
-In addition, you will build the implementation of the RESTful client with two approaches: Contexts and Dependency Injection (CDI) or `RestClientBuilder`.
+Then, you will instantiate the client and use it in the `inventory` service. It is possible to do so using two different approaches: CDI with the help of MicroProfile Config, and the `RestClientBuilder`.
+
+In order to instantiate the `SystemClient`, you must provide a valid base URL.
+You will define the default base URL with host name as `localhost` using CDI and MicroProfile Config method. For example, by default `http://localhost:9080/system` is the base URL of the client.
+Then, you will set the base URL as a variable with the host name as a parameter, and build the RESTful client using the `RestClientBuilder` method.
 
 // =================================================================================================
 // Getting Started
@@ -82,14 +85,14 @@ The code for the `system` service in the `src/main/java/io/openliberty/guides/sy
 the `inventory` service tries to invoke.
 
 Now you need to create a RESTful client interface that represents the `system` service, call it the `SystemClient`.
-Copy all the following code and replace the contents of the `src/main/java/io/openliberty/guides/inventory/client/SystemClient.java` file:
+Create the `SystemClient` class in the `src/main/java/io/openliberty/guides/inventory/client/SystemClient.java` file:
 
 [source, java, indent=0]
 ----
 include::finish/src/main/java/io/openliberty/guides/inventory/client/SystemClient.java[tags=client]
 ----
 
-Note that the service will automatically build and generate an implementation for the `SystemClient` interface, because the JAX-RS annotations in this interface tell the RESTful service
+The service automatically builds and generates an implementation for the `SystemClient` interface, because the JAX-RS annotations in this interface tell the RESTful service
 what to do. That allows you to not have to worry about all of the boilerplate code (like setting up a client class, connecting to the remote server, invoking the right URI with the right parameters).
 
 When the `getProperties()` method gets invoked, the `SystemClient` sends a GET request to the endpoint at `<baseUrl>/properties`.
@@ -100,12 +103,11 @@ The `@RegisterRestClient` annotation registers this interface as a RESTful clien
 
 The `@RegisterProvider` annotation tells the framework to register provider classes to be used when invoking this interface; you can add as many providers as necessary.
 In the `SystemClient`, you add a response exception mapper as a provider to map the `404 NOT FOUND` response code with the `UnknownUrlException`.
-Read the next section to see more details.
 
 // =================================================================================================
 // Handling exceptions through ResponseExceptionMappers
 // =================================================================================================
-=== Handling exceptions through ResponseExceptionMappers
+== Handling exceptions through ResponseExceptionMappers
 
 In the `SystemClient` interface, the `getProperties()` method may throw an `UnknownUrlException` if the response from the `system` service is `404 NOT FOUND`, and `@RegisterProvider(UnknownUrlExceptionMapper.class)` registers the response exception mapper.
 Implement the actual exception class and the mapper class to see how this mechanism works.
@@ -124,20 +126,13 @@ include::finish/src/main/java/io/openliberty/guides/inventory/client/UnknownUrlE
 ----
 
 The `handles()` method inspects the HTTP response code to determine if an exception should be thrown for this response, and the `toThrowable()` method returns the mapped exception.
-// =================================================================================================
-// Instantiating the RESTful client
-// =================================================================================================
-== Instantiating the RESTful client
-
-Now you need to instantiate the `SystemClient` and use it in the `inventory` service. It is possible to do so using two different approaches: CDI with the help of MicroProfile Config, and the `RestClientBuilder`.
-In order to instantiate the `SystemClient`, you must provide a valid base URL. For example, by default `http://localhost:9080/system` is the base URL of the client.
-You will define the default base URL with host name as `localhost` using MicroProfile Config and CDI method.
-Then, you will set the base URL as a variable with the host name as a parameter, and build the RESTful `SystemClient` using the `RestClientBuilder` method.
 
 // =================================================================================================
-// Injecting the client with CDI and Config
+// Injecting the client with dependency injection
 // =================================================================================================
-=== Injecting the client with CDI and Config
+== Injecting the client with dependency injection
+
+Now you need to instantiate the `SystemClient` class and use it in the `inventory` service. If you only need to connect with the default host name, it is easy to instantiate the `SystemClient` using CDI annotations.
 
 First, configure the default base URL of the `SystemClient` using MicroProfile Config. The feature has been enabled for you in both `server.xml` and `pom.xml` files.
 Create a configuration file `src/main/webapp/META-INF/microprofile-config.properties` and add a config property `<fullyQualifiedInterfaceName>/mp-rest/url`, which in this case is `io.openliberty.guides.inventory.client.SystemClient/mp-rest/url`.
@@ -155,15 +150,15 @@ Revisit the `SystemClient` interface from the previous section:
 ----
 include::finish/src/main/java/io/openliberty/guides/inventory/client/SystemClient.java[tags=annotations]
 ----
-Note that the `@Dependent` and `@RegisterRestClient` annotations imply that the interface is manageable through context and dependency injection.
+The `@Dependent` and `@RegisterRestClient` annotations imply that the interface is manageable through context and dependency injection.
 
-Inject the client called `defaultRestClient` to the `InventoryManager` class using CDI. Copy all the following code and replace the contents of the `src/main/java/io/openliberty/guides/inventory/InventoryManager.java` file:
+Create the `InventoryManager` class in the `src/main/java/io/openliberty/guides/inventory/InventoryManager.java` file:
 [source, java, indent=0]
 ----
 include::finish/src/main/java/io/openliberty/guides/inventory/InventoryManager.java[tags=manager]
 ----
 
-`@Inject` and `@RestClient` implies that CDI injects an instance of the `SystemClient` to the `InventoryManager` class.
+`@Inject` and `@RestClient` annotations inject an instance of the `SystemClient` called `defaultRestClient` to the `InventoryManager` class.
 Since `InventoryManager` class is another CDI managed object (CDI requires one to inject the `SystemClient`), you add the client here.
 
 If the parameter `hostname` is `localhost`, then the service runs the `getPropertiesWithDefaultHostName()` helper function to fetch system properties.
@@ -172,7 +167,7 @@ It invokes the `system` service by calling the `defaultRestClient.getProperties(
 // =================================================================================================
 // Building the client with RestClientBuilder
 // =================================================================================================
-=== Building the client with RestClientBuilder
+== Building the client with RestClientBuilder
 
 The `inventory` service may also provide a different host name rather than the default `localhost`. Set the host name as a variable and build the client using the `RestClientBuilder`.
 
@@ -196,9 +191,7 @@ Once the server is running, try to fetch your system properties by two approache
 
 1. Visit `http://localhost:9080/inventory/systems/localhost`. It retrieves the system property information for `localhost` by invoking the `http://localhost:9080/system/properties` client.
 
-2. Get your internal IP address first. One easy way to get your IP is to type the following command in your terminal:
-`ifconfig | grep "inet " | grep -Fv 127.0.0.1 | awk '{print $2}'`.
-Then, visit `http://localhost:9080/inventory/systems/{ip_address}` to retrieve your system properties by invoking the `http://{ip_address}:9080/system/properties` client.
+2. Get your internal IP address first. Then, visit `http://localhost:9080/inventory/systems/{ip_address}` to retrieve your system properties by invoking the `http://{ip_address}:9080/system/properties` client.
 
 include::{common-includes}/mvnpackage.adoc[]
 
