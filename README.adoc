@@ -34,10 +34,11 @@ service on that host. The `system` service simulates a remote service in this ap
 
 You will learn how to create and register the client interface and handle exceptions through `ResponseExceptionMappers`.
 Then, you will instantiate the client and use it in the `inventory` service. It is possible to do so using two different approaches: CDI with the help of MicroProfile Config, and the `RestClientBuilder`.
+You can choose either way to instantiate the client in the future, but in this guide you will explore both methods in order to handle different scenarios to provide a valid base URL. You must have a valid base URL to instantiate the RESTful client.
 
-In order to instantiate the `SystemClient`, you must provide a valid base URL.
-You will define the default base URL with host name as `localhost` using CDI and MicroProfile Config method. For example, by default `http://localhost:9080/system` is the base URL of the client.
-Then, you will set the base URL as a variable with the host name as a parameter, and build the RESTful client using the `RestClientBuilder` method.
+You will handle the two scenarios in the following way:
+ - Define the default base URL with host name as `localhost` in the configuration file and inject the client using the CDI method.
+ - Set the base URL as a variable with the host name as a parameter, and build the RESTful client using the `RestClientBuilder` method.
 
 // =================================================================================================
 // Getting Started
