@@ -36,7 +36,7 @@ You will learn how to create and register the client interface and handle except
 Then, you will instantiate the client and use it in the `inventory` service. It is possible to do so using two different approaches: CDI with the help of MicroProfile Config, and the `RestClientBuilder`.
 
 In order to instantiate the `SystemClient`, you must provide a valid base URL.
-You will define the default base URL with host name as `localhost` using MicroProfile Config and CDI method. For example, by default `http://localhost:9080/system` is the base URL of the client.
+You will define the default base URL with host name as `localhost` using CDI and MicroProfile Config method. For example, by default `http://localhost:9080/system` is the base URL of the client.
 Then, you will set the base URL as a variable with the host name as a parameter, and build the RESTful client using the `RestClientBuilder` method.
 
 // =================================================================================================
@@ -128,9 +128,9 @@ include::finish/src/main/java/io/openliberty/guides/inventory/client/UnknownUrlE
 The `handles()` method inspects the HTTP response code to determine if an exception should be thrown for this response, and the `toThrowable()` method returns the mapped exception.
 
 // =================================================================================================
-// Injecting the client with CDI and Config
+// Injecting the client with dependency injection
 // =================================================================================================
-== Injecting the client with CDI and Config
+== Injecting the client with dependency injection
 
 Now you need to instantiate the `SystemClient` class and use it in the `inventory` service. If you only need to connect with the default host name, it is easy to instantiate the `SystemClient` using CDI annotations.
 
@@ -191,9 +191,7 @@ Once the server is running, try to fetch your system properties by two approache
 
 1. Visit `http://localhost:9080/inventory/systems/localhost`. It retrieves the system property information for `localhost` by invoking the `http://localhost:9080/system/properties` client.
 
-2. Get your internal IP address first. One easy way to get your IP is to type the following command in your terminal:
-`ifconfig | grep "inet " | grep -Fv 127.0.0.1 | awk '{print $2}'`.
-Then, visit `http://localhost:9080/inventory/systems/{ip_address}` to retrieve your system properties by invoking the `http://{ip_address}:9080/system/properties` client.
+2. Get your internal IP address first. Then, visit `http://localhost:9080/inventory/systems/{ip_address}` to retrieve your system properties by invoking the `http://{ip_address}:9080/system/properties` client.
 
 include::{common-includes}/mvnpackage.adoc[]
 
