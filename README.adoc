@@ -15,7 +15,7 @@
 :page-related-guides: ['rest-intro', 'cdi-intro', 'microprofile-config']
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
 :source-highlighter: prettify
-= Invoking RESTful microservices through MicroProfile Rest Client
+= Consuming RESTful microservices in a type-safe way
 
 Learn how to use MicroProfile Rest Client to invoke RESTful microservices over HTTP in a type-safe way.
 
