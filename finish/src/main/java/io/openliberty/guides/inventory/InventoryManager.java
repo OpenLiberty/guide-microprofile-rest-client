@@ -81,29 +81,4 @@ public class InventoryManager {
 	}
   // end::builder[]
 }
-
 // end::manager[]
-
-// If the request matches the System Service running on the localhost, use the
-// Injected localRestClientService
-// For all other host names, use RestCLientBuilder to request properties from
-// the remoteSystemService
-// private void urlHelper() {
-// String url = null;
-// Map<String, String> configProps = null;
-// Config config = ConfigProvider.getConfig();
-// for(ConfigSource cs :config.getConfigSources()) {
-// configProps = cs.getProperties();
-// if(configProps.containsKey(SystemClient.class.getName() + "/mp-rest/url")) {
-// url = configProps.remove(SystemClient.class.getName() + "/mp-rest/url");
-// System.out.println("old url = " + url);
-// }
-//
-// }
-// String remoteURL = url.replaceAll("localhost", hostname);
-// configProps.put(SystemClient.class.getName() + "/mp-rest/url", url);
-
-// Response resp = localRestClientService.getProperties();
-// properties = .getEntity(Properties.class);
-// properties = remoteSystemService.getProperties().getEntity(Properties.class);
-// }
