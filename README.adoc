@@ -38,7 +38,7 @@ You can choose either way to instantiate the client in the future, but in this g
 
 You will handle various scenarios in the following way:
 
- - Define the default base URL with host name as `localhost` in the configuration file and inject the client using the CDI method.
+ - Define the default base URL with host name as `localhost` in the configuration file, and inject the client using the CDI method.
 
  - Set the base URL as a variable with the host name as a parameter, and build the RESTful client using the `RestClientBuilder` method.
 
@@ -238,6 +238,9 @@ Results :
 
 Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
 ----
+
+To see whether the tests detect a failure, change the path of the `system` service, so that when the `inventory` service tries to access the invalid URL, a `404 NOT FOUND` exception is thrown.
+Re-run the Maven build. You will see a test failure occur.
 
 == Great work! You're done!
 
