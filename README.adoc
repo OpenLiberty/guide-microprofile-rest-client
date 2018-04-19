@@ -25,11 +25,9 @@ Learn how to use MicroProfile Rest Client to invoke RESTful microservices over H
 
 == What you'll learn
 
-You will learn how to retrieve information from a remote service with MicroProfile Rest Client.
-MicroProfile Rest Client provides a type-safe way to call RESTful services so that you can
-focus more on the client models rather than how to connect with remote services while developing
+You will learn how to build a MicroProfile Rest Client to access remote REST Services to retrieve information.
+MicroProfile Rest Client provides a type-safe way to call RESTful services so that you can focus more on the client models rather than how to connect with remote services while developing
 client applications.
-//simplicity of code!!!
 
 The application that you will be working with is an `inventory` service, which retrieves and stores the system property information for different hosts.
 Whenever a request is made to retrieve the system properties of a particular host, the `inventory` service will create a client to invoke the `system`
@@ -75,7 +73,7 @@ Now, navigate back to the `start` directory to begin.
 // =================================================================================================
 == Writing the RESTful client interface
 
-The MicroProfile Rest Client API was added as a dependency to your `pom.xml` file. Look for the dependency with the `microprofile-rest-client-api` artifact ID.
+The MicroProfile Rest Client API are added as a dependency to your `pom.xml` file. Look for the dependency with the `microprofile-rest-client-api` artifact ID.
 This added dependency provides the library that your code requires to implement the MicroProfile Rest Client interface.
 
 The `mpRestClient-1.0` feature is also enabled in the `src/main/liberty/config/server.xml` file. This feature allows you to use the MicroProfile Rest Client to invoke RESTful services over HTTP in a type-safe way.
@@ -96,6 +94,10 @@ what to do. That allows you to not have to worry about all of the boilerplate co
 
 When the `getProperties()` method gets invoked, the `system` client sends a GET request to the endpoint at `<baseUrl>/system/properties`.
 
+`@Dependent` tells the service the scope of this interface.
+
+`@RegisterRestClient` registers this interface as a RESTful client.
+
 `@RegisterProvider()` adds any provider classes to this interface; you can add as many providers as necessary.
 In the `system` client, you add a response exception mapper as a provider to map the `404 NOT FOUND` response code with the `UnknownUrlException`. Read the next section to see more details.
 
@@ -107,14 +109,14 @@ In the `system` client, you add a response exception mapper as a provider to map
 In the `system` client interface, the `getProperties()` method may throw an `UnknownUrlException` if the response from the `system` service is `404 NOT FOUND`, and `@RegisterProvider(UnknownUrlExceptionMapper.class)` registers the response exception mapper.
 Implement the actual exception class and the mapper class to see how this mechanism works.
 
-Create the `src/main/java/io/openliberty/guides/inventory/client/UnknownUrlException.java` file and add the exception class code:
+Create an `UnknownUrlException` exception class in the `src/main/java/io/openliberty/guides/inventory/client/UnknownUrlException.java` file:
 [source, java, indent=0]
 ----
 include::finish/src/main/java/io/openliberty/guides/inventory/client/UnknownUrlException.java[tags=exception]
 ----
 
 Now, you need to link the `UnknownUrlException` class with the corresponding response code through a `ResponseExceptionMapper`.
-Create `src/main/java/io/openliberty/guides/inventory/client/UnknownUrlExceptionMapper.java` file and add the mapper class code:
+Create an `UnknownUrlExceptionMapper` mapper class in the `src/main/java/io/openliberty/guides/inventory/client/UnknownUrlExceptionMapper.java` file:
 [source, java, indent=0]
 ----
 include::finish/src/main/java/io/openliberty/guides/inventory/client/UnknownUrlExceptionMapper.java[tags=mapper]
@@ -148,15 +150,12 @@ include::finish/src/main/webapp/META-INF/microprofile-config.properties[tags=con
 
 This configuration will be automatically picked up by the MicroProfile Config API.
 
-Then, add two more annotations to the `src/main/java/io/openliberty/guides/inventory/client/SystemClient.java` file so that the interface annotations look like the following:
+Revisit the `SystemClient` interface from the previous section:
 [source, java, indent=0, role="no_copy"]
 ----
 include::finish/src/main/java/io/openliberty/guides/inventory/client/SystemClient.java[tags=annotations]
 ----
-
-`@Dependent` tells the service the scope of this interface.
-
-`@RegisterRestClient` registers this interface as a RESTful client.
+Note that the `@Dependent` and `@RegisterRestClient` annotations imply that the interface is manageable through context and dependency injection.
 
 Inject the client called `defaultRestClient` to the `InventoryManager` class using CDI. Copy all the following code and replace the contents of the `src/main/java/io/openliberty/guides/inventory/InventoryManager.java` file:
 [source, java, indent=0]
@@ -164,7 +163,8 @@ Inject the client called `defaultRestClient` to the `InventoryManager` class usi
 include::finish/src/main/java/io/openliberty/guides/inventory/InventoryManager.java[tags=manager]
 ----
 
-`@Inject` and `@RestClient` implies that CDI injects an instance of the `system` client to the `inventory` service.
+`@Inject` and `@RestClient` implies that CDI injects an instance of the `system` client to the `InventoryManager` class.
+Since `InventoryManager` class is another CDI managed object (CDI requires one to inject the `SystemClient`), you add the client here.
 
 If the parameter `hostname` is `localhost`, then the service runs the `getPropertiesWithDefaultHostName()` helper function to fetch system properties.
 It invokes the `system` service by calling the `defaultRestClient.getProperties()` method.
@@ -174,7 +174,7 @@ It invokes the `system` service by calling the `defaultRestClient.getProperties(
 // =================================================================================================
 === Building the client with RestClientBuilder
 
-The `inventory` service may also provide a different host name rather than the default `localhost`, so you will set the host name as a variable and build the client using the `RestClientBuilder`.
+The `inventory` service may also provide a different host name rather than the default `localhost`. Set the host name as a variable and build the client using the `RestClientBuilder`.
 
 Look at the `getPropertiesWithGivenHostName()` method in the `src/main/java/io/openliberty/guides/inventory/InventoryManager.java` file:
 [source, java, indent=0, role="no_copy"]
@@ -184,7 +184,7 @@ include::finish/src/main/java/io/openliberty/guides/inventory/InventoryManager.j
 
 The host name is provided as a parameter. This method first assembles the base URL consisted of the new host name, then, instantiates a `RestClientBuilder` with this new URL, and builds the `system` client.
 
-Similarly, you will invoke the `system` service by calling the `customRestClient.getProperties()` method.
+Similarly, call the `customRestClient.getProperties()` method to invoke the `system` service.
 
 // =================================================================================================
 // Building and running the application
@@ -209,7 +209,7 @@ include::{common-includes}/mvnpackage.adoc[]
 
 == Testing the application
 
-Create a `src/test/java/it/io/openliberty/guides/client/RestClientTest.java` file and add the following code:
+Create a `RestClientTest` test class in the `src/test/java/it/io/openliberty/guides/client/RestClientTest.java` file:
 
 [source, java, indent=0]
 ----
@@ -222,7 +222,7 @@ The `testDefaultLocalhost()` test fetches and compares system properties from th
 
 The `testRestClientBuilder()` test first gets your IP address. Then, use your IP address as the host name to fetch your system properties and compare them.
 
-In addition, a few endpoint tests have been provided for you to test the basic functionality of the `inventory` and `system` services. If a test failure occurs, you might have introduced a bug into the code.
+In addition, a few endpoint tests are provided for you to test the basic functionality of the `inventory` and `system` services. If a test failure occurs, you might have introduced a bug into the code.
 
 include::{common-includes}/mvnverify.adoc[]
 
