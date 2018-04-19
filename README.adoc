@@ -34,7 +34,7 @@ Whenever a request is made to retrieve the system properties of a particular hos
 service on that host. The `system` service simulates a remote service in this application.
 
 You will learn how to create and register the client interface and handle exceptions through `ResponseExceptionMappers`.
-In addition, you will build the implementation of the RESTful client with two approaches: Contexts and Dependency Injection (CDI) or `RestClientBuilder`.
+In addition, you will build the implementation of the RESTful client with two approaches: Contexts and Dependency Injection (CDI) and `RestClientBuilder`.
 
 // =================================================================================================
 // Getting Started
@@ -82,14 +82,14 @@ The code for the `system` service in the `src/main/java/io/openliberty/guides/sy
 the `inventory` service tries to invoke.
 
 Now you need to create a RESTful client interface that represents the `system` service, call it the `SystemClient`.
-Copy all the following code and replace the contents of the `src/main/java/io/openliberty/guides/inventory/client/SystemClient.java` file:
+Create the `SystemClient` class in the `src/main/java/io/openliberty/guides/inventory/client/SystemClient.java` file:
 
 [source, java, indent=0]
 ----
 include::finish/src/main/java/io/openliberty/guides/inventory/client/SystemClient.java[tags=client]
 ----
 
-Note that the service will automatically build and generate an implementation for the `SystemClient` interface, because the JAX-RS annotations in this interface tell the RESTful service
+The service automatically builds and generates an implementation for the `SystemClient` interface, because the JAX-RS annotations in this interface tell the RESTful service
 what to do. That allows you to not have to worry about all of the boilerplate code (like setting up a client class, connecting to the remote server, invoking the right URI with the right parameters).
 
 When the `getProperties()` method gets invoked, the `SystemClient` sends a GET request to the endpoint at `<baseUrl>/properties`.
@@ -100,12 +100,11 @@ The `@RegisterRestClient` annotation registers this interface as a RESTful clien
 
 The `@RegisterProvider` annotation tells the framework to register provider classes to be used when invoking this interface; you can add as many providers as necessary.
 In the `SystemClient`, you add a response exception mapper as a provider to map the `404 NOT FOUND` response code with the `UnknownUrlException`.
-Read the next section to see more details.
 
 // =================================================================================================
 // Handling exceptions through ResponseExceptionMappers
 // =================================================================================================
-=== Handling exceptions through ResponseExceptionMappers
+== Handling exceptions through ResponseExceptionMappers
 
 In the `SystemClient` interface, the `getProperties()` method may throw an `UnknownUrlException` if the response from the `system` service is `404 NOT FOUND`, and `@RegisterProvider(UnknownUrlExceptionMapper.class)` registers the response exception mapper.
 Implement the actual exception class and the mapper class to see how this mechanism works.
@@ -155,15 +154,15 @@ Revisit the `SystemClient` interface from the previous section:
 ----
 include::finish/src/main/java/io/openliberty/guides/inventory/client/SystemClient.java[tags=annotations]
 ----
-Note that the `@Dependent` and `@RegisterRestClient` annotations imply that the interface is manageable through context and dependency injection.
+The `@Dependent` and `@RegisterRestClient` annotations imply that the interface is manageable through context and dependency injection.
 
-Inject the client called `defaultRestClient` to the `InventoryManager` class using CDI. Copy all the following code and replace the contents of the `src/main/java/io/openliberty/guides/inventory/InventoryManager.java` file:
+Create the `InventoryManager` class in the `src/main/java/io/openliberty/guides/inventory/InventoryManager.java` file:
 [source, java, indent=0]
 ----
 include::finish/src/main/java/io/openliberty/guides/inventory/InventoryManager.java[tags=manager]
 ----
 
-`@Inject` and `@RestClient` implies that CDI injects an instance of the `SystemClient` to the `InventoryManager` class.
+`@Inject` and `@RestClient` annotations inject an instance of the `SystemClient` called `defaultRestClient` to the `InventoryManager` class.
 Since `InventoryManager` class is another CDI managed object (CDI requires one to inject the `SystemClient`), you add the client here.
 
 If the parameter `hostname` is `localhost`, then the service runs the `getPropertiesWithDefaultHostName()` helper function to fetch system properties.
