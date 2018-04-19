@@ -25,16 +25,19 @@ Learn how to use MicroProfile Rest Client to invoke RESTful microservices over H
 
 == What you'll learn
 
-You will learn how to build a MicroProfile Rest Client to access remote REST Services to retrieve information.
-MicroProfile Rest Client provides a type-safe way to call RESTful services so that you can focus more on the client models rather than how to connect with remote services while developing
-client applications.
+You will learn how to build a MicroProfile Rest Client to access remote REST Services.
+MicroProfile Rest Client provides a type-safe way to call RESTful services so that you can focus more on the client services rather than how to connect with remote services.
 
-The application that you will be working with is an `inventory` service, which retrieves and stores the system property information for different hosts.
+The application that you will be working with is an `inventory` service, which fetches and stores the system property information for different hosts.
 Whenever a request is made to retrieve the system properties of a particular host, the `inventory` service will create a client to invoke the `system`
 service on that host. The `system` service simulates a remote service in this application.
 
 You will learn how to create and register the client interface and handle exceptions through `ResponseExceptionMappers`.
-In addition, you will build the implementation of the RESTful client with two approaches: Contexts and Dependency Injection (CDI) and `RestClientBuilder`.
+Then, you will instantiate the client and use it in the `inventory` service. It is possible to do so using two different approaches: CDI with the help of MicroProfile Config, and the `RestClientBuilder`.
+
+In order to instantiate the `SystemClient`, you must provide a valid base URL.
+You will define the default base URL with host name as `localhost` using MicroProfile Config and CDI method. For example, by default `http://localhost:9080/system` is the base URL of the client.
+Then, you will set the base URL as a variable with the host name as a parameter, and build the RESTful client using the `RestClientBuilder` method.
 
 // =================================================================================================
 // Getting Started
@@ -123,20 +126,13 @@ include::finish/src/main/java/io/openliberty/guides/inventory/client/UnknownUrlE
 ----
 
 The `handles()` method inspects the HTTP response code to determine if an exception should be thrown for this response, and the `toThrowable()` method returns the mapped exception.
-// =================================================================================================
-// Instantiating the RESTful client
-// =================================================================================================
-== Instantiating the RESTful client
-
-Now you need to instantiate the `SystemClient` and use it in the `inventory` service. It is possible to do so using two different approaches: CDI with the help of MicroProfile Config, and the `RestClientBuilder`.
-In order to instantiate the `SystemClient`, you must provide a valid base URL. For example, by default `http://localhost:9080/system` is the base URL of the client.
-You will define the default base URL with host name as `localhost` using MicroProfile Config and CDI method.
-Then, you will set the base URL as a variable with the host name as a parameter, and build the RESTful `SystemClient` using the `RestClientBuilder` method.
 
 // =================================================================================================
 // Injecting the client with CDI and Config
 // =================================================================================================
-=== Injecting the client with CDI and Config
+== Injecting the client with CDI and Config
+
+Now you need to instantiate the `SystemClient` class and use it in the `inventory` service. If you only need to connect with the default host name, it is easy to instantiate the `SystemClient` using CDI annotations.
 
 First, configure the default base URL of the `SystemClient` using MicroProfile Config. The feature has been enabled for you in both `server.xml` and `pom.xml` files.
 Create a configuration file `src/main/webapp/META-INF/microprofile-config.properties` and add a config property `<fullyQualifiedInterfaceName>/mp-rest/url`, which in this case is `io.openliberty.guides.inventory.client.SystemClient/mp-rest/url`.
@@ -171,7 +167,7 @@ It invokes the `system` service by calling the `defaultRestClient.getProperties(
 // =================================================================================================
 // Building the client with RestClientBuilder
 // =================================================================================================
-=== Building the client with RestClientBuilder
+== Building the client with RestClientBuilder
 
 The `inventory` service may also provide a different host name rather than the default `localhost`. Set the host name as a variable and build the client using the `RestClientBuilder`.
 
