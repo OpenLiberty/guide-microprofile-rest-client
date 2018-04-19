@@ -20,10 +20,7 @@ public class UnknownUrlException extends Exception {
 	public UnknownUrlException() {
 		super();
 	}
-
-	/**
-	 * @param message
-	 */
+	
 	public UnknownUrlException(String message) {
 		super(message);
 	}
