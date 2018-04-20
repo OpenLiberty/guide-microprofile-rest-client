@@ -136,7 +136,7 @@ Now, instantiate the `SystemClient` interface and use it in the `inventory` serv
 
 First, configure the default base URL of the `SystemClient` instance by using MicroProfile Config. The feature has been enabled for you in both `server.xml` and `pom.xml` files.
 Create a configuration file `src/main/webapp/META-INF/microprofile-config.properties` and add a config property `<fullyQualifiedInterfaceName>/mp-rest/url`, which in this case is `io.openliberty.guides.inventory.client.SystemClient/mp-rest/url`.
-Configure the property to the default base URL `http://localhost:9080/system`:
+Configure this property to the default `http://localhost:9080/system` base URL:
 
 [source, java, indent=0]
 ----
@@ -236,8 +236,8 @@ Results :
 Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
 ----
 
-To see whether the tests detect a failure, change the path of the `system` service, so that when the `inventory` service tries to access the invalid URL, a `404 NOT FOUND` exception is thrown.
-Re-run the Maven build. You will see a test failure occur.
+To see whether the tests detect a failure, change the base URL in the configuration file, so that when the `inventory` service tries to access the invalid URL, a `404 NOT FOUND` exception is thrown.
+Re-run the Maven build. You will see a test failure occur. Re-start the liberty server and visit `http://localhost:9080/inventory/systems/localhost`, you will see the error message `ERROR: Unknown hostname or the system service may not be running on localhost`.
 
 == Great work! You're done!
 
