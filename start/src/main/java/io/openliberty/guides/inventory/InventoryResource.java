@@ -29,26 +29,29 @@ import io.openliberty.guides.inventory.model.InventoryList;
 @Path("/systems")
 public class InventoryResource {
 
-	// tag::Inject[]
-	@Inject
-	InventoryManager manager;
-	// end::Inject[]
+  // tag::Inject[]
+  @Inject
+  InventoryManager manager;
+  // end::Inject[]
 
-	@GET
-	@Path("/{hostname}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getPropertiesForHost(@PathParam("hostname") String hostname) {
-		Properties props = manager.get(hostname);
-		if (props == null) {
-			return Response.status(Response.Status.NOT_FOUND)
-					.entity("ERROR: Unknown hostname or the system service may not be running on " + hostname).build();
-		}
-		return Response.ok(props).build();
-	}
+  @GET
+  @Path("/{hostname}")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response getPropertiesForHost(@PathParam("hostname") String hostname) {
+    Properties props = manager.get(hostname);
+    if (props == null) {
+      return Response.status(Response.Status.NOT_FOUND)
+                     .entity(
+                         "ERROR: Unknown hostname or the system service may not be running on "
+                             + hostname)
+                     .build();
+    }
+    return Response.ok(props).build();
+  }
 
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	public InventoryList listContents() {
-		return manager.list();
-	}
+  @GET
+  @Produces(MediaType.APPLICATION_JSON)
+  public InventoryList listContents() {
+    return manager.list();
+  }
 }

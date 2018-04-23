@@ -28,61 +28,63 @@ import io.openliberty.guides.inventory.client.UnknownUrlExceptionMapper;
 @ApplicationScoped
 public class InventoryManager {
 
-	private InventoryList invList = new InventoryList();
+  private InventoryList invList = new InventoryList();
 
-	@Inject
-	@RestClient
-	private SystemClient defaultRestClient;
+  @Inject
+  @RestClient
+  private SystemClient defaultRestClient;
 
-	public Properties get(String hostname) {
+  public Properties get(String hostname) {
 
-		Properties properties = null;
-		if (hostname.equals("localhost")) {
-			properties = getPropertiesWithDefaultHostName();
-		} else {
-			properties = getPropertiesWithGivenHostName(hostname);
-		}
+    Properties properties = null;
+    if (hostname.equals("localhost")) {
+      properties = getPropertiesWithDefaultHostName();
+    } else {
+      properties = getPropertiesWithGivenHostName(hostname);
+    }
 
-		if (properties != null) {
-			invList.addToInventoryList(hostname, properties);
-		}
-		return properties;
-	}
+    if (properties != null) {
+      invList.addToInventoryList(hostname, properties);
+    }
+    return properties;
+  }
 
-	public InventoryList list() {
-		return invList;
-	}
+  public InventoryList list() {
+    return invList;
+  }
 
-	private Properties getPropertiesWithDefaultHostName() {
-		try {
-			return defaultRestClient.getProperties();
-		} catch (UnknownUrlException e) {
-			System.err.println("The given URL is unreachable.");
-			e.printStackTrace();
-			return null;
-		}
-	}
+  private Properties getPropertiesWithDefaultHostName() {
+    try {
+      return defaultRestClient.getProperties();
+    } catch (UnknownUrlException e) {
+      System.err.println("The given URL is unreachable.");
+      e.printStackTrace();
+      return null;
+    }
+  }
+
   // tag::builder[]
-	private Properties getPropertiesWithGivenHostName(String hostname) {
-		String customURLString = "http://" + hostname + ":9080/system";
-		URL customURL = null;
-		try {
-			customURL = new URL(customURLString);
-			SystemClient customRestClient = RestClientBuilder.newBuilder()
-                                             .baseUrl(customURL)
-                                             .register(UnknownUrlExceptionMapper.class)
-                                             .build(SystemClient.class);
-			return customRestClient.getProperties();
+  private Properties getPropertiesWithGivenHostName(String hostname) {
+    String customURLString = "http://" + hostname + ":9080/system";
+    URL customURL = null;
+    try {
+      customURL = new URL(customURLString);
+      SystemClient customRestClient = RestClientBuilder.newBuilder()
+                                                       .baseUrl(customURL)
+                                                       .register(
+                                                           UnknownUrlExceptionMapper.class)
+                                                       .build(SystemClient.class);
+      return customRestClient.getProperties();
 
-		} catch (UnknownUrlException e) {
-			System.err.println("The given URL is unreachable.");
-			e.printStackTrace();
-		} catch (MalformedURLException e) {
-			System.err.println("The given URL is not formatted correctly.");
-			e.printStackTrace();
-		}
-		return null;
-	}
+    } catch (UnknownUrlException e) {
+      System.err.println("The given URL is unreachable.");
+      e.printStackTrace();
+    } catch (MalformedURLException e) {
+      System.err.println("The given URL is not formatted correctly.");
+      e.printStackTrace();
+    }
+    return null;
+  }
   // end::builder[]
 }
 // end::manager[]
