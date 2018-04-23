@@ -15,13 +15,11 @@ package it.io.openliberty.guides.inventory;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-
 import javax.json.JsonObject;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
 import org.apache.cxf.jaxrs.provider.jsrjsonp.JsrJsonpProvider;
 import org.junit.After;
 import org.junit.Before;
@@ -62,7 +60,6 @@ public class InventoryEndpointTest {
     this.testEmptyInventory();
     this.testHostRegistration();
     this.testSystemPropertiesMatch();
-    this.testUnknownHost();
   }
   // end::testSuite[]
 
@@ -136,25 +133,6 @@ public class InventoryEndpointTest {
   }
   // end::testSystemPropertiesMatch[]
 
-  // tag::testUnknownHost[]
-  public void testUnknownHost() {
-    Response response = this.getResponse(baseUrl + INVENTORY_SYSTEMS);
-    this.assertResponse(baseUrl, response);
-
-    Response badResponse = client.target(baseUrl + INVENTORY_SYSTEMS + "/"
-        + "badhostname").request(MediaType.APPLICATION_JSON).get();
-
-    String obj = badResponse.readEntity(String.class);
-
-    boolean isError = obj.contains("ERROR");
-    assertTrue("badhostname is not a valid host but it didn't raise an error",
-               isError);
-
-    response.close();
-    badResponse.close();
-  }
-
-  // end::testUnknownHost[]
   // end::tests[]
   // tag::helpers[]
   // tag::javadoc[]
@@ -162,7 +140,7 @@ public class InventoryEndpointTest {
    * <p>
    * Returns response information from the specified URL.
    * </p>
-   * 
+   *
    * @param url
    *          - target URL.
    * @return Response object with the response from the specified URL.
@@ -177,7 +155,7 @@ public class InventoryEndpointTest {
    * <p>
    * Asserts that the given URL has the correct response code of 200.
    * </p>
-   * 
+   *
    * @param url
    *          - target URL.
    * @param response
@@ -193,7 +171,7 @@ public class InventoryEndpointTest {
   /**
    * Asserts that the specified JVM system property is equivalent in both the
    * system and inventory services.
-   * 
+   *
    * @param propertyName
    *          - name of the system property to check.
    * @param hostname
