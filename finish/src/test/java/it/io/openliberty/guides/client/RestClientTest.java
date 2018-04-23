@@ -14,7 +14,6 @@
 package it.io.openliberty.guides.client;
 
 import static org.junit.Assert.assertEquals;
-
 import javax.json.JsonObject;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
