@@ -13,7 +13,7 @@
 // tag::testClass[]
 package it.io.openliberty.guides.inventory;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertEqualssdsd;
 import static org.junit.Assert.assertTrue;
 import javax.json.JsonObject;
 import javax.ws.rs.client.Client;
