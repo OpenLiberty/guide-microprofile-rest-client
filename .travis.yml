@@ -5,3 +5,17 @@ script:
   - cd finish
   - mvn clean install
   - build=$( grep "Open Liberty" target/liberty/wlp/usr/servers/defaultServer/logs/console.log | cut -d' ' -f5 | cut -d')' -f1 ); release=$( echo "$build" | cut -d'/' -f1); number=$( echo "$build" | cut -d'/' -f2); echo  "Open Liberty release $release"; echo  "Open Liberty build number $number";
+notifications:
+  slack:
+    template:
+      - "Build:  <%{build_url}|#%{build_number}> | Commit (<%{compare_url}|%{commit}>): %{commit_message}"
+      - "Repo/Branch: %{repository_slug}@%{branch}"
+      - "Author: %{author}" 
+      - "Summary: %{result} in %{duration}"
+    rooms:
+      secure: nE2kqGdVqGpOl/NbW8wtBRgWoWhds7dpIHpBDzexJEaL/WGfP+S/uNE8M3IIkZAkthlz2WjhWdDS6VA079LZ5l1G62TrcilcbprOH/PVilVHiBDoLFzvvk3klHMB76jO8Mo1ZgimRWeEUiZ0P2HSRwHDS398p7ZmuAlwN/iYiu98oELZY6EDVoNIUDKrRae0PglO7CiRTHNY92ACrbMDkbHfdoHdFeLTlapwOn5PxUU/42tx1EeqIYVqS0q81yEjhvqjYjfGAFoOd5WZeDplQxfwVcvMYb4G5vbUBT3cGELm6WvYnWNxuRq5c5WW/IJtcLWR3Xrvg7goYaKs0UzgD97fjZQNqi18OrY9P+p0MpeS+CT9oDTOdB02ufYzBroSvrRyj3x54yF0Gs9yNMEA1+NT5LUs282ZIAWnn7coqfHb7qUx1091yCgMKZlNTKxxsL2C9VHygJX8eFKhYImlJox4Kui7gglZoj7KEa4KygX4g/h9s9vDzL303PF39kgrFpLUp0UQqfo+Y6O43sT1D+1BppvNj0sCFisX1UqS8Br93g2ZgGwclkPyAqJZAo8Gcq3ER0yg4vXoNRkn7K9dhds5BI37ZENAHjelF3IkQRYl0aO8n8MeMWNXzR4g6yO+Glz3CqAKT+fA1kZDp5lquCOxQ08ejnbMml2CHy4Wc7U=
+    on_success: never
+branches:
+  only: 
+  - master
+    
