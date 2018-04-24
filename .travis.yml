@@ -12,7 +12,7 @@ notifications:
       - "Repo/Branch: %{repository_slug}@%{branch}"
       - "Author: %{author}" 
       - "Summary: %{result} in %{duration}"
-     if:  $TRAVIS_PULL_REQUEST != false
+     condition:  $TRAVIS_PULL_REQUEST != false
       - "Pull Request: <%{pull_request_url}|#%{pull_request_number}"
     rooms:
       secure: nE2kqGdVqGpOl/NbW8wtBRgWoWhds7dpIHpBDzexJEaL/WGfP+S/uNE8M3IIkZAkthlz2WjhWdDS6VA079LZ5l1G62TrcilcbprOH/PVilVHiBDoLFzvvk3klHMB76jO8Mo1ZgimRWeEUiZ0P2HSRwHDS398p7ZmuAlwN/iYiu98oELZY6EDVoNIUDKrRae0PglO7CiRTHNY92ACrbMDkbHfdoHdFeLTlapwOn5PxUU/42tx1EeqIYVqS0q81yEjhvqjYjfGAFoOd5WZeDplQxfwVcvMYb4G5vbUBT3cGELm6WvYnWNxuRq5c5WW/IJtcLWR3Xrvg7goYaKs0UzgD97fjZQNqi18OrY9P+p0MpeS+CT9oDTOdB02ufYzBroSvrRyj3x54yF0Gs9yNMEA1+NT5LUs282ZIAWnn7coqfHb7qUx1091yCgMKZlNTKxxsL2C9VHygJX8eFKhYImlJox4Kui7gglZoj7KEa4KygX4g/h9s9vDzL303PF39kgrFpLUp0UQqfo+Y6O43sT1D+1BppvNj0sCFisX1UqS8Br93g2ZgGwclkPyAqJZAo8Gcq3ER0yg4vXoNRkn7K9dhds5BI37ZENAHjelF3IkQRYl0aO8n8MeMWNXzR4g6yO+Glz3CqAKT+fA1kZDp5lquCOxQ08ejnbMml2CHy4Wc7U=
