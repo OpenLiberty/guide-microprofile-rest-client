@@ -61,7 +61,9 @@ After starting the application, you can access the following two microservices:
 
 * The `http://localhost:9080/system/properties` microservice retrieves the system property information for a specific host. In this case, the specific host is the `localhost`.
 
-* The `http://localhost:9080/inventory/systems/{hostname}` microservice retrieves the system property information for a specific host with `{hostname}` by invoking the `http://{hostname}:9080/system/properties` client
+* The `http://localhost:9080/inventory/systems/localhost` microservice retrieves the system property information for a specific host named `localhost` by invoking the `http://localhost:9080/system/properties` client
+
+In addition, try to get your internal IP address, and visit the `http://localhost:9080/inventory/systems/{your_ip_address}` URL. You will see the same system property information, but the process of getting this information is actually implemented differently.
 
 When you are done checking out the application, stop the Open Liberty server:
 
@@ -191,7 +193,7 @@ Once the server is running, try to fetch your system properties by two approache
 
 1. Visit the `http://localhost:9080/inventory/systems/localhost` URL. It retrieves the system property information for `localhost` by invoking the `http://localhost:9080/system/properties` client.
 
-2. Get your internal IP address first. Then, visit the `http://localhost:9080/inventory/systems/{ip_address}` URL to retrieve your system properties by invoking the `http://{ip_address}:9080/system/properties` client.
+2. Get your internal IP address first. Then, visit the `http://localhost:9080/inventory/systems/{your_ip_address}` URL to retrieve your system properties by invoking the `http://{your_ip_address}:9080/system/properties` client.
 
 include::{common-includes}/mvnpackage.adoc[]
 
