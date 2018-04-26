@@ -63,7 +63,7 @@ After starting the application, you can access the following three URLs:
 
 * The `http://localhost:9080/inventory/systems/localhost` URL retrieves the system property information for `localhost` by invoking the `http://localhost:9080/system/properties` microservice.
 
-* Get your internal IP address first, then visit the `http://localhost:9080/inventory/systems/<your_hostname>` URL by replacing ``<your_hostname>` to your IP address. You will see the same system property information, but the process of getting this information is actually implemented differently.
+* Get your internal IP address first, then visit the `http://localhost:9080/inventory/systems/<your_hostname>` URL by replacing `<your_hostname>` to your IP address. You will see the same system property information, but the process of getting this information is actually implemented differently.
 
 When you are done checking out the application, stop the Open Liberty server:
 
