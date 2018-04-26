@@ -29,6 +29,7 @@ import io.openliberty.guides.inventory.client.UnknownUrlExceptionMapper;
 public class InventoryManager {
 
   private InventoryList invList = new InventoryList();
+  private final String DEFAULT_PORT = System.getProperty("default.http.port");
 
   @Inject
   @RestClient
@@ -65,7 +66,7 @@ public class InventoryManager {
 
   // tag::builder[]
   private Properties getPropertiesWithGivenHostName(String hostname) {
-    String customURLString = "http://" + hostname + ":9080/system";
+    String customURLString = "http://" + hostname + ":" + DEFAULT_PORT + "/system";
     URL customURL = null;
     try {
       customURL = new URL(customURLString);
