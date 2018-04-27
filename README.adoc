@@ -57,7 +57,7 @@ Maven goals to build the application and run it inside Open Liberty:
 mvn install liberty:start-server
 ```
 
-After starting the application, you can access the following URLs:
+After you start the application, you can access the following URLs:
 
 * The `http://localhost:9080/system/properties` URL retrieves the system property information for a specific host. In this case, `localhost` is a specific host name.
 
@@ -82,7 +82,7 @@ Now, navigate back to the `start` directory to begin.
 The MicroProfile Rest Client API is added as a dependency to your `pom.xml` file. Look for the dependency with the `microprofile-rest-client-api` artifact ID.
 This dependency provides the library that is required to implement the MicroProfile Rest Client interface.
 
-The `mpRestClient-1.0` feature is also enabled in the `src/main/liberty/config/server.xml` file. This feature allows you to use the MicroProfile Rest Client to invoke RESTful microservices with template interfaces.
+The `mpRestClient-1.0` feature is also enabled in the `src/main/liberty/config/server.xml` file. This feature enables the MicroProfile Rest Client to invoke RESTful microservices with template interfaces.
 
 The code for the `system` service in the `src/main/java/io/openliberty/guides/system` directory is provided for you. It simulates a remote RESTful service that
 the `inventory` service invokes.
@@ -98,11 +98,11 @@ what to do. You don't have to worry about all of the boilerplate code, such as s
 
 When the `getProperties()` method is invoked, the `SystemClient` instance sends a GET request to the `<baseUrl>/properties` endpoint.
 
-The `@Dependent` annotation tells the service that the scope of the interface is dependent on the class that it is injected into.
+The `@Dependent` annotation tells the service that the scope of the interface depends on the class that it is injected into.
 
 The `@RegisterRestClient` annotation registers the interface as a RESTful client.
 
-The `@RegisterProvider` annotation tells the framework to register provider classes to be used when invoking the interface. You can add as many providers as necessary.
+The `@RegisterProvider` annotation tells the framework to register the provider classes to be used when the framework invokes the interface. You can add as many providers as necessary.
 In the `SystemClient` interface, add a response exception mapper as a provider to map the `404 NOT FOUND` response code with the `UnknownUrlException` exception.
 
 // =================================================================================================
@@ -126,14 +126,14 @@ Create an `UnknownUrlExceptionMapper` mapper class in the `src/main/java/io/open
 include::finish/src/main/java/io/openliberty/guides/inventory/client/UnknownUrlExceptionMapper.java[tags=mapper]
 ----
 
-The `handles()` method inspects the HTTP response code to determine if an exception should be thrown for the specific response, and the `toThrowable()` method returns the mapped exception.
+The `handles()` method inspects the HTTP response code to determine whether an exception is thrown for the specific response, and the `toThrowable()` method returns the mapped exception.
 
 // =================================================================================================
 // Injecting the client with dependency injection
 // =================================================================================================
 == Injecting the client with dependency injection
 
-Now, instantiate the `SystemClient` interface and use it in the `inventory` service. If you only want to connect with the default host name, it is easy to instantiate the `SystemClient` by using CDI annotations.
+Now, instantiate the `SystemClient` interface and use it in the `inventory` service. If you want to connect only with the default host name, you can easily instantiate the `SystemClient` with CDI annotations.
 
 First, configure the default base URL of the `SystemClient` instance by using MicroProfile Config. This feature is enabled for you in both the `server.xml` and `pom.xml` files.
 Create a `src/main/webapp/META-INF/microprofile-config.properties` configuration file and add a `<fullyQualifiedInterfaceName>/mp-rest/url` config property, which in this case is `io.openliberty.guides.inventory.client.SystemClient/mp-rest/url`.
