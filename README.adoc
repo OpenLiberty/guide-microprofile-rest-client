@@ -135,9 +135,13 @@ The `handles()` method inspects the HTTP response code to determine whether an e
 
 Now, instantiate the `SystemClient` interface and use it in the `inventory` service. If you want to connect only with the default host name, you can easily instantiate the `SystemClient` with CDI annotations.
 
-First, configure the default base URL of the `SystemClient` instance by using MicroProfile Config. This feature is enabled for you in both the `server.xml` and `pom.xml` files.
-Create a `src/main/webapp/META-INF/microprofile-config.properties` configuration file and add a `<fullyQualifiedInterfaceName>/mp-rest/url` config property, which in this case is `io.openliberty.guides.inventory.client.SystemClient/mp-rest/url`.
+First, you need to tell the MicroProfile Rest Client API the base URL value for the `system` service endpoint.
+You can configure the default base URL of the `SystemClient` instance by using MicroProfile Config. The feature has been enabled for you in both `server.xml` and `pom.xml` files.
+
+Create a configuration file `src/main/webapp/META-INF/microprofile-config.properties`. The config property to add the base URL is `<fullyQualifiedInterfaceName>/mp-rest/url`.
+In this case, add the config property `io.openliberty.guides.inventory.client.SystemClient/mp-rest/url`.
 Configure this property to the default `http://localhost:9080/system` base URL:
+
 
 [source, java, indent=0]
 ----
