@@ -32,39 +32,39 @@ The application that you will be working with is an `inventory` service, which f
 Whenever a request is made to retrieve the system properties of a particular host, the `inventory` service will create a client to invoke the `system`
 service on that host. The `system` service simulates a remote service in the application.
 
-You will learn how to create and register the client interface and handle exceptions through `ResponseExceptionMappers` mapper class.
-Then, you will instantiate the client and use it in the `inventory` service. It is possible to do so by using two different approaches: CDI with the help of MicroProfile Config method, and the `RestClientBuilder` method.
-You can choose either way to instantiate the client in the future, but in this guide you will explore both methods in order to handle different scenarios to provide a valid base URL. You must have a valid base URL to instantiate the RESTful client.
+You will learn how to create and register the client interface and handle exceptions through the `ResponseExceptionMappers` mapper class.
+Then, you will instantiate the client and use it in the `inventory` service. You can choose from two different approaches: CDI with the help of MicroProfile Config or the `RestClientBuilder` method.
+In this guide, you will explore both methods in order to handle different scenarios to provide a valid base URL. You need a valid base URL to instantiate the RESTful client.
 
-You will handle various scenarios in the following way:
+You will handle various scenarios with the two methods:
 
- - Define the default base URL with host name as `localhost` in the configuration file, and inject the client by using the CDI method.
+ - With the CDI method, define the default base URL with the `localhost` host name in the configuration file and inject the client.
 
- - Set the base URL as a variable with the host name as a parameter, and build the RESTful client by using the `RestClientBuilder` method.
+ - With the `RestClientBuilder` method, set the base URL as a variable with the host name as a parameter and build the RESTful client.
 
 // =================================================================================================
-// Getting Started
+// Getting started
 // =================================================================================================
 
 include::{common-includes}/gitclone.adoc[]
 
 === Try what you'll build
 
-To try out the application, first navigate to the `finish` directory, which contains the complete `inventory` application, then run the following
+To try out the application, first navigate to the `finish` directory, which contains the complete `inventory` application. Then, run the following
 Maven goals to build the application and run it inside Open Liberty:
 
 ```
 mvn install liberty:start-server
 ```
 
-After starting the application, you can access the following three URLs:
+After starting the application, you can access the following URLs:
 
 * The `http://localhost:9080/system/properties` URL retrieves the system property information for a specific host. In this case, `localhost` is a specific host name.
 
 * The `http://localhost:9080/inventory/systems/localhost` URL retrieves the system property information for `localhost` by invoking the `http://localhost:9080/system/properties` microservice.
 
-* Get your fully qualified domain name (FQDN) first, then visit the `http://localhost:9080/inventory/systems/{your_hostname}` URL by replacing `{your_hostname}` with your FQDN.
-You will see the same system property information, but the process of getting this information is actually implemented differently.
+* First, get your fully qualified domain name (FQDN), then visit the `http://localhost:9080/inventory/systems/{your_hostname}` URL by replacing `{your_hostname}` with your FQDN.
+You will see the same system property information, but the process of getting the information is different.
 
 When you are done checking out the application, stop the Open Liberty server:
 
@@ -79,31 +79,31 @@ Now, navigate back to the `start` directory to begin.
 // =================================================================================================
 == Writing the RESTful client interface
 
-The MicroProfile Rest Client API are added as a dependency to your `pom.xml` file. Look for the dependency with the `microprofile-rest-client-api` artifact ID.
+The MicroProfile Rest Client API is added as a dependency to your `pom.xml` file. Look for the dependency with the `microprofile-rest-client-api` artifact ID.
 This dependency provides the library that is required to implement the MicroProfile Rest Client interface.
 
 The `mpRestClient-1.0` feature is also enabled in the `src/main/liberty/config/server.xml` file. This feature allows you to use the MicroProfile Rest Client to invoke RESTful microservices with template interfaces.
 
 The code for the `system` service in the `src/main/java/io/openliberty/guides/system` directory is provided for you. It simulates a remote RESTful service that
-the `inventory` service tries to invoke.
+the `inventory` service invokes.
 
-Now, create a RESTful client interface for the `system` service. To do so, create the `SystemClient` class in the `src/main/java/io/openliberty/guides/inventory/client/SystemClient.java` file:
+Next, create a RESTful client interface for the `system` service. First, create the `SystemClient` class in the `src/main/java/io/openliberty/guides/inventory/client/SystemClient.java` file:
 [source, java, indent=0]
 ----
 include::finish/src/main/java/io/openliberty/guides/inventory/client/SystemClient.java[tags=client]
 ----
 
-The service automatically builds and generates an implementation for the `SystemClient` interface, because the JAX-RS annotations in the interface tell the RESTful service
-what to do. You don't have to worry about all of the boilerplate code, such as setting up a client class, connecting to the remote server, or invoking the right URI with the right parameters.
+The service automatically builds and generates an implementation for the `SystemClient` interface because the JAX-RS annotations in the interface tell the RESTful service
+what to do. You don't have to worry about all of the boilerplate code, such as setting up a client class, connecting to the remote server, or invoking the correct URI with the correct parameters.
 
-When the `getProperties()` method gets invoked, the `SystemClient` instance sends a GET request to the endpoint at `<baseUrl>/properties`.
+When the `getProperties()` method is invoked, the `SystemClient` instance sends a GET request to the `<baseUrl>/properties` endpoint.
 
-The `@Dependent` annotation tells the service that the scope of the interface is dependent on the class that they get injected into.
+The `@Dependent` annotation tells the service that the scope of the interface is dependent on the class that it is injected into.
 
 The `@RegisterRestClient` annotation registers the interface as a RESTful client.
 
-The `@RegisterProvider` annotation tells the framework to register provider classes to be used when invoking the interface; you can add as many providers as necessary.
-In the `SystemClient`, you add a response exception mapper as a provider to map the `404 NOT FOUND` response code with the `UnknownUrlException` exception.
+The `@RegisterProvider` annotation tells the framework to register provider classes to be used when invoking the interface. You can add as many providers as necessary.
+In the `SystemClient` interface, add a response exception mapper as a provider to map the `404 NOT FOUND` response code with the `UnknownUrlException` exception.
 
 // =================================================================================================
 // Handling exceptions through ResponseExceptionMappers
@@ -135,8 +135,8 @@ The `handles()` method inspects the HTTP response code to determine if an except
 
 Now, instantiate the `SystemClient` interface and use it in the `inventory` service. If you only want to connect with the default host name, it is easy to instantiate the `SystemClient` by using CDI annotations.
 
-First, configure the default base URL of the `SystemClient` instance by using MicroProfile Config. The feature has been enabled for you in both `server.xml` and `pom.xml` files.
-Create a configuration file `src/main/webapp/META-INF/microprofile-config.properties` and add a config property `<fullyQualifiedInterfaceName>/mp-rest/url`, which in this case is `io.openliberty.guides.inventory.client.SystemClient/mp-rest/url`.
+First, configure the default base URL of the `SystemClient` instance by using MicroProfile Config. This feature is enabled for you in both the `server.xml` and `pom.xml` files.
+Create a `src/main/webapp/META-INF/microprofile-config.properties` configuration file and add a `<fullyQualifiedInterfaceName>/mp-rest/url` config property, which in this case is `io.openliberty.guides.inventory.client.SystemClient/mp-rest/url`.
 Configure this property to the default `http://localhost:9080/system` base URL:
 
 [source, java, indent=0]
@@ -144,14 +144,14 @@ Configure this property to the default `http://localhost:9080/system` base URL:
 include::finish/src/main/webapp/META-INF/microprofile-config.properties[tags=config]
 ----
 
-This configuration will be automatically picked up by the MicroProfile Config API.
+This configuration is automatically picked up by the MicroProfile Config API.
 
 Revisit the `SystemClient` interface from the previous section:
 [source, java, indent=0, role="no_copy"]
 ----
 include::finish/src/main/java/io/openliberty/guides/inventory/client/SystemClient.java[tags=annotations]
 ----
-The `@Dependent` and `@RegisterRestClient` annotations imply that the interface is manageable through context and dependency injection.
+The `@Dependent` and `@RegisterRestClient` annotations imply that the interface is manageable through Context and Dependency Injection (CDI).
 
 Create the `InventoryManager` class in the `src/main/java/io/openliberty/guides/inventory/InventoryManager.java` file:
 [source, java, indent=0]
@@ -160,17 +160,17 @@ include::finish/src/main/java/io/openliberty/guides/inventory/InventoryManager.j
 ----
 
 `@Inject` and `@RestClient` annotations inject an instance of the `SystemClient` called `defaultRestClient` to the `InventoryManager` class.
-Since `InventoryManager` class is another CDI managed object and CDI requires one to inject the `SystemClient`, you add the client here.
+Since the `InventoryManager` class is another object that is managed by CDI, and CDI requires an object to inject the `SystemClient` interface, add the client here.
 
-If the parameter `hostname` is `localhost`, the service runs the `getPropertiesWithDefaultHostName()` helper function to fetch system properties.
-It invokes the `system` service by calling the `defaultRestClient.getProperties()` method.
+If the `hostname` parameter is `localhost`, the service runs the `getPropertiesWithDefaultHostName()` helper function to fetch system properties.
+The helper function invokes the `system` service by calling the `defaultRestClient.getProperties()` method.
 
 // =================================================================================================
 // Building the client with RestClientBuilder
 // =================================================================================================
 == Building the client with RestClientBuilder
 
-The `inventory` service might also provide a different host name rather than the default `localhost`. Set the host name as a variable and build the client by using the `RestClientBuilder` method.
+The `inventory` service might also provide a different host name rather than the default `localhost` host name. Set the host name as a variable and build the client by using the `RestClientBuilder` method.
 
 Look at the `getPropertiesWithGivenHostName()` method in the `src/main/java/io/openliberty/guides/inventory/InventoryManager.java` file:
 [source, java, indent=0, role="no_copy"]
@@ -178,7 +178,7 @@ Look at the `getPropertiesWithGivenHostName()` method in the `src/main/java/io/o
 include::finish/src/main/java/io/openliberty/guides/inventory/InventoryManager.java[tags=builder]
 ----
 
-The host name is provided as a parameter. This method first assembles the base URL consisted of the new host name, then, instantiates a `RestClientBuilder` builder with the new URL, registers the response exception mapper, and builds the `SystemClient` instance.
+The host name is provided as a parameter. This method first assembles the base URL consisting of the new host name. Then, the method instantiates a `RestClientBuilder` builder with the new URL, registers the response exception mapper, and builds the `SystemClient` instance.
 
 Similarly, call the `customRestClient.getProperties()` method to invoke the `system` service.
 
@@ -188,11 +188,11 @@ Similarly, call the `customRestClient.getProperties()` method to invoke the `sys
 
 include::{common-includes}/mvnbuild.adoc[]
 
-Once the server is running, try to fetch your system properties by two approaches:
+When the server is running, select either approach to fetch your system properties:
 
-1. Visit the `http://localhost:9080/inventory/systems/localhost` URL. It retrieves the system property information for `localhost` by invoking the `http://localhost:9080/system/properties` service.
+- Visit the `http://localhost:9080/inventory/systems/localhost` URL. The URL retrieves the system property information for `localhost` host name by invoking the `http://localhost:9080/system/properties` service.
 
-2. Get your fully qualified domain name (FQDN) first. Then, visit the `http://localhost:9080/inventory/systems/{your_hostname}` URL by replacing `{your_hostname}` with your FQDN. It retrieves your system properties by invoking the `http://{your_hostname}:9080/system/properties` service.
+- Get your FQDN first. Then, visit the `http://localhost:9080/inventory/systems/{your_hostname}` URL by replacing `{your_hostname}` with your FQDN, which retrieves your system properties by invoking the `http://{your_hostname}:9080/system/properties` service.
 
 include::{common-includes}/mvnpackage.adoc[]
 
@@ -214,7 +214,7 @@ Each test case tests one of the methods for instantiating a RESTful client.
 
 The `testDefaultLocalhost()` test fetches and compares system properties from the `http://localhost:9080/inventory/systems/localhost` URL.
 
-The `testRestClientBuilder()` test first gets your IP address. Then, use your IP address as the host name to fetch your system properties and compare them.
+The `testRestClientBuilder()` test gets your IP address. Then, use your IP address as the host name to fetch your system properties and compare them.
 
 In addition, a few endpoint tests are provided for you to test the basic functionality of the `inventory` and `system` services. If a test failure occurs, you might have introduced a bug into the code.
 
@@ -237,14 +237,14 @@ Results :
 Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
 ----
 
-To see whether the tests detect a failure, change the base URL in the configuration file, so that when the `inventory` service tries to access the invalid URL, a `404 NOT FOUND` exception is thrown.
-Re-run the Maven build. You will see a test failure occur. Re-start the liberty server and visit `http://localhost:9080/inventory/systems/localhost`, you will see the error message `ERROR: Unknown hostname or the system service may not be running on localhost`.
+To see whether the tests detect a failure, change the base URL in the configuration file so that when the `inventory` service tries to access the invalid URL, a `404 NOT FOUND` exception is thrown.
+Rerun the Maven build. You see a test failure occur. Restart the server and visit `http://localhost:9080/inventory/systems/localhost`. You see an error message that says, `ERROR: Unknown hostname or the system service may not be running on localhost`.
 
 == Great work! You're done!
 
 You just built and tested a MicroProfile application with MicroProfile Rest Client and Open Liberty.
 
 Feel free to try one of the related guides. They demonstrate more technologies that you can learn and
-expand on what you built in this guide.
+expand on what you built here.
 
 include::{common-includes}/finish.adoc[]
