@@ -32,15 +32,15 @@ The application that you will be working with is an `inventory` service, which f
 Whenever a request is made to retrieve the system properties of a particular host, the `inventory` service will create a client to invoke the `system`
 service on that host. The `system` service simulates a remote service in the application.
 
-You will learn how to create and register the client interface and handle exceptions through `ResponseExceptionMappers` mapper class.
-Then, you will instantiate the client and use it in the `inventory` service. It is possible to do so by using two different approaches: CDI with the help of MicroProfile Config method, and the `RestClientBuilder` method.
-You can choose either way to instantiate the client in the future, but in this guide you will explore both methods in order to handle different scenarios to provide a valid base URL. You must have a valid base URL to instantiate the RESTful client.
+You will learn how to create and register the client interface and handle exceptions through the `ResponseExceptionMappers` mapper class.
+Then, you will instantiate the client and use it in the `inventory` service. You can choose from two different approaches: CDI with the help of MicroProfile Config or the `RestClientBuilder` method.
+In this guide, you will explore both methods in order to handle different scenarios to provide a valid base URL. You need a valid base URL to instantiate the RESTful client.
 
-You will handle various scenarios in the following way:
+You will handle various scenarios with the two methods:
 
- - Define the default base URL with host name as `localhost` in the configuration file, and inject the client by using the CDI method.
+ - With the CDI method, define the default base URL with the `localhost` host name in the configuration file and inject the client.
 
- - Set the base URL as a variable with the host name as a parameter, and build the RESTful client by using the `RestClientBuilder` method.
+ - With the `RestClientBuilder` method, set the base URL as a variable with the host name as a parameter and build the RESTful client.
 
 // =================================================================================================
 // Getting Started
@@ -50,21 +50,21 @@ include::{common-includes}/gitclone.adoc[]
 
 === Try what you'll build
 
-To try out the application, first navigate to the `finish` directory, which contains the complete `inventory` application, then run the following
+To try out the application, first navigate to the `finish` directory, which contains the complete `inventory` application. Then, run the following
 Maven goals to build the application and run it inside Open Liberty:
 
 ```
 mvn install liberty:start-server
 ```
 
-After starting the application, you can access the following three URLs:
+After starting the application, you can access the following URLs:
 
 * The `http://localhost:9080/system/properties` URL retrieves the system property information for a specific host. In this case, `localhost` is a specific host name.
 
 * The `http://localhost:9080/inventory/systems/localhost` URL retrieves the system property information for `localhost` by invoking the `http://localhost:9080/system/properties` microservice.
 
-* Get your fully qualified domain name (FQDN) first, then visit the `http://localhost:9080/inventory/systems/+<your_hostname>+` URL by replacing `<your_hostname>` with your FQDN.
-You will see the same system property information, but the process of getting this information is actually implemented differently.
+* First, get your fully qualified domain name (FQDN), then visit the `http://localhost:9080/inventory/systems/+<your_hostname>+` URL by replacing `<your_hostname>` with your FQDN.
+You will see the same system property information, but the process of getting the information is different.
 
 When you are done checking out the application, stop the Open Liberty server:
 
@@ -79,7 +79,7 @@ Now, navigate back to the `start` directory to begin.
 // =================================================================================================
 == Writing the RESTful client interface
 
-The MicroProfile Rest Client API are added as a dependency to your `pom.xml` file. Look for the dependency with the `microprofile-rest-client-api` artifact ID.
+The MicroProfile Rest Client API is added as a dependency to your `pom.xml` file. Look for the dependency with the `microprofile-rest-client-api` artifact ID.
 This dependency provides the library that is required to implement the MicroProfile Rest Client interface.
 
 The `mpRestClient-1.0` feature is also enabled in the `src/main/liberty/config/server.xml` file. This feature allows you to use the MicroProfile Rest Client to invoke RESTful microservices with template interfaces.
