@@ -59,13 +59,13 @@ Maven goals to build the application and run it inside Open Liberty:
 mvn install liberty:start-server
 ```
 
-After you start the application, you can access the following URLs:
+After you start the application, you can access the following microservices:
 
-* The `http://localhost:9080/system/properties` URL retrieves the system property information for a specific host. In this case, `localhost` is a specific host name.
+* The `http://localhost:9080/system/properties` microservice simulates the remote `system` service that retrieves the system property information for a specific host. In this case, `localhost` is a specific host name.
 
-* The `http://localhost:9080/inventory/systems/localhost` URL retrieves the system property information for `localhost` by invoking the `http://localhost:9080/system/properties` microservice.
+* The `http://localhost:9080/inventory/systems/localhost` microservice is the `inventory` service that invokes the `http://localhost:9080/system/properties` microservice to retrieves the system property information.
 
-* First, get your fully qualified domain name (FQDN), then visit the `http://localhost:9080/inventory/systems/{your_hostname}` URL by replacing `{your_hostname}` with your FQDN.
+* The `http://localhost:9080/inventory/systems/{your_hostname}` microservice is the `inventory` service that invokes the `http://{your_hostname}:9080/system/properties` microservice. Get your fully qualified domain name (FQDN), visit the URL by replacing `{your_hostname}` with your FQDN. 
 You will see the same system property information, but the process of getting the information is different.
 
 When you are done checking out the application, stop the Open Liberty server:
@@ -84,18 +84,19 @@ Now, navigate back to the `start` directory to begin.
 The MicroProfile Rest Client API is added as a dependency to your `pom.xml` file. Look for the dependency with the `microprofile-rest-client-api` artifact ID.
 This dependency provides the library that is required to implement the MicroProfile Rest Client interface.
 
-The `mpRestClient-1.0` feature is also enabled in the `src/main/liberty/config/server.xml` file. This feature enables the MicroProfile Rest Client to invoke RESTful microservices with template interfaces.
+The `mpRestClient-1.0` feature is also enabled in the `src/main/liberty/config/server.xml` file. This feature enables the MicroProfile Rest Client to invoke RESTful microservices in a type-safe way.
 
-The code for the `system` service in the `src/main/java/io/openliberty/guides/system` directory is provided for you. It simulates a remote RESTful service that
-the `inventory` service invokes.
+The code for the `system` service in the `src/main/java/io/openliberty/guides/system` directory is provided for you. It simulates a remote RESTful service that the `inventory` service invokes.
 
-Next, create a RESTful client interface for the `system` service. First, create the `SystemClient` class in the `src/main/java/io/openliberty/guides/inventory/client/SystemClient.java` file:
+Next, create a RESTful client interface for the `system` service. Write a template interface that maps every method prototype in the remote `system` service. The template interface omits the detailed implementation of each method from the service, but keeps its annotations, return type, name of the method, list of arguments, as well as exception declarations.
+
+Create the `SystemClient` class in the `src/main/java/io/openliberty/guides/inventory/client/SystemClient.java` file:
 [source, java, indent=0]
 ----
 include::finish/src/main/java/io/openliberty/guides/inventory/client/SystemClient.java[tags=client]
 ----
 
-The MicroProfile Rest Client feature automatically builds and generates an implementation for the `SystemClient` interface because the JAX-RS annotations in the interface tell the RESTful service
+The MicroProfile Rest Client feature automatically builds and generates an implementation for the `SystemClient` interface because the JAX-RS annotations in the template interface tell the RESTful service
 what to do. You don't have to worry about all of the boilerplate code, such as setting up a client class, connecting to the remote server, or invoking the correct URI with the correct parameters.
 
 When the `getProperties()` method is invoked, the `SystemClient` instance sends a GET request to the `<baseUrl>/properties` endpoint.
