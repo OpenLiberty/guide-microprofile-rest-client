@@ -134,8 +134,7 @@ The `handles()` method inspects the HTTP response code to determine whether an e
 // =================================================================================================
 == Injecting the client with dependency injection
 
-Now, instantiate the `SystemClient` interface and use it in the `inventory` service. If you want to connect only with the default host name, you can easily instantiate the `SystemClient` with CDI annotations.
-CDI injection makes things a lot simpler when it comes to bootstrapping the client.
+Now, instantiate the `SystemClient` interface and use it in the `inventory` service. If you want to connect only with the default host name, you can easily instantiate the `SystemClient` with CDI annotations. CDI injection simplifies the process of bootstrapping the client.
 
 First, you need to tell the MicroProfile Rest Client API the base URL value for the `system` service endpoint.
 You can configure the default base URL of the `SystemClient` instance by using MicroProfile Config. The feature has been enabled for you in both `server.xml` and `pom.xml` files.
@@ -158,13 +157,13 @@ Revisit the `SystemClient` interface from the previous section:
 include::finish/src/main/java/io/openliberty/guides/inventory/client/SystemClient.java[tags=annotations]
 ----
 The `@Dependent` annotation tells the service that the scope of the interface depends on the class that it is injected into.
-By default, interfaces have a scope of `@Dependent` unless there is another scope defined on the interface.
+By default, interfaces have a `@Dependent` scope unless another scope is defined on the interface.
 
-The `@RegisterRestClient` annotation registers the interface as a RESTful client. The runtime create a CDI bean for every interface that is annotated with the `@RegisterRestClient` annotation.
+The `@RegisterRestClient` annotation registers the interface as a RESTful client. The runtime creates a CDI bean for every interface that is annotated with the `@RegisterRestClient` annotation.
 
 The `@Dependent` and `@RegisterRestClient` annotations imply that the interface is manageable through CDI. You must have them in order to inject the client by CDI.
 
-CDI also requires an CDI managed object to inject the `SystemClient` interface into. Since the `InventoryManager` class is another object that is managed by CDI, add the client here.
+CDI also requires a CDI managed object to inject the `SystemClient` interface. Since the `InventoryManager` class is another object that is managed by CDI, add the client here.
 
 Create the `InventoryManager` class in the `src/main/java/io/openliberty/guides/inventory/InventoryManager.java` file:
 [source, java, indent=0]
@@ -184,8 +183,8 @@ The helper function invokes the `system` service by calling the `defaultRestClie
 // =================================================================================================
 == Building the client with RestClientBuilder
 
-The `inventory` service might also want to connect with a host other than the default `localhost`. Then, it is not reasonable to configure a base URL that is not yet known.
-Therefore, set the host name as a variable and build the client by using the `RestClientBuilder` method, and you can customize the base URL from the given host name attribute.
+The `inventory` service might also connect with a host other than the default `localhost` host. Then, you cannot configure a base URL that is not yet known.
+Therefore, set the host name as a variable and build the client by using the `RestClientBuilder` method. You can customize the base URL from the host name attribute.
 
 Look at the `getPropertiesWithGivenHostName()` method in the `src/main/java/io/openliberty/guides/inventory/InventoryManager.java` file:
 [source, java, indent=0, role="no_copy"]
@@ -193,7 +192,7 @@ Look at the `getPropertiesWithGivenHostName()` method in the `src/main/java/io/o
 include::finish/src/main/java/io/openliberty/guides/inventory/InventoryManager.java[tags=builder]
 ----
 
-The host name is provided as a parameter. This method first assembles the base URL consisting of the new host name.
+The host name is provided as a parameter. This method first assembles the base URL that consists of the new host name.
 Then, the method instantiates a `RestClientBuilder` builder with the new URL, registers the response exception mapper, and builds the `SystemClient` instance.
 
 Similarly, call the `customRestClient.getProperties()` method to invoke the `system` service.
