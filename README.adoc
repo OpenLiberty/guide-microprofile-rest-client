@@ -36,7 +36,7 @@ The MicroProfile Rest Client API automatically generates an instance of the temp
 
 You will instantiate the client and use it in the `inventory` service. You can choose from two different approaches, Context and Dependency Injection (CDI) with the help of MicroProfile Config or the RestClientBuilder method.
 When the CDI injection is available for you, and the base URL is static and able to configure, you can inject the client with CDI easily. When the CDI option is not available, use the more verbose `RestClientBuilder` method.
-In this guide, you will explore both methods to handle different scenarios to provide a valid base URL.
+In this guide, you will explore both methods to handle different scenarios for providing a valid base URL.
 
 You will handle various scenarios with the two methods:
 
