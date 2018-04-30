@@ -110,7 +110,7 @@ In the `SystemClient` interface, add a response exception mapper as a provider t
 
 In the `SystemClient` interface, the `getProperties()` method might throw an `UnknownUrlException` exception if the response from the `system` service is `404 NOT FOUND`.
 The interface maps to what you want to invoke on the remote service. Then, the `@RegisterProvider(UnknownUrlExceptionMapper.class)` annotation registers the response exception mapper.
-Exception mappers map various response code from the remote service to throwable exceptions.
+Exception mappers map various response codes from the remote service to throwable exceptions.
 
 Implement the actual exception class and the mapper class to see how this mechanism works.
 
