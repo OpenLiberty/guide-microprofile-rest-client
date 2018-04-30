@@ -34,9 +34,9 @@ service on that host. The `system` service simulates a remote service in the app
 You will learn how to create a template interface that maps to the remote service that you want to call.
 The MicroProfile Rest Client API automatically generates an instance of the template interface based on its annotations. Thus, you don't waste time on setting up the client and connecting with the remote service.
 
-You will instantiate the client and use it in the `inventory` service. You can choose from two different approaches: Context and Dependency Injection (CDI) with the help of MicroProfile Config, or the `RestClientBuilder` method.
-When the CDI injection is available for you and the base URL is static and able to configure, you can inject the client with CDI easily. When the CDI option is not available, use the more verbose `RestClientBuilder` method.
-In this guide, you will explore both methods in order to handle different scenarios to provide a valid base URL.
+You will instantiate the client and use it in the `inventory` service. You can choose from two different approaches, Context and Dependency Injection (CDI) with the help of MicroProfile Config or the RestClientBuilder method.
+When the CDI injection is available for you, and the base URL is static and able to configure, you can inject the client with CDI easily. When the CDI option is not available, use the more verbose `RestClientBuilder` method.
+In this guide, you will explore both methods to handle different scenarios to provide a valid base URL.
 
 You will handle various scenarios with the two methods:
 
