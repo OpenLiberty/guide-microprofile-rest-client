@@ -164,7 +164,7 @@ The `@RegisterRestClient` annotation registers the interface as a RESTful client
 
 The `@Dependent` and `@RegisterRestClient` annotations imply that the interface is manageable through CDI. You must have them in order to inject the client.
 
-CDI also requires to have a CDI managed bean to inject the `SystemClient` interface. Since the `InventoryManager` class is another managed bean, add the client here.
+CDI also requires a CDI managed bean to inject the `SystemClient` interface. Since the `InventoryManager` class is another managed bean, add the client here.
 
 Create the `InventoryManager` class in the `src/main/java/io/openliberty/guides/inventory/InventoryManager.java` file:
 [source, java, indent=0]
