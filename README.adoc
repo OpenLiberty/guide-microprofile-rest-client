@@ -25,7 +25,7 @@ Learn how to use MicroProfile Rest Client to invoke RESTful microservices over H
 
 == What you'll learn
 
-You will learn how to build a MicroProfile Rest Client to access remote RESTful services. MicroProfile Rest Client provides a type-safe way to invoke RESTful services.
+You will learn how to build a MicroProfile Rest Client to access remote RESTful services. MicroProfile Rest Client provides a type-safe way to invoke RESTful services with template interfaces.
 
 The application that you will be working with is an `inventory` service, which fetches and stores the system property information for different hosts.
 Whenever a request is made to retrieve the system properties of a particular host, the `inventory` service will create a client to invoke the `system`
@@ -65,7 +65,7 @@ After you start the application, you can access the following microservices:
 
 * The `http://localhost:9080/inventory/systems/localhost` microservice is the `inventory` service that invokes the `http://localhost:9080/system/properties` microservice to retrieves the system property information.
 
-* The `http://localhost:9080/inventory/systems/{your_hostname}` microservice is the `inventory` service that invokes the `http://{your_hostname}:9080/system/properties` microservice. Get your fully qualified domain name (FQDN), visit the URL by replacing `{your_hostname}` with your FQDN. 
+* The `http://localhost:9080/inventory/systems/{your_hostname}` microservice is the `inventory` service that invokes the `http://{your_hostname}:9080/system/properties` microservice. Get your fully qualified domain name (FQDN), visit the URL by replacing `{your_hostname}` with your FQDN.
 You will see the same system property information, but the process of getting the information is different.
 
 When you are done checking out the application, stop the Open Liberty server:
@@ -160,11 +160,11 @@ include::finish/src/main/java/io/openliberty/guides/inventory/client/SystemClien
 The `@Dependent` annotation tells the service that the scope of the interface depends on the class that it is injected into.
 By default, interfaces have a `@Dependent` scope unless another scope is defined on the interface.
 
-The `@RegisterRestClient` annotation registers the interface as a RESTful client. The runtime creates a CDI bean for every interface that is annotated with the `@RegisterRestClient` annotation.
+The `@RegisterRestClient` annotation registers the interface as a RESTful client. The runtime creates a CDI managed bean for every interface that is annotated with the `@RegisterRestClient` annotation.
 
-The `@Dependent` and `@RegisterRestClient` annotations imply that the interface is manageable through CDI. You must have them in order to inject the client by CDI.
+The `@Dependent` and `@RegisterRestClient` annotations imply that the interface is manageable through CDI. You must have them in order to inject the client.
 
-CDI also requires a CDI managed object to inject the `SystemClient` interface. Since the `InventoryManager` class is another object that is managed by CDI, add the client here.
+CDI also requires a CDI managed bean to inject the `SystemClient` interface. Since the `InventoryManager` class is another managed bean, add the client here.
 
 Create the `InventoryManager` class in the `src/main/java/io/openliberty/guides/inventory/InventoryManager.java` file:
 [source, java, indent=0]
