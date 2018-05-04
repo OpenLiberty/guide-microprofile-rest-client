@@ -34,13 +34,11 @@ Whenever a request is made to retrieve the system properties of a particular hos
 service on that host. The `system` service simulates a remote service in the application.
 
 You will instantiate the client and use it in the `inventory` service. You can choose from two different approaches, Context and Dependency Injection (CDI) with the help of MicroProfile Config or the RestClientBuilder method.
-When the base URL of the remote service is static and able to configure, you can inject the client with CDI easily. When the base URL is not yet known and requires to be determined during the runtime, use the more verbose `RestClientBuilder` method.
-
 In this guide, you will explore both methods to handle two scenarios for providing a valid base URL:
 
- - With the CDI method, define the default base URL with the `localhost` host name in the configuration file.
+ - When the base URL of the remote service is static and able to configure, define the default base URL with the `localhost` host name in the configuration file. Inject the client with CDI method.
 
- - With the `RestClientBuilder` method, set the base URL as a variable with the host name as a parameter.
+ - When the base URL is not yet known and requires to be determined during the runtime, set the base URL as a variable with the host name as a parameter. Build the client with the more verbose `RestClientBuilder` method.
 
 // =================================================================================================
 // Getting started
