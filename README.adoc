@@ -107,7 +107,7 @@ In the `SystemClient` interface, add a response exception mapper as a provider t
 // =================================================================================================
 === Handling exceptions through ResponseExceptionMappers
 
-Error handling is an important step to ensure the application can fail safely. If there is an error response when invoking the remote service, for instance, the service returns a `404` response code,
+Error handling is an important step to ensure the application can fail safely. If there is an error response when invoking the remote service, for instance, the service returns a `404 NOT FOUND` response code,
 you need to handle it. First, you need to define an exception, and map the exception with the error response code. Then, register the exception mapper in the client interface.
 
 Look at the client interface from the previous section, the `@RegisterProvider(UnknownUrlExceptionMapper.class)` annotation registers the `UnknownUrlExceptionMapper` response exception mapper.
