@@ -26,7 +26,7 @@ Learn how to use MicroProfile Rest Client to invoke RESTful microservices over H
 == What you'll learn
 
 You will learn how to build a MicroProfile Rest Client to access remote RESTful services. You will create a template interface that maps to the remote service that you want to call.
-The MicroProfile Rest Client API automatically generates an instance of the template interface based on its annotations.
+The MicroProfile Rest Client API automatically generates an instance of the template interface that is based on its annotations.
 Thus, you don't have to worry about all of the boilerplate code, such as setting up a client class, connecting to the remote server, or invoking the correct URI with the correct parameters.
 
 The application that you will be working with is an `inventory` service, which fetches and stores the system property information for different hosts.
@@ -34,7 +34,7 @@ Whenever a request is made to retrieve the system properties of a particular hos
 service on that host. The `system` service simulates a remote service in the application.
 
 You will instantiate the client and use it in the `inventory` service. You can choose from two different approaches, Context and Dependency Injection (CDI) with the help of MicroProfile Config or the RestClientBuilder method.
-In this guide, you will explore both methods to handle two scenarios for providing a valid base URL:
+In this guide, you will explore both methods to handle scenarios for providing a valid base URL.
 
  - When the base URL of the remote service is static and able to configure, define the default base URL in the configuration file. Inject the client with CDI method.
 
