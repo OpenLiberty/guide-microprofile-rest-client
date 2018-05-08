@@ -26,7 +26,7 @@ Learn how to use MicroProfile Rest Client to invoke RESTful microservices over H
 == What you'll learn
 
 You will learn how to build a MicroProfile Rest Client to access remote RESTful services. You will create a template interface that maps to the remote service that you want to call.
-The MicroProfile Rest Client API automatically generates an instance of the template interface based on its annotations.
+The MicroProfile Rest Client API automatically generates an instance of the template interface that is based on its annotations.
 Thus, you don't have to worry about all of the boilerplate code, such as setting up a client class, connecting to the remote server, or invoking the correct URI with the correct parameters.
 
 The application that you will be working with is an `inventory` service, which fetches and stores the system property information for different hosts.
@@ -34,11 +34,11 @@ Whenever a request is made to retrieve the system properties of a particular hos
 service on that host. The `system` service simulates a remote service in the application.
 
 You will instantiate the client and use it in the `inventory` service. You can choose from two different approaches, Context and Dependency Injection (CDI) with the help of MicroProfile Config or the RestClientBuilder method.
-In this guide, you will explore both methods to handle two scenarios for providing a valid base URL:
+In this guide, you will explore both methods to handle scenarios for providing a valid base URL.
 
  - When the base URL of the remote service is static and able to configure, define the default base URL in the configuration file. Inject the client with CDI method.
 
- - When the base URL is not yet known and requires to be determined during the runtime, set the base URL as a variable. Build the client with the more verbose `RestClientBuilder` method.
+ - When the base URL is not yet known and needs to be determined during the run time, set the base URL as a variable. Build the client with the more verbose `RestClientBuilder` method.
 
 // =================================================================================================
 // Getting started
@@ -85,7 +85,7 @@ The `mpRestClient-1.0` feature is also enabled in the `src/main/liberty/config/s
 The code for the `system` service in the `src/main/java/io/openliberty/guides/system` directory is provided for you. It simulates a remote RESTful service that the `inventory` service invokes.
 
 Next, create a RESTful client interface for the `system` service. Write a template interface that maps the API of the remote `system` service.
-The template interface describes the remote service that you want to access. The interface defines the resource to access as a method by mapping its annotations, return type, list of arguments, as well as exception declarations.
+The template interface describes the remote service that you want to access. The interface defines the resource to access as a method by mapping its annotations, return type, list of arguments, and exception declarations.
 
 Create the `SystemClient` class in the `src/main/java/io/openliberty/guides/inventory/client/SystemClient.java` file:
 [source, java, indent=0]
@@ -106,10 +106,9 @@ In the `SystemClient` interface, add a response exception mapper as a provider t
 // =================================================================================================
 === Handling exceptions through ResponseExceptionMappers
 
-Error handling is an important step to ensure the application can fail safely. If there is an error response when invoking the remote service, for instance, the service returns a `404` response code,
-you need to handle it. First, you need to define an exception, and map the exception with the error response code. Then, register the exception mapper in the client interface.
+Error handling is an important step to ensure that the application can fail safely. If there is an error response such as `404 NOT FOUND` when invoking the remote service, you need to handle it. First, define an exception, and map the exception with the error response code. Then, register the exception mapper in the client interface.
 
-Look at the client interface from the previous section, the `@RegisterProvider(UnknownUrlExceptionMapper.class)` annotation registers the `UnknownUrlExceptionMapper` response exception mapper.
+Look at the client interface again, the `@RegisterProvider(UnknownUrlExceptionMapper.class)` annotation registers the `UnknownUrlExceptionMapper` response exception mapper.
 An exception mapper maps various response codes from the remote service to throwable exceptions.
 
 Implement the actual exception class and the mapper class to see how this mechanism works.
@@ -137,7 +136,7 @@ The `handles()` method inspects the HTTP response code to determine whether an e
 Now, instantiate the `SystemClient` interface and use it in the `inventory` service. If you want to connect only with the default host name, you can easily instantiate the `SystemClient` with CDI annotations. CDI injection simplifies the process of bootstrapping the client.
 
 First, you need to define the base URL of the `SystemClient` instance.
-You can configure the default base URL by using MicroProfile Config. The feature has been enabled for you in both `server.xml` and `pom.xml` files.
+Configure the default base URL with the MicroProfile Config feature. This feature is enabled for you in both `server.xml` and `pom.xml` files.
 
 Create a configuration file `src/main/webapp/META-INF/microprofile-config.properties`. The config property to add the base URL is `<fullyQualifiedInterfaceName>/mp-rest/url`.
 In this case, add the config property `io.openliberty.guides.inventory.client.SystemClient/mp-rest/url`.
@@ -150,7 +149,7 @@ include::finish/src/main/webapp/META-INF/microprofile-config.properties[tags=con
 
 This configuration is automatically picked up by the MicroProfile Config API.
 
-Look at the `SystemClient` interface from the previous section:
+Look at the `SystemClient` interface again.
 [source, java, indent=0, role="no_copy"]
 ----
 include::finish/src/main/java/io/openliberty/guides/inventory/client/SystemClient.java[tags=annotations]
@@ -162,7 +161,7 @@ The `@RegisterRestClient` annotation registers the interface as a RESTful client
 
 The `@Dependent` and `@RegisterRestClient` annotations imply that the interface is manageable through CDI. You must have them in order to inject the client.
 
-Inject the `SystemClient` interface to the `InventoryManager` class, which is another CDI managed bean. Create the `InventoryManager` class in the `src/main/java/io/openliberty/guides/inventory/InventoryManager.java` file:
+Inject the `SystemClient` interface into the `InventoryManager` class, which is another CDI managed bean. Create the `InventoryManager` class in the `src/main/java/io/openliberty/guides/inventory/InventoryManager.java` file:
 [source, java, indent=0]
 ----
 include::finish/src/main/java/io/openliberty/guides/inventory/InventoryManager.java[tags=manager]
@@ -249,12 +248,12 @@ Results :
 Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
 ----
 
-To see whether the tests detect a failure, change the base URL in the configuration file so that when the `inventory` service tries to access the invalid URL, a `404 NOT FOUND` exception is thrown.
+To see whether the tests detect a failure, change the base URL in the configuration file so that when the `inventory` service tries to access the invalid URL, an UnknownUrlException is thrown.
 Rerun the Maven build. You see a test failure occur.
 
 == Great work! You're done!
 
-You just built and tested invoking a remote service using a template interface with MicroProfile Rest Client and Open Liberty.
+You just invoked a remote service by using a template interface with MicroProfile Rest Client and Open Liberty.
 
 Feel free to try one of the related guides. They demonstrate more technologies that you can learn and
 expand on what you built here.
