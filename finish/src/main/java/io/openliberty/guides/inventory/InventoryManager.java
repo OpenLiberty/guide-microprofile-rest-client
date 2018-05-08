@@ -62,7 +62,7 @@ public class InventoryManager {
     try {
       return defaultRestClient.getProperties();
     } catch (UnknownUrlException e) {
-      System.err.println("The given URL is unreachable."); 
+      System.err.println("The given URL is unreachable.");
     } catch (RuntimeException e) {
       System.err.println("Runtime exception: " + e.getMessage());
     }
@@ -75,13 +75,11 @@ public class InventoryManager {
     URL customURL = null;
     try {
       customURL = new URL(customURLString);
-
-        SystemClient customRestClient = RestClientBuilder.newBuilder()
-                                        .baseUrl(customURL)
-                                        .register(UnknownUrlExceptionMapper.class)
-                                        .build(SystemClient.class);
-        return customRestClient.getProperties();
-
+      SystemClient customRestClient = RestClientBuilder.newBuilder()
+                                      .baseUrl(customURL)
+                                      .register(UnknownUrlExceptionMapper.class)
+                                      .build(SystemClient.class);
+      return customRestClient.getProperties();
     } catch (RuntimeException e) {
       System.err.println("Runtime exception: " + e.getMessage());
     } catch (UnknownUrlException e) {
