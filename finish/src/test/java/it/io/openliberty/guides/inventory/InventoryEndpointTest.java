@@ -19,6 +19,7 @@ import javax.json.JsonObject;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.MediaType;
 import org.apache.cxf.jaxrs.provider.jsrjsonp.JsrJsonpProvider;
 import org.junit.After;
 import org.junit.Before;
@@ -59,6 +60,7 @@ public class InventoryEndpointTest {
     this.testEmptyInventory();
     this.testHostRegistration();
     this.testSystemPropertiesMatch();
+    this.testUnknownHost();
   }
   // end::testSuite[]
 
@@ -131,6 +133,23 @@ public class InventoryEndpointTest {
     sysResponse.close();
   }
   // end::testSystemPropertiesMatch[]
+
+  public void testUnknownHost() {
+    Response response = this.getResponse(baseUrl + INVENTORY_SYSTEMS);
+    this.assertResponse(baseUrl, response);
+
+    Response badResponse = client.target(baseUrl + INVENTORY_SYSTEMS + "/"
+        + "badhostname").request(MediaType.APPLICATION_JSON).get();
+
+    String obj = badResponse.readEntity(String.class);
+
+    boolean isError = obj.contains("ERROR");
+    assertTrue("badhostname is not a valid host but it didn't raise an error",
+               isError);
+
+    response.close();
+    badResponse.close();
+  }
 
   // end::tests[]
   // tag::helpers[]

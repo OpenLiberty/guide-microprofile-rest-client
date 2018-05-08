@@ -84,7 +84,8 @@ The `mpRestClient-1.0` feature is also enabled in the `src/main/liberty/config/s
 
 The code for the `system` service in the `src/main/java/io/openliberty/guides/system` directory is provided for you. It simulates a remote RESTful service that the `inventory` service invokes.
 
-Next, create a RESTful client interface for the `system` service. Write a template interface that maps the API of the remote `system` service. The template interface omits the detailed implementation of each method from the service, but keeps its annotations, return type, name of the method, list of arguments, as well as exception declarations.
+Next, create a RESTful client interface for the `system` service. Write a template interface that maps the API of the remote `system` service.
+The template interface describes the remote service that you want to access. The interface defines the resource to access as a method by mapping its annotations, return type, list of arguments, as well as exception declarations.
 
 Create the `SystemClient` class in the `src/main/java/io/openliberty/guides/inventory/client/SystemClient.java` file:
 [source, java, indent=0]

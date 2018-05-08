@@ -15,6 +15,10 @@ package io.openliberty.guides.inventory;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import java.net.HttpURLConnection;
+import java.net.URI;
+
 import java.util.Properties;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -58,10 +62,11 @@ public class InventoryManager {
     try {
       return defaultRestClient.getProperties();
     } catch (UnknownUrlException e) {
-      System.err.println("The given URL is unreachable.");
-      e.printStackTrace();
-      return null;
+      System.err.println("The given URL is unreachable."); 
+    } catch (RuntimeException e) {
+      System.err.println("Runtime exception: " + e.getMessage());
     }
+    return null;
   }
 
   // tag::builder[]
@@ -70,18 +75,19 @@ public class InventoryManager {
     URL customURL = null;
     try {
       customURL = new URL(customURLString);
-      SystemClient customRestClient = RestClientBuilder.newBuilder()
-                                      .baseUrl(customURL)
-                                      .register(UnknownUrlExceptionMapper.class)
-                                      .build(SystemClient.class);
-      return customRestClient.getProperties();
 
+        SystemClient customRestClient = RestClientBuilder.newBuilder()
+                                        .baseUrl(customURL)
+                                        .register(UnknownUrlExceptionMapper.class)
+                                        .build(SystemClient.class);
+        return customRestClient.getProperties();
+
+    } catch (RuntimeException e) {
+      System.err.println("Runtime exception: " + e.getMessage());
     } catch (UnknownUrlException e) {
       System.err.println("The given URL is unreachable.");
-      e.printStackTrace();
     } catch (MalformedURLException e) {
       System.err.println("The given URL is not formatted correctly.");
-      e.printStackTrace();
     }
     return null;
   }
