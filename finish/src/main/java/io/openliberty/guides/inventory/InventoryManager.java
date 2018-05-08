@@ -19,6 +19,7 @@ import java.net.URL;
 import java.net.HttpURLConnection;
 import java.net.URI;
 
+import javax.ws.rs.ProcessingException;
 import java.util.Properties;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -63,8 +64,8 @@ public class InventoryManager {
       return defaultRestClient.getProperties();
     } catch (UnknownUrlException e) {
       System.err.println("The given URL is unreachable.");
-    } catch (RuntimeException e) {
-      System.err.println("Runtime exception: " + e.getMessage());
+    } catch (ProcessingException e) {
+      System.err.println("ProcessingException: " + e.getMessage());
     }
     return null;
   }
@@ -80,8 +81,8 @@ public class InventoryManager {
                                       .register(UnknownUrlExceptionMapper.class)
                                       .build(SystemClient.class);
       return customRestClient.getProperties();
-    } catch (RuntimeException e) {
-      System.err.println("Runtime exception: " + e.getMessage());
+    } catch (ProcessingException e) {
+      System.err.println("ProcessingException: " + e.getMessage());
     } catch (UnknownUrlException e) {
       System.err.println("The given URL is unreachable.");
     } catch (MalformedURLException e) {

@@ -15,6 +15,7 @@ package io.openliberty.guides.inventory.client;
 
 import java.util.Properties;
 import javax.enterprise.context.Dependent;
+import javax.ws.rs.ProcessingException;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -31,6 +32,6 @@ public interface SystemClient {
   // end::annotations[]
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  public Properties getProperties() throws UnknownUrlException, RuntimeException;
+  public Properties getProperties() throws UnknownUrlException, ProcessingException;
 }
 // end::client[]
