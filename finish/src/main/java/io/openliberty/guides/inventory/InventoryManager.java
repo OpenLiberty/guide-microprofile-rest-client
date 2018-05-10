@@ -30,6 +30,9 @@ import io.openliberty.guides.inventory.client.SystemClient;
 import io.openliberty.guides.inventory.client.UnknownUrlException;
 import io.openliberty.guides.inventory.client.UnknownUrlExceptionMapper;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import java.net.UnknownHostException;
+
 @ApplicationScoped
 public class InventoryManager {
 
@@ -64,8 +67,13 @@ public class InventoryManager {
       return defaultRestClient.getProperties();
     } catch (UnknownUrlException e) {
       System.err.println("The given URL is unreachable.");
-    } catch (ProcessingException e) {
-      System.err.println("ProcessingException: " + e.getMessage());
+    } catch (ProcessingException ex) {
+      Throwable rootEx = ExceptionUtils.getRootCause(ex);
+      if (rootEx != null && rootEx instanceof UnknownHostException) {
+          System.err.println("The specified host is unknown.");
+      } else {
+          throw ex;
+      }
     }
     return null;
   }
@@ -81,8 +89,13 @@ public class InventoryManager {
                                       .register(UnknownUrlExceptionMapper.class)
                                       .build(SystemClient.class);
       return customRestClient.getProperties();
-    } catch (ProcessingException e) {
-      System.err.println("ProcessingException: " + e.getMessage());
+    } catch (ProcessingException ex) {
+      Throwable rootEx = ExceptionUtils.getRootCause(ex);
+      if (rootEx != null && rootEx instanceof UnknownHostException) {
+          System.err.println("The specified host is unknown.");
+      } else {
+          throw ex;
+      }
     } catch (UnknownUrlException e) {
       System.err.println("The given URL is unreachable.");
     } catch (MalformedURLException e) {
