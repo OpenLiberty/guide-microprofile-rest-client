@@ -13,25 +13,22 @@
 // tag::manager[]
 package io.openliberty.guides.inventory;
 
-import java.net.MalformedURLException;
 import java.net.URL;
-
-import java.net.HttpURLConnection;
 import java.net.URI;
-
+import java.net.HttpURLConnection;
+import java.net.UnknownHostException;
+import java.net.MalformedURLException;
 import javax.ws.rs.ProcessingException;
 import java.util.Properties;
-import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.enterprise.context.ApplicationScoped;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.eclipse.microprofile.rest.client.RestClientBuilder;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import io.openliberty.guides.inventory.model.InventoryList;
 import io.openliberty.guides.inventory.client.SystemClient;
 import io.openliberty.guides.inventory.client.UnknownUrlException;
 import io.openliberty.guides.inventory.client.UnknownUrlExceptionMapper;
-
-import org.apache.commons.lang3.exception.ExceptionUtils;
-import java.net.UnknownHostException;
 
 @ApplicationScoped
 public class InventoryManager {
