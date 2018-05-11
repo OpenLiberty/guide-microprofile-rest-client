@@ -1,6 +1,6 @@
 // tag::copyright[]
 /*******************************************************************************
- * Copyright (c) 2017, 2018 IBM Corporation and others.
+ * Copyright (c) 2018 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -30,7 +30,7 @@ import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 @Path("/properties")
 public interface SystemClient {
   // end::annotations[]
-  
+
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   public Properties getProperties() throws UnknownUrlException, ProcessingException;
