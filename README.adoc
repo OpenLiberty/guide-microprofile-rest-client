@@ -26,7 +26,7 @@ Learn how to use MicroProfile Rest Client to invoke RESTful microservices over H
 == What you'll learn
 
 You will learn how to build a MicroProfile Rest Client to access remote RESTful services. You will create a template interface that maps to the remote service that you want to call.
-The MicroProfile Rest Client API automatically generates an instance of the template interface that is based on its annotations.
+MicroProfile Rest Client automatically generates a client instance based on what is defined and annotated in the template interface.
 Thus, you don't have to worry about all of the boilerplate code, such as setting up a client class, connecting to the remote server, or invoking the correct URI with the correct parameters.
 
 The application that you will be working with is an `inventory` service, which fetches and stores the system property information for different hosts.
@@ -36,7 +36,7 @@ service on that host. The `system` service simulates a remote service in the app
 You will instantiate the client and use it in the `inventory` service. You can choose from two different approaches, Context and Dependency Injection (CDI) with the help of MicroProfile Config or the RestClientBuilder method.
 In this guide, you will explore both methods to handle scenarios for providing a valid base URL.
 
- - When the base URL of the remote service is static and able to configure, define the default base URL in the configuration file. Inject the client with CDI method.
+ - When the base URL of the remote service is static and known, define the default base URL in the configuration file. Inject the client with CDI method.
 
  - When the base URL is not yet known and needs to be determined during the run time, set the base URL as a variable. Build the client with the more verbose `RestClientBuilder` method.
 
@@ -80,7 +80,7 @@ Now, navigate to the `start` directory to begin.
 The MicroProfile Rest Client API is added as a dependency to your `pom.xml` file. Look for the dependency with the `microprofile-rest-client-api` artifact ID.
 This dependency provides the library that is required to implement the MicroProfile Rest Client interface.
 
-The `mpRestClient-1.0` feature is also enabled in the `src/main/liberty/config/server.xml` file. This feature enables the MicroProfile Rest Client to invoke RESTful microservices.
+The `mpRestClient-1.0` feature is also enabled in the `src/main/liberty/config/server.xml` file. This feature enables your Open Liberty server to use MicroProfile Rest Client to invoke RESTful microservices.
 
 The code for the `system` service in the `src/main/java/io/openliberty/guides/system` directory is provided for you. It simulates a remote RESTful service that the `inventory` service invokes.
 
@@ -93,8 +93,7 @@ Create the `SystemClient` class in the `src/main/java/io/openliberty/guides/inve
 include::finish/src/main/java/io/openliberty/guides/inventory/client/SystemClient.java[tags=client]
 ----
 
-The MicroProfile Rest Client feature automatically builds and generates an implementation for the `SystemClient` interface because the JAX-RS annotations in the template interface tell the RESTful service
-what to do. Thus, you don't waste time on setting up the client and connecting with the remote service.
+The MicroProfile Rest Client feature automatically builds and generates a client implementation based on what is defined in the `SystemClient` interface. Thus, you don't waste time on setting up the client and connecting with the remote service.
 
 When the `getProperties()` method is invoked, the `SystemClient` instance sends a GET request to the `<baseUrl>/properties` endpoint.
 
