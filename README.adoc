@@ -61,21 +61,21 @@ After you start the application, you can access the following microservices:
 
 * The `http://localhost:9080/inventory/systems/localhost` microservice is the `inventory` service that invokes the `http://localhost:9080/system/properties` microservice to retrieves the system property information.
 
-* The `http://localhost:9080/inventory/systems/{your_hostname}` microservice is the `inventory` service that invokes the `http://{your_hostname}:9080/system/properties` microservice. Get your fully qualified domain name (FQDN), visit the URL by replacing `{your_hostname}` with your FQDN.
+* The `http://localhost:9080/inventory/systems/{your_hostname}` microservice is the `inventory` service that invokes the `http://{your_hostname}:9080/system/properties` microservice. In Windows, Mac OS, and Linux, get your fully qualified domain name (FQDN) by entering `hostname` from your terminal. Visit the URL by replacing `{your_hostname}` with your FQDN.
 You will see the same system property information, but the process of getting the information is different.
 
-When you are done checking out the application, stop the Open Liberty server:
+When you are done checking out the application, stop the Open Liberty server. You must stop your running Open Liberty server before you re-install it next time.
 
 ```
 mvn liberty:stop-server
 ```
 
-Now, navigate back to the `start` directory to begin.
-
 // =================================================================================================
 // Writing the RESTful client interface
 // =================================================================================================
 == Writing the RESTful client interface
+
+Now, navigate to the `start` directory to begin.
 
 The MicroProfile Rest Client API is added as a dependency to your `pom.xml` file. Look for the dependency with the `microprofile-rest-client-api` artifact ID.
 This dependency provides the library that is required to implement the MicroProfile Rest Client interface.
@@ -84,7 +84,7 @@ The `mpRestClient-1.0` feature is also enabled in the `src/main/liberty/config/s
 
 The code for the `system` service in the `src/main/java/io/openliberty/guides/system` directory is provided for you. It simulates a remote RESTful service that the `inventory` service invokes.
 
-Next, create a RESTful client interface for the `system` service. Write a template interface that maps the API of the remote `system` service.
+Create a RESTful client interface for the `system` service. Write a template interface that maps the API of the remote `system` service.
 The template interface describes the remote service that you want to access. The interface defines the resource to access as a method by mapping its annotations, return type, list of arguments, and exception declarations.
 
 Create the `SystemClient` class in the `src/main/java/io/openliberty/guides/inventory/client/SystemClient.java` file:
@@ -149,7 +149,7 @@ include::finish/src/main/webapp/META-INF/microprofile-config.properties[tags=con
 
 This configuration is automatically picked up by the MicroProfile Config API.
 
-Look at the `SystemClient` interface again.
+Look at the annotations in the `SystemClient` interface again.
 [source, java, indent=0, role="no_copy"]
 ----
 include::finish/src/main/java/io/openliberty/guides/inventory/client/SystemClient.java[tags=annotations]
@@ -169,7 +169,7 @@ include::finish/src/main/java/io/openliberty/guides/inventory/InventoryManager.j
 
 `@Inject` and `@RestClient` annotations inject an instance of the `SystemClient` called `defaultRestClient` to the `InventoryManager` class.
 
-Since the `InventoryManager` class is `@ApplicationScoped`, and the `SystemClient` CDI bean maintains the same scope because of the `@Dependent` annotation, the client is initialized once per application.
+Since the `InventoryManager` class is `@ApplicationScoped`, and the `SystemClient` CDI bean maintains the same scope through the `@Dependent` annotation, the client is initialized once per application.
 
 If the `hostname` parameter is `localhost`, the service runs the `getPropertiesWithDefaultHostName()` helper function to fetch system properties.
 The helper function invokes the `system` service by calling the `defaultRestClient.getProperties()` method.
