@@ -19,18 +19,18 @@
     </properties>
 
     <dependencies>
-    	<dependency>
-    		<groupId>org.eclipse.microprofile.rest.client</groupId>
-    		<artifactId>microprofile-rest-client-api</artifactId>
-    		<version>1.0</version>
-    		<scope>provided</scope>
-    	</dependency>
-    	<dependency>
-    		<groupId>org.eclipse.microprofile.config</groupId>
-    		<artifactId>microprofile-config-api</artifactId>
-    		<version>1.2.1</version>
-        <scope>provided</scope>
-		</dependency>
+      	<dependency>
+          <groupId>org.eclipse.microprofile.rest.client</groupId>
+          <artifactId>microprofile-rest-client-api</artifactId>
+          <version>1.0</version>
+      	  <scope>provided</scope>
+      	</dependency>
+      	<dependency>
+          <groupId>org.eclipse.microprofile.config</groupId>
+          <artifactId>microprofile-config-api</artifactId>
+          <version>1.2.1</version>
+          <scope>provided</scope>
+  		  </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -97,7 +97,7 @@
             <version>3.0</version>
         </dependency>
     </dependencies>
-    
+
     <build>
         <plugins>
             <plugin>
@@ -145,7 +145,6 @@
                     <bootstrapProperties>
                         <default.http.port>${testServerHttpPort}</default.http.port>
                         <default.https.port>${testServerHttpsPort}</default.https.port>
-                        <com.ibm.ws.logging.trace.specification>JCDI=all:com.ibm.ws.webbeans*=all:org.apache.webbeans*=all:org.jboss.weld*=all:com.ibm.ws.cdi*=all:org.eclipse.microprofile*=all:com.ibm.ws.microprofile*=all</com.ibm.ws.logging.trace.specification>
                     </bootstrapProperties>
                 </configuration>
                 <executions>
