@@ -204,7 +204,7 @@ When the server is running, select either approach to fetch your system properti
 
 - Get your FQDN first. Then, visit the `http://localhost:9080/inventory/systems/{your_hostname}` URL by replacing `{your_hostname}` with your FQDN, which retrieves your system properties by invoking the `http://{your_hostname}:9080/system/properties` service.
 
-include::{common-includes}/mvnpackage.adoc[]
+include::{common-includes}/mvncompile.adoc[]
 
 
 // =================================================================================================
