@@ -38,6 +38,7 @@ public class InventoryResource {
   @Path("/{hostname}")
   @Produces(MediaType.APPLICATION_JSON)
   public Response getPropertiesForHost(@PathParam("hostname") String hostname) {
+    // Get properties
     Properties props = manager.get(hostname);
     if (props == null) {
       return Response.status(Response.Status.NOT_FOUND)
@@ -46,6 +47,9 @@ public class InventoryResource {
                              + hostname)
                      .build();
     }
+
+    // Add to inventory
+    manager.add(hostname, props);
     return Response.ok(props).build();
   }
 
