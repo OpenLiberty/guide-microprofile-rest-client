@@ -9,6 +9,9 @@
 :page-layout: guide
 :page-duration: 20 minutes
 :page-releasedate: 2018-05-14
+:page-guide-catagory: microprofile
+:page-essential: true
+:page-essential-order: 3
 :page-description: Learn how to use MicroProfile Rest Client to invoke RESTful services over HTTP in a type-safe way.
 :page-tags: ['REST', 'MicroProfile', 'Rest Client', 'microservices']
 :page-permalink: /guides/{projectid}
