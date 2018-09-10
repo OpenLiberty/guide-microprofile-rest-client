@@ -4,14 +4,14 @@ before_script:
 - cd finish
 script:
 - mvn clean install
-- serverName=$(target/liberty/wlp/bin/server list | cut -d '.' -f2| tr -d '\n'); 
+- serverName=$(target/liberty/wlp/bin/server list | cut -d '.' -f2| tr -d '\n');
 - build=$(grep "Open Liberty" target/liberty/wlp/usr/servers/"$serverName"/logs/console.log
   | cut -d' ' -f5 | cut -d')' -f1 ); release=$( echo "$build" | cut -d'/' -f1); number=$(
   echo "$build" | cut -d'/' -f2); ol_jv=$(grep -i "on java" target/liberty/wlp/usr/servers/"$serverName"/logs/console.log);
   jv=$(printf '%s\n' "${ol_jv//$' on '/$'\n'}" | sed '2q;d'); echo -e "\n"; echo -e  "\033[1;34mOpen
   Liberty release:\033[0m \033[1;36m$release\033[0m"; echo -e "\033[1;34mOpen Liberty
   build number:\033[0m \033[1;36m$number\033[0m"; echo -e "\033[1;34mJava version:\033[0m
-  \033[1;36m$jv\033[0m"; 
+  \033[1;36m$jv\033[0m";
 - cd target/liberty/wlp/usr/servers/"$serverName"/logs/; repo_name=$(echo "$TRAVIS_REPO_SLUG"
   | sed -e "s/\//-/g"); if [ "$TRAVIS_TEST_RESULT" -eq 0 ]; then result="passed";
   else result="failed"; fi; serverlogsarchive="$repo_name-$TRAVIS_BUILD_NUMBER-$result.zip";zip
@@ -19,12 +19,13 @@ script:
 notifications:
   slack:
     template:
-    - 'Build: <%{build_url}| %{build_number}> | Commit (<%{compare_url}|%{commit}>): %{commit_message}'
+    - 'Build: <%{build_url}| %{build_number}> | Commit (<%{compare_url}|%{commit}>):
+      %{commit_message}'
     - 'Repo@Branch: %{repository_slug}@%{branch}'
     - 'Author: %{author}'
     - 'Summary: %{result} in %{duration}'
     rooms:
-      secure: zhIDntPT5O70fqkG2xZjYb0Npw8EAwTxqiwAFk7d7I/PEJx9BhXE/gwuHQGLuO4q6mkFYrqA87jQkkrnPLx77l/m0ZzqSyusdgEXdrhJguiH/vKf7J3sZ44UVQJIUZEjlLuWqRNuQgvC/v6u5YP0Wq1oxb5iqe410TzJFii41pxRaHNFN2ta/gwFG4WwtM1ZMLTuBmDyUUkrpxi5l9yyptYUTTw0NdmYa+s51hy5E40WamvzASzYGIHAd5LRGRtDQeOftdg4yDurRFeuyCDCSgqPFlV+cxHEwLu8a8QBe0V/L+1KKT40KWdDnGWzxF6xvNUTCcoZUNhLG05dFrTsup5ZNW89V76BLFYyBO70M5F7kGCr8gNQiUG+ASkWCIAcK3p6AjBIQU95+CNGwUAsiu8fgrlpVkZp846keIHEJ6tzxb7ZYybCu2+0atw26gdiRJoPvS4Lge2D35PIwqIPbb3o11ct/z/3xPIm8TYOHisfLE0JpGGKJ5M9vTcVfcjHRoXtRvl0WEpydjMr2k3sKbjWLOjILWC0ACnRYyQdzaVhsFIpDcqwNeUjh1YyzyyZRiIC9iMEjMu+cNdzFJFVdynjWrCSHK6ewTcLNutosO/ok00O7TWrWo4Gx8ZSHtng/2G2fvEQMmrIzpagJy343wcUGF6eVzd//FH5Iuzi7v4=
+      secure: CqqdG1QMzcJao+hSHp6f56S6MbwyYSJlC5iPIZ1bluNzh3/8oi3yEKW8mJaG6ih4y1mHu82XB0yp11QndrhJh0+6tuTu/tbNBOUdoRJ2kQAXhOKN7LgD3KzYNKxJtcFSK9PAQJrp4mR+giW5HCLRZHs9VgSa5ZXgXKXa8PLXq/KaVDG/B2U8u5s/VfUcqlBm9csYiaFllDlpcZtHmYZZ6O3UAhYESa0CLTVeM3ZZBuufieNNs2sWH59tjIByzoepT/eKm+T9asRuCo1ypoJ981/ywgXkXRyF/TYHKK9Jp5pIZsQCaIJJSj+0lnTn1SxGBOsqzmHxrFpHjfpKctTZrI1kULp/NBR+i0Cpy/XaoOGyyqrSE/cRHOaTpVHOOTUkh2a8atVipzdPH4f8WND43LtGQiyYspNnacPYALlL1aljfLu4DxbQi+58yLVeR6mp718f68A4Rc6rIRAFGKOL26uNKjbpAU+tqlaczT84CRNZ4WSh79Tetjfc4j+kjT2uQLqq6Omw+1JNKVLzWrXo39G4g3HhibwIG+lWaeSt7thZ+e55DkYwrhfY8IYBuySxUEflS3errkBynE+jzGP/elYp2tesFvMGSD4MOyUoIBGXFncr00q5FhZTPWucq2u6jAjLvNyf6wrdkPJbJ6D7fSkc/yHSCtDSLe41Q2mpq1Q=
     on_success: never
     on_failure: always
 branches:
