@@ -83,10 +83,10 @@ mvn liberty:stop-server
 
 Now, navigate to the `start` directory to begin.
 
-The MicroProfile Rest Client API is added as a dependency to your `pom.xml` file. Look for the dependency with the `microprofile-rest-client-api` artifact ID.
+The MicroProfile Rest Client API is added as a dependency to your `pom.xml` file. Look for the dependency with the `mpRestClient` artifact ID.
 This dependency provides the library that is required to implement the MicroProfile Rest Client interface.
 
-The `mpRestClient-1.0` feature is also enabled in the `src/main/liberty/config/server.xml` file. This feature enables your Open Liberty server to use MicroProfile Rest Client to invoke RESTful microservices.
+The `mpRestClient` feature is also enabled in the `src/main/liberty/config/server.xml` file. This feature enables your Open Liberty server to use MicroProfile Rest Client to invoke RESTful microservices.
 
 The code for the `system` service in the `src/main/java/io/openliberty/guides/system` directory is provided for you. It simulates a remote RESTful service that the `inventory` service invokes.
 
