@@ -6,14 +6,14 @@
 // Contributors:
 //   IBM Corporation
 :projectid: microprofile-rest-client
-:page-layout: guide
+:page-layout: guide-multipane
 :page-duration: 20 minutes
 :page-releasedate: 2018-05-14
 :page-guide-category: microprofile
 :page-essential: true
 :page-essential-order: 3
 :page-description: Learn how to use MicroProfile Rest Client to invoke RESTful services over HTTP in a type-safe way.
-:page-tags: ['REST', 'MicroProfile', 'Rest Client', 'microservices']
+:page-tags: ['MicroProfile']
 :page-permalink: /guides/{projectid}
 :page-related-guides: ['rest-intro', 'cdi-intro', 'microprofile-config']
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
@@ -50,6 +50,7 @@ In this guide, you will explore both methods to handle scenarios for providing a
 // Getting started
 // =================================================================================================
 
+[role=command]
 include::{common-includes}/gitclone.adoc[]
 
 === Try what you'll build
@@ -57,6 +58,7 @@ include::{common-includes}/gitclone.adoc[]
 To try out the application, first navigate to the `finish` directory, which contains the complete `inventory` application. Then, run the following
 Maven goals to build the application and run it inside Open Liberty:
 
+[role=command]
 ```
 mvn install liberty:start-server
 ```
@@ -72,6 +74,7 @@ You will see the same system property information, but the process of getting th
 
 When you are done checking out the application, stop the Open Liberty server. You must stop your running Open Liberty server before you re-install it next time.
 
+[role=command]
 ```
 mvn liberty:stop-server
 ```
@@ -93,10 +96,15 @@ The code for the `system` service in the `src/main/java/io/openliberty/guides/sy
 Create a RESTful client interface for the `system` service. Write a template interface that maps the API of the remote `system` service.
 The template interface describes the remote service that you want to access. The interface defines the resource to access as a method by mapping its annotations, return type, list of arguments, and exception declarations.
 
-Create the `SystemClient` class in the `src/main/java/io/openliberty/guides/inventory/client/SystemClient.java` file:
-[source, java, indent=0]
+[role="code_command hotspot=17-22", subs="quotes"]
 ----
-include::finish/src/main/java/io/openliberty/guides/inventory/client/SystemClient.java[tags=client]
+Create the `SystemClient` class.
+`src/main/java/io/openliberty/guides/inventory/client/SystemClient.java`
+----
+SystemClient.java
+[source, Java, linenums, role='code_column']
+----
+include::finish/src/main/java/io/openliberty/guides/inventory/client/SystemClient.java[tags=**;!copyright]
 ----
 
 The MicroProfile Rest Client feature automatically builds and generates a client implementation based on what is defined in the `SystemClient` interface. Thus, you don't waste time on setting up the client and connecting with the remote service.
@@ -118,17 +126,26 @@ An exception mapper maps various response codes from the remote service to throw
 
 Implement the actual exception class and the mapper class to see how this mechanism works.
 
-Create an `UnknownUrlException` exception class in the `src/main/java/io/openliberty/guides/inventory/client/UnknownUrlException.java` file:
-[source, java, indent=0]
+[role="code_command hotspot=3-14", subs="quotes"]
 ----
-include::finish/src/main/java/io/openliberty/guides/inventory/client/UnknownUrlException.java[tags=exception]
+Create the `UnknownUrlException` class. `src/main/java/io/openliberty/guides/inventory/client/UnknownUrlException.java`
+----
+UnknownUrlException.java
+[source, Java, linenums, role='code_column']
+----
+include::finish/src/main/java/io/openliberty/guides/inventory/client/UnknownUrlException.java[tags=**;!copyright]
 ----
 
 Now, link the `UnknownUrlException` class with the corresponding response code through a `ResponseExceptionMapper` mapper class.
-Create an `UnknownUrlExceptionMapper` mapper class in the `src/main/java/io/openliberty/guides/inventory/client/UnknownUrlExceptionMapper.java` file:
-[source, java, indent=0]
+
+[role="code_command hotspot=10-24", subs="quotes"]
 ----
-include::finish/src/main/java/io/openliberty/guides/inventory/client/UnknownUrlExceptionMapper.java[tags=mapper]
+Create the `UnknownUrlExceptionMapper` class. `src/main/java/io/openliberty/guides/inventory/client/UnknownUrlExceptionMapper.java`
+----
+UnknownUrlExceptionMapper.java
+[source, Java, linenums, role='code_column']
+----
+include::finish/src/main/java/io/openliberty/guides/inventory/client/UnknownUrlExceptionMapper.java[tags=**;!copyright]
 ----
 
 The `handles()` method inspects the HTTP response code to determine whether an exception is thrown for the specific response, and the `toThrowable()` method returns the mapped exception.
@@ -143,22 +160,31 @@ Now, instantiate the `SystemClient` interface and use it in the `inventory` serv
 First, you need to define the base URL of the `SystemClient` instance.
 Configure the default base URL with the MicroProfile Config feature. This feature is enabled for you in both `server.xml` and `pom.xml` files.
 
-Create a configuration file `src/main/webapp/META-INF/microprofile-config.properties`. The config property to add the base URL is `<fullyQualifiedInterfaceName>/mp-rest/url`.
-In this case, add the config property `io.openliberty.guides.inventory.client.SystemClient/mp-rest/url`.
-Configure this property to the default `http://localhost:9080/system` base URL:
+[role="code_command hotspot=1-2", subs="quotes"]
+----
+Create a configuration file.
+`src/main/webapp/META-INF/microprofile-config.properties`
+----
+microprofile-config.properties
+[source, Java, linenums, role='code_column']
+----
+include::finish/src/main/webapp/META-INF/microprofile-config.properties[tags=**;!copyright]
+----
 
-[source, java, indent=0]
-----
-include::finish/src/main/webapp/META-INF/microprofile-config.properties[tags=config]
-----
+The config property to add the base URL is `<fullyQualifiedInterfaceName>/mp-rest/url`.
+In this case, add the config property `io.openliberty.guides.inventory.client.SystemClient/mp-rest/url`.
+Configure this property to the default [hotspot=2 file=0]`http://localhost:9080/system` base URL:
 
 This configuration is automatically picked up by the MicroProfile Config API.
 
 Look at the annotations in the `SystemClient` interface again.
-[source, java, indent=0, role="no_copy"]
+
+SystemClient.java
+[source, Java, linenums, role='code_column']
 ----
-include::finish/src/main/java/io/openliberty/guides/inventory/client/SystemClient.java[tags=annotations]
+include::finish/src/main/java/io/openliberty/guides/inventory/client/SystemClient.java[tags=**;!copyright]
 ----
+
 The `@Dependent` annotation tells the service that the scope of the interface depends on the class that it is injected into.
 By default, interfaces have a `@Dependent` scope unless another scope is defined on the interface.
 
@@ -166,10 +192,17 @@ The `@RegisterRestClient` annotation registers the interface as a RESTful client
 
 The `@Dependent` and `@RegisterRestClient` annotations imply that the interface is manageable through CDI. You must have them in order to inject the client.
 
-Inject the `SystemClient` interface into the `InventoryManager` class, which is another CDI managed bean. Create the `InventoryManager` class in the `src/main/java/io/openliberty/guides/inventory/InventoryManager.java` file:
-[source, java, indent=0]
+Inject the `SystemClient` interface into the `InventoryManager` class, which is another CDI managed bean. 
+
+[role="code_command hotspot=23-100", subs="quotes"]
 ----
-include::finish/src/main/java/io/openliberty/guides/inventory/InventoryManager.java[tags=manager]
+Create the `InventoryManager` class.
+`src/main/java/io/openliberty/guides/inventory/InventoryManager.java`
+----
+InventoryManager.java
+[source, Java, linenums, role='code_column']
+----
+include::finish/src/main/java/io/openliberty/guides/inventory/InventoryManager.java[tags=**;!copyright]
 ----
 
 `@Inject` and `@RestClient` annotations inject an instance of the `SystemClient` called `defaultRestClient` to the `InventoryManager` class.
@@ -187,10 +220,12 @@ The helper function invokes the `system` service by calling the `defaultRestClie
 The `inventory` service might also connect with a host other than the default `localhost` host. Then, you cannot configure a base URL that is not yet known.
 Therefore, set the host name as a variable and build the client by using the `RestClientBuilder` method. You can customize the base URL from the host name attribute.
 
-Look at the `getPropertiesWithGivenHostName()` method in the `src/main/java/io/openliberty/guides/inventory/InventoryManager.java` file:
-[source, java, indent=0, role="no_copy"]
+Look at the `getPropertiesWithGivenHostName()` method in the `src/main/java/io/openliberty/guides/inventory/InventoryManager.java` file.
+
+InventoryManager.java
+[source, Java, linenums, role='code_column']
 ----
-include::finish/src/main/java/io/openliberty/guides/inventory/InventoryManager.java[tags=builder]
+include::finish/src/main/java/io/openliberty/guides/inventory/InventoryManager.java[tags=**;!copyright]
 ----
 
 The host name is provided as a parameter. This method first assembles the base URL that consists of the new host name.
@@ -202,6 +237,7 @@ Similarly, call the `customRestClient.getProperties()` method to invoke the `sys
 // Building and running the application
 // =================================================================================================
 
+[role=command]
 include::{common-includes}/mvnbuild.adoc[]
 
 When the server is running, select either approach to fetch your system properties:
@@ -210,6 +246,7 @@ When the server is running, select either approach to fetch your system properti
 
 - Get your FQDN first. Then, visit the `http://localhost:9080/inventory/systems/{your_hostname}` URL by replacing `{your_hostname}` with your FQDN, which retrieves your system properties by invoking the `http://{your_hostname}:9080/system/properties` service.
 
+[role=command]
 include::{common-includes}/mvncompile.adoc[]
 
 
@@ -219,11 +256,15 @@ include::{common-includes}/mvncompile.adoc[]
 
 == Testing the application
 
-Create a `RestClientTest` test class in the `src/test/java/it/io/openliberty/guides/client/RestClientTest.java` file:
-
-[source, java, indent=0]
+[role="code_command hotspot=16-96", subs="quotes"]
 ----
-include::finish/src/test/java/it/io/openliberty/guides/client/RestClientTest.java[tags=testClass]
+Create a `RestClientTest` class.
+`src/test/java/it/io/openliberty/guides/client/RestClientTest.java`
+----
+RestClientTest.java
+[source, Java, linenums, role='code_column']
+----
+include::finish/src/test/java/it/io/openliberty/guides/client/RestClientTest.java[tags=**;!copyright]
 ----
 
 Each test case tests one of the methods for instantiating a RESTful client.
@@ -234,6 +275,7 @@ The `testRestClientBuilder()` test gets your IP address. Then, use your IP addre
 
 In addition, a few endpoint tests are provided for you to test the basic functionality of the `inventory` and `system` services. If a test failure occurs, you might have introduced a bug into the code.
 
+[role=command]
 include::{common-includes}/mvnverify.adoc[]
 
 [source, role="no_copy"]
@@ -264,3 +306,4 @@ Feel free to try one of the related guides. They demonstrate more technologies t
 expand on what you built here.
 
 include::{common-includes}/finish.adoc[]
+include::https://raw.githubusercontent.com/OpenLiberty/guides-common/multipane/attribution.adoc[subs="attributes"]
