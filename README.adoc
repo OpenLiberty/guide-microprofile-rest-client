@@ -65,9 +65,9 @@ mvn install liberty:start-server
 
 After you start the application, you can access the following microservices:
 
-* The `http://localhost:9080/system/properties` microservice simulates the remote `system` service that retrieves the system property information for a specific host. In this case, `localhost` is a specific host name.
+* The http://localhost:9080/system/properties microservice simulates the remote `system` service that retrieves the system property information for a specific host. In this case, `localhost` is a specific host name.
 
-* The `http://localhost:9080/inventory/systems/localhost` microservice is the `inventory` service that invokes the `http://localhost:9080/system/properties` microservice to retrieves the system property information.
+* The http://localhost:9080/inventory/systems/localhost microservice is the `inventory` service that invokes the http://localhost:9080/system/properties microservice to retrieves the system property information.
 
 * The `http://localhost:9080/inventory/systems/{your_hostname}` microservice is the `inventory` service that invokes the `http://{your_hostname}:9080/system/properties` microservice. In Windows, Mac OS, and Linux, get your fully qualified domain name (FQDN) by entering `hostname` from your terminal. Visit the URL by replacing `{your_hostname}` with your FQDN.
 You will see the same system property information, but the process of getting the information is different.
@@ -107,12 +107,12 @@ SystemClient.java
 include::finish/src/main/java/io/openliberty/guides/inventory/client/SystemClient.java[tags=**;!copyright]
 ----
 
-The MicroProfile Rest Client feature automatically builds and generates a client implementation based on what is defined in the `SystemClient` interface. Thus, you don't waste time on setting up the client and connecting with the remote service.
+The MicroProfile Rest Client feature automatically builds and generates a client implementation based on what is defined in the [hotspot=17-22]`SystemClient` interface. Thus, you don't waste time on setting up the client and connecting with the remote service.
 
-When the `getProperties()` method is invoked, the `SystemClient` instance sends a GET request to the `<baseUrl>/properties` endpoint.
+When the [hotspot=21]`getProperties()` method is invoked, the `SystemClient` instance sends a GET request to the `<baseUrl>/properties` endpoint.
 
-The `@RegisterProvider` annotation tells the framework to register the provider classes to be used when the framework invokes the interface. You can add as many providers as necessary.
-In the `SystemClient` interface, add a response exception mapper as a provider to map the `404` response code with the `UnknownUrlException` exception.
+The [hotspot=15]`@RegisterProvider` annotation tells the framework to register the provider classes to be used when the framework invokes the interface. You can add as many providers as necessary.
+In the [hotspot=17=22]`SystemClient` interface, add a response exception mapper as a provider to map the `404` response code with the `UnknownUrlException` exception.
 
 // =================================================================================================
 // Handling exceptions through ResponseExceptionMappers
@@ -128,7 +128,8 @@ Implement the actual exception class and the mapper class to see how this mechan
 
 [role="code_command hotspot=3-14", subs="quotes"]
 ----
-Create the `UnknownUrlException` class. `src/main/java/io/openliberty/guides/inventory/client/UnknownUrlException.java`
+Create the `UnknownUrlException` class.
+`src/main/java/io/openliberty/guides/inventory/client/UnknownUrlException.java`
 ----
 UnknownUrlException.java
 [source, Java, linenums, role='code_column']
@@ -140,7 +141,8 @@ Now, link the `UnknownUrlException` class with the corresponding response code t
 
 [role="code_command hotspot=10-24", subs="quotes"]
 ----
-Create the `UnknownUrlExceptionMapper` class. `src/main/java/io/openliberty/guides/inventory/client/UnknownUrlExceptionMapper.java`
+Create the `UnknownUrlExceptionMapper` class
+`src/main/java/io/openliberty/guides/inventory/client/UnknownUrlExceptionMapper.java`
 ----
 UnknownUrlExceptionMapper.java
 [source, Java, linenums, role='code_column']
@@ -166,7 +168,7 @@ Create a configuration file.
 `src/main/webapp/META-INF/microprofile-config.properties`
 ----
 microprofile-config.properties
-[source, Java, linenums, role='code_column']
+[source, properties, linenums, role='code_column']
 ----
 include::finish/src/main/webapp/META-INF/microprofile-config.properties[tags=**;!copyright]
 ----
