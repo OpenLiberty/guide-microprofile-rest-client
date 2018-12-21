@@ -183,7 +183,7 @@ Configure the default base URL with the MicroProfile Config feature. This featur
 
 [role="code_command hotspot=1-2", subs="quotes"]
 ----
-Create a configuration file.
+Create the configuration file.
 `src/main/webapp/META-INF/microprofile-config.properties`
 ----
 microprofile-config.properties
@@ -279,7 +279,7 @@ include::{common-includes}/mvncompile.adoc[]
 
 [role="code_command hotspot=17-96", subs="quotes"]
 ----
-Create a `RestClientTest` class.
+Create the `RestClientTest` class.
 `src/test/java/it/io/openliberty/guides/client/RestClientTest.java`
 ----
 RestClientTest.java
