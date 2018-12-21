@@ -25,11 +25,6 @@ NOTE: This repository contains the guide documentation source. To view the guide
 
 Learn how to use MicroProfile Rest Client to invoke RESTful microservices over HTTP in a type-safe way.
 
-:inventory-service: http://localhost:9080/inventory/systems/{your_hostname}
-:invoked-service: http://{your_hostname}:9080/system/properties
-:property-url: http://[localhost]:9080/system
-:test-link: http://localhost:9080/inventory/systems/localhost
-
 // =================================================================================================
 // What you'll learn
 // =================================================================================================
@@ -74,7 +69,7 @@ After you start the application, you can access the following microservices:
 
 * The http://localhost:9080/inventory/systems/localhost microservice is the `inventory` service that invokes the http://localhost:9080/system/properties microservice to retrieves the system property information.
 
-* The http://localhost:9080/inventory/systems/{your_hostname} microservice is the `inventory` service that invokes the `{invoked-service}` microservice. In Windows, Mac OS, and Linux, get your fully qualified domain name (FQDN) by entering `hostname` from your terminal. Visit the URL by replacing `{your_hostname}` with your FQDN.
+* The http://localhost:9080/inventory/systems/[your_hostname] microservice is the `inventory` service that invokes the `http://[your_hostname]:9080/system/properties` microservice. In Windows, Mac OS, and Linux, get your fully qualified domain name (FQDN) by entering `hostname` from your terminal. Visit the URL by replacing `[your_hostname]` with your FQDN.
 You will see the same system property information, but the process of getting the information is different.
 
 When you are done checking out the application, stop the Open Liberty server. You must stop your running Open Liberty server before you re-install it next time.
@@ -199,7 +194,7 @@ include::finish/src/main/webapp/META-INF/microprofile-config.properties[tags=**;
 
 The config property to add the base URL is `<fullyQualifiedInterfaceName>/mp-rest/url`.
 In this case, add the config property `io.openliberty.guides.inventory.client.SystemClient/mp-rest/url`.
-Configure this property to the default [hotspot=2 file=0]`{property-url}` base URL:
+Configure this property to the default [hotspot=2 file=0]`http://localhost:9080/system` base URL:
 
 This configuration is automatically picked up by the MicroProfile Config API.
 
@@ -270,7 +265,7 @@ When the server is running, select either approach to fetch your system properti
 
 - Visit the http://localhost:9080/inventory/systems/localhost URL. The URL retrieves the system property information for `localhost` host name by invoking the http://localhost:9080/system/properties service.
 
-- Get your FQDN first. Then, visit the http://localhost:9080/inventory/systems/{your_hostname} URL by replacing `{your_hostname}` with your FQDN, which retrieves your system properties by invoking the `{invoked-service}` service.
+- Get your FQDN first. Then, visit the http://localhost:9080/inventory/systems/[your_hostname] URL by replacing `[your_hostname]` with your FQDN, which retrieves your system properties by invoking the `http://[your_hostname]:9080/system/properties` service.
 
 [role=command]
 include::{common-includes}/mvncompile.adoc[]
@@ -295,7 +290,7 @@ include::finish/src/test/java/it/io/openliberty/guides/client/RestClientTest.jav
 
 Each test case tests one of the methods for instantiating a RESTful client.
 
-The [hotspot=47-57]`testDefaultLocalhost()` test fetches and compares system properties from the `{test-link}` URL.
+The [hotspot=47-57]`testDefaultLocalhost()` test fetches and compares system properties from the [role="no_copy"]```http://localhost:9080/inventory/systems/localhost``` URL.
 
 The [hotspot=59-74]`testRestClientBuilder()` test gets your IP address. Then, use your IP address as the host name to fetch your system properties and compare them.
 
