@@ -230,7 +230,7 @@ include::finish/src/main/java/io/openliberty/guides/inventory/InventoryManager.j
 
 Since the [hotspot=24-101 file=2]`InventoryManager` class is [hotspot=23 file=2]`@ApplicationScoped`, and the [hotspot=17-22 file=1]`SystemClient` CDI bean maintains the same scope through the [hotspot=13 file=1]`@Dependent` annotation, the client is initialized once per application.
 
-If the `hostname` parameter is `localhost`, the service runs the [hotspot=36 file=2]`getPropertiesWithDefaultHostName()` helper function to fetch system properties.
+If the `hostname` parameter is `localhost`, the service runs the [hotspot=58-67 file=2]`getPropertiesWithDefaultHostName()` helper function to fetch system properties.
 The helper function invokes the `system` service by calling the [hotspot=60 file=2]`defaultRestClient.getProperties()` method.
 
 // =================================================================================================
