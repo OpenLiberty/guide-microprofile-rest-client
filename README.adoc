@@ -194,7 +194,7 @@ include::finish/src/main/webapp/META-INF/microprofile-config.properties[tags=**;
 
 The config property to add the base URL is `<fullyQualifiedInterfaceName>/mp-rest/url`.
 In this case, add the config property `io.openliberty.guides.inventory.client.SystemClient/mp-rest/url`.
-Configure this property to the default [hotspot=2 file=0]`http://localhost:9080/system` base URL:
+Configure this property to the default [hotspot=2 file=0]`http://localhost:9080/system` base URL.
 
 This configuration is automatically picked up by the MicroProfile Config API.
 
