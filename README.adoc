@@ -13,6 +13,7 @@
 :page-essential: true
 :page-essential-order: 3
 :page-description: Learn how to use MicroProfile Rest Client to invoke RESTful services over HTTP in a type-safe way.
+:guide-author: Open Liberty
 :page-tags: ['MicroProfile']
 :page-permalink: /guides/{projectid}
 :page-related-guides: ['rest-intro', 'cdi-intro', 'microprofile-config']
@@ -60,6 +61,7 @@ Maven goals to build the application and run it inside Open Liberty:
 
 [role=command]
 ```
+cd finish
 mvn install liberty:start-server
 ```
 
