@@ -113,7 +113,7 @@ The template interface describes the remote service that you want to access. The
 
 [role="code_command hotspot=17-22", subs="quotes"]
 ----
-Create the `SystemClient` class.
+#Create the `SystemClient` class.#
 `src/main/java/io/openliberty/guides/inventory/client/SystemClient.java`
 ----
 SystemClient.java
@@ -124,7 +124,7 @@ include::finish/src/main/java/io/openliberty/guides/inventory/client/SystemClien
 
 The MicroProfile Rest Client feature automatically builds and generates a client implementation based on what is defined in the [hotspot=17-22 file=2]`SystemClient` interface. Thus, you don't waste time on setting up the client and connecting with the remote service.
 
-When the [hotspot=21 file=2]`getProperties()` method is invoked, the `SystemClient` instance sends a GET request to the `<baseUrl>/properties` endpoint.
+When the [hotspot=21 file=2]`getProperties()` method is invoked, the [hotspot=17-22 file=2]`SystemClient` instance sends a GET request to the `<baseUrl>/properties` endpoint.
 
 The [hotspot=15 file=2]`@RegisterProvider` annotation tells the framework to register the provider classes to be used when the framework invokes the interface. You can add as many providers as necessary.
 In the [hotspot=17-22 file=2]`SystemClient` interface, add a response exception mapper as a provider to map the `404` response code with the [hotspot=21 file=2]`UnknownUrlException` exception.
@@ -149,7 +149,7 @@ Implement the actual exception class and the mapper class to see how this mechan
 
 [role="code_command hotspot=3-14", subs="quotes"]
 ----
-Create the `UnknownUrlException` class.
+#Create the `UnknownUrlException` class.#
 `src/main/java/io/openliberty/guides/inventory/client/UnknownUrlException.java`
 ----
 UnknownUrlException.java
@@ -162,7 +162,7 @@ Now, link the [hotspot=3-14 file=1]`UnknownUrlException` class with the correspo
 
 [role="code_command hotspot=10-24", subs="quotes"]
 ----
-Create the `UnknownUrlExceptionMapper` class.
+#Create the `UnknownUrlExceptionMapper` class.#
 `src/main/java/io/openliberty/guides/inventory/client/UnknownUrlExceptionMapper.java`
 ----
 UnknownUrlExceptionMapper.java
@@ -178,14 +178,14 @@ The [hotspot=15-18 file=2]`handles()` method inspects the HTTP response code to 
 // =================================================================================================
 == Injecting the client with dependency injection
 
-Now, instantiate the `SystemClient` interface and use it in the `inventory` service. If you want to connect only with the default host name, you can easily instantiate the `SystemClient` with CDI annotations. CDI injection simplifies the process of bootstrapping the client.
+Now, instantiate the [hotspot=17-22 file=1]`SystemClient` interface and use it in the `inventory` service. If you want to connect only with the default host name, you can easily instantiate the `SystemClient` with CDI annotations. CDI injection simplifies the process of bootstrapping the client.
 
-First, you need to define the base URL of the `SystemClient` instance.
+First, you need to define the base URL of the [hotspot=17-22 file=1]`SystemClient` instance.
 Configure the default base URL with the MicroProfile Config feature. This feature is enabled for you in both `server.xml` and `pom.xml` files.
 
 [role="code_command hotspot=1-2", subs="quotes"]
 ----
-Create the configuration file.
+#Create the configuration file.#
 `src/main/webapp/META-INF/microprofile-config.properties`
 ----
 microprofile-config.properties
@@ -195,7 +195,7 @@ include::finish/src/main/webapp/META-INF/microprofile-config.properties[tags=**;
 ----
 
 The config property to add the base URL is `<fullyQualifiedInterfaceName>/mp-rest/url`.
-In this case, add the config property `io.openliberty.guides.inventory.client.SystemClient/mp-rest/url`.
+In this case, add the config property [hotspot=1-2 file=0]`io.openliberty.guides.inventory.client.SystemClient/mp-rest/url`.
 Configure this property to the default [hotspot=2 file=0]`http://localhost:9080/system` base URL.
 
 This configuration is automatically picked up by the MicroProfile Config API.
@@ -215,11 +215,11 @@ The [hotspot=14 file=1]`@RegisterRestClient` annotation registers the interface 
 
 The [hotspot=13 file=1]`@Dependent` and [hotspot=14 file=1]`@RegisterRestClient` annotations imply that the interface is manageable through CDI. You must have them in order to inject the client.
 
-Inject the [hotspot=17-22 file=1]`SystemClient` interface into the `InventoryManager` class, which is another CDI managed bean. 
+Inject the [hotspot=17-22 file=1]`SystemClient` interface into the [hotspot=24-98 file=2]`InventoryManager` class, which is another CDI managed bean. 
 
-[role="code_command hotspot=24-98", subs="quotes"]
+[role="code_command hotspot=24-101", subs="quotes"]
 ----
-Create the `InventoryManager` class.
+#Create the `InventoryManager` class.#
 `src/main/java/io/openliberty/guides/inventory/InventoryManager.java`
 ----
 InventoryManager.java
@@ -228,7 +228,7 @@ InventoryManager.java
 include::finish/src/main/java/io/openliberty/guides/inventory/InventoryManager.java[tags=**;!copyright]
 ----
 
-[hotspot=29 file=2]`@Inject` and [hotspot=30 file=2]`@RestClient` annotations inject an instance of the [hotspot=31 file=2]`SystemClient` called `defaultRestClient` to the `InventoryManager` class.
+[hotspot=29 file=2]`@Inject` and [hotspot=30 file=2]`@RestClient` annotations inject an instance of the [hotspot=31 file=2]`SystemClient` called `defaultRestClient` to the [hotspot=24-98 file=2]`InventoryManager` class.
 
 Since the [hotspot=24-101 file=2]`InventoryManager` class is [hotspot=23 file=2]`@ApplicationScoped`, and the [hotspot=17-22 file=1]`SystemClient` CDI bean maintains the same scope through the [hotspot=13 file=1]`@Dependent` annotation, the client is initialized once per application.
 
@@ -281,7 +281,7 @@ include::{common-includes}/mvncompile.adoc[]
 
 [role="code_command hotspot=17-96", subs="quotes"]
 ----
-Create the `RestClientTest` class.
+#Create the `RestClientTest` class.#
 `src/test/java/it/io/openliberty/guides/client/RestClientTest.java`
 ----
 RestClientTest.java
