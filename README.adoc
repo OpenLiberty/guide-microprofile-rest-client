@@ -88,7 +88,7 @@ mvn liberty:stop-server
 
 Now, navigate to the `start` directory to begin.
 
-The MicroProfile Rest Client API is added as a dependency to your [hotspot=1-236 file=0]`pom.xml` file. Look for the dependency with the [hotspot=93 file=0]`mpRestClient` artifact ID.
+The MicroProfile Rest Client API is added as a dependency to your [hotspot=* file=0]`pom.xml` file. Look for the dependency with the [hotspot=93 file=0]`mpRestClient` artifact ID.
 
 pom.xml
 [source,xml,linenums,role="code_column"]
@@ -194,9 +194,7 @@ microprofile-config.properties
 include::finish/src/main/webapp/META-INF/microprofile-config.properties[tags=**;!copyright]
 ----
 
-The config property to add the base URL is `<fullyQualifiedInterfaceName>/mp-rest/url`.
-In this case, add the config property [hotspot=1-2 file=0]`io.openliberty.guides.inventory.client.SystemClient/mp-rest/url`.
-Configure this property to the default [hotspot=2 file=0]`http://localhost:9080/system` base URL.
+The config property [hotspot=1 file=0]`io.openliberty.guides.inventory.client.SystemClient/mp-rest/url` is configured to the default `http://localhost:9080/system` base URL.
 
 This configuration is automatically picked up by the MicroProfile Config API.
 
