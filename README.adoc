@@ -88,7 +88,7 @@ mvn liberty:stop-server
 
 Now, navigate to the `start` directory to begin.
 
-The MicroProfile Rest Client API is added as a dependency to your [hotspot=* file=0]`pom.xml` file. Look for the dependency with the [hotspot=93 file=0]`mpRestClient` artifact ID.
+The MicroProfile Rest Client API is added as a dependency to your [hotspot file=0]`pom.xml` file. Look for the dependency with the [hotspot=93 file=0]`mpRestClient` artifact ID.
 
 pom.xml
 [source,xml,linenums,role="code_column"]
