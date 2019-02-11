@@ -98,7 +98,7 @@ include::finish/pom.xml[tags=**]
 
 This dependency provides the library that is required to implement the MicroProfile Rest Client interface.
 
-The [hotspot=8 file=1]`mpRestClient` feature is also enabled in the [hotspot=1-15 file=1]`src/main/liberty/config/server.xml` file. This feature enables your Open Liberty server to use MicroProfile Rest Client to invoke RESTful microservices.
+The [hotspot=8 file=1]`mpRestClient` feature is also enabled in the [hotspot file=1]`src/main/liberty/config/server.xml` file. This feature enables your Open Liberty server to use MicroProfile Rest Client to invoke RESTful microservices.
 
 server.xml
 [source,xml,linenums,role="code_column"]
@@ -111,7 +111,7 @@ The code for the `system` service in the `src/main/java/io/openliberty/guides/sy
 Create a RESTful client interface for the `system` service. Write a template interface that maps the API of the remote `system` service.
 The template interface describes the remote service that you want to access. The interface defines the resource to access as a method by mapping its annotations, return type, list of arguments, and exception declarations.
 
-[role="code_command hotspot=17-22", subs="quotes"]
+[role="code_command hotspot", subs="quotes"]
 ----
 #Create the `SystemClient` class.#
 `src/main/java/io/openliberty/guides/inventory/client/SystemClient.java`
@@ -147,7 +147,7 @@ include::finish/src/main/java/io/openliberty/guides/inventory/client/SystemClien
 
 Implement the actual exception class and the mapper class to see how this mechanism works.
 
-[role="code_command hotspot=3-14", subs="quotes"]
+[role="code_command hotspot", subs="quotes"]
 ----
 #Create the `UnknownUrlException` class.#
 `src/main/java/io/openliberty/guides/inventory/client/UnknownUrlException.java`
@@ -160,7 +160,7 @@ include::finish/src/main/java/io/openliberty/guides/inventory/client/UnknownUrlE
 
 Now, link the [hotspot=3-14 file=1]`UnknownUrlException` class with the corresponding response code through a `ResponseExceptionMapper` mapper class.
 
-[role="code_command hotspot=10-24", subs="quotes"]
+[role="code_command hotspot", subs="quotes"]
 ----
 #Create the `UnknownUrlExceptionMapper` class.#
 `src/main/java/io/openliberty/guides/inventory/client/UnknownUrlExceptionMapper.java`
@@ -183,7 +183,7 @@ Now, instantiate the [hotspot=17-22 file=1]`SystemClient` interface and use it i
 First, you need to define the base URL of the [hotspot=17-22 file=1]`SystemClient` instance.
 Configure the default base URL with the MicroProfile Config feature. This feature is enabled for you in both `server.xml` and `pom.xml` files.
 
-[role="code_command hotspot=1-2", subs="quotes"]
+[role="code_command hotspot", subs="quotes"]
 ----
 #Create the configuration file.#
 `src/main/webapp/META-INF/microprofile-config.properties`
@@ -215,7 +215,7 @@ The [hotspot=13 file=1]`@Dependent` and [hotspot=14 file=1]`@RegisterRestClient`
 
 Inject the [hotspot=17-22 file=1]`SystemClient` interface into the [hotspot=24-98 file=2]`InventoryManager` class, which is another CDI managed bean. 
 
-[role="code_command hotspot=24-101", subs="quotes"]
+[role="code_command hotspot", subs="quotes"]
 ----
 #Create the `InventoryManager` class.#
 `src/main/java/io/openliberty/guides/inventory/InventoryManager.java`
@@ -277,7 +277,7 @@ include::{common-includes}/mvncompile.adoc[]
 
 == Testing the application
 
-[role="code_command hotspot=17-96", subs="quotes"]
+[role="code_command hotspot", subs="quotes"]
 ----
 #Create the `RestClientTest` class.#
 `src/test/java/it/io/openliberty/guides/client/RestClientTest.java`
