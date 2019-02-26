@@ -326,4 +326,4 @@ You just invoked a remote service by using a template interface with MicroProfil
 Feel free to try one of the related guides. They demonstrate more technologies that you can learn and
 expand on what you built here.
 
-include::https://raw.githubusercontent.com/OpenLiberty/guides-common/multipane/attribution.adoc[subs="attributes"]
+include::{common-includes}/attribution.adoc[subs="attributes"]
