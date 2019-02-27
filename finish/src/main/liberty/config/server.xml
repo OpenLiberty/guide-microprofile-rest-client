@@ -8,7 +8,8 @@
     <feature>mpRestClient-1.1</feature>
   </featureManager>
 
-  <httpEndpoint host="*" httpPort="${default.http.port}" httpsPort="${default.https.port}" id="defaultHttpEndpoint"/>
+  <httpEndpoint host="*" httpPort="${default.http.port}" httpsPort="${default.https.port}"
+                id="defaultHttpEndpoint"/>
 
   <webApplication location="microprofile-rest-client.war" contextRoot="/"/>
 </server>
