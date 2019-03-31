@@ -14,6 +14,7 @@
 package io.openliberty.guides.inventory;
 
 import java.net.URL;
+import java.net.ConnectException;
 import java.net.UnknownHostException;
 import java.net.MalformedURLException;
 import javax.ws.rs.ProcessingException;
@@ -103,7 +104,7 @@ public class InventoryManager {
 
   private void handleProcessingException(ProcessingException ex) {
     Throwable rootEx = ExceptionUtils.getRootCause(ex);
-    if (rootEx != null && rootEx instanceof UnknownHostException) {
+    if (rootEx != null && (rootEx instanceof UnknownHostException || rootEx instanceof ConnectException)) {
       System.err.println("The specified host is unknown.");
     } else {
       throw ex;
