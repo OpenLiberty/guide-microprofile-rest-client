@@ -213,7 +213,7 @@ The [hotspot=14 file=1]`@RegisterRestClient` annotation registers the interface 
 
 The [hotspot=13 file=1]`@Dependent` and [hotspot=14 file=1]`@RegisterRestClient` annotations imply that the interface is manageable through CDI. You must have them in order to inject the client.
 
-Inject the [hotspot=17-22 file=1]`SystemClient` interface into the [hotspot=24-98 file=2]`InventoryManager` class, which is another CDI managed bean. 
+Inject the [hotspot=17-22 file=1]`SystemClient` interface into the [hotspot=25-102 file=2]`InventoryManager` class, which is another CDI managed bean. 
 
 [role="code_command hotspot", subs="quotes"]
 ----
@@ -226,12 +226,12 @@ InventoryManager.java
 include::finish/src/main/java/io/openliberty/guides/inventory/InventoryManager.java[tags=**;!copyright]
 ----
 
-[hotspot=29 file=2]`@Inject` and [hotspot=30 file=2]`@RestClient` annotations inject an instance of the [hotspot=31 file=2]`SystemClient` called `defaultRestClient` to the [hotspot=24-98 file=2]`InventoryManager` class.
+[hotspot=30 file=2]`@Inject` and [hotspot=31 file=2]`@RestClient` annotations inject an instance of the [hotspot=32 file=2]`SystemClient` called `defaultRestClient` to the [hotspot=25-99 file=2]`InventoryManager` class.
 
-Since the [hotspot=24-101 file=2]`InventoryManager` class is [hotspot=23 file=2]`@ApplicationScoped`, and the [hotspot=17-22 file=1]`SystemClient` CDI bean maintains the same scope through the [hotspot=13 file=1]`@Dependent` annotation, the client is initialized once per application.
+Since the [hotspot=25-102 file=2]`InventoryManager` class is [hotspot=24 file=2]`@ApplicationScoped`, and the [hotspot=17-22 file=1]`SystemClient` CDI bean maintains the same scope through the [hotspot=13 file=1]`@Dependent` annotation, the client is initialized once per application.
 
-If the `hostname` parameter is `localhost`, the service runs the [hotspot=58-67 file=2]`getPropertiesWithDefaultHostName()` helper function to fetch system properties.
-The helper function invokes the `system` service by calling the [hotspot=60 file=2]`defaultRestClient.getProperties()` method.
+If the `hostname` parameter is `localhost`, the service runs the [hotspot=59-68 file=2]`getPropertiesWithDefaultHostName()` helper function to fetch system properties.
+The helper function invokes the `system` service by calling the [hotspot=61 file=2]`defaultRestClient.getProperties()` method.
 
 // =================================================================================================
 // Building the client with RestClientBuilder
@@ -241,7 +241,7 @@ The helper function invokes the `system` service by calling the [hotspot=60 file
 The `inventory` service might also connect with a host other than the default `localhost` host. Then, you cannot configure a base URL that is not yet known.
 Therefore, set the host name as a variable and build the client by using the `RestClientBuilder` method. You can customize the base URL from the host name attribute.
 
-Look at the [hotspot=69-87]`getPropertiesWithGivenHostName()` method in the `src/main/java/io/openliberty/guides/inventory/InventoryManager.java` file.
+Look at the [hotspot=70-88]`getPropertiesWithGivenHostName()` method in the `src/main/java/io/openliberty/guides/inventory/InventoryManager.java` file.
 
 InventoryManager.java
 [source, Java, linenums, role='code_column']
@@ -250,9 +250,9 @@ include::finish/src/main/java/io/openliberty/guides/inventory/InventoryManager.j
 ----
 
 The host name is provided as a parameter. This method first assembles the base URL that consists of the new host name.
-Then, the method instantiates a [hotspot=74-77]`RestClientBuilder` builder with the new URL, registers the response exception mapper, and builds the `SystemClient` instance.
+Then, the method instantiates a [hotspot=75-78]`RestClientBuilder` builder with the new URL, registers the response exception mapper, and builds the `SystemClient` instance.
 
-Similarly, call the [hotspot=78]`customRestClient.getProperties()` method to invoke the `system` service.
+Similarly, call the [hotspot=79]`customRestClient.getProperties()` method to invoke the `system` service.
 
 // =================================================================================================
 // Building and running the application

@@ -1,6 +1,6 @@
 // tag::copyright[]
 /*******************************************************************************
- * Copyright (c) 2017, 2018 IBM Corporation and others.
+ * Copyright (c) 2017, 2019 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@
 package io.openliberty.guides.inventory;
 
 import java.net.URL;
+import java.net.ConnectException;
 import java.net.UnknownHostException;
 import java.net.MalformedURLException;
 import javax.ws.rs.ProcessingException;
@@ -103,7 +104,8 @@ public class InventoryManager {
 
   private void handleProcessingException(ProcessingException ex) {
     Throwable rootEx = ExceptionUtils.getRootCause(ex);
-    if (rootEx != null && rootEx instanceof UnknownHostException) {
+    if (rootEx != null && (rootEx instanceof UnknownHostException || 
+        rootEx instanceof ConnectException)) {
       System.err.println("The specified host is unknown.");
     } else {
       throw ex;
