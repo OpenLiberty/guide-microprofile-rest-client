@@ -124,7 +124,7 @@ include::finish/src/main/java/io/openliberty/guides/inventory/client/SystemClien
 
 The MicroProfile Rest Client feature automatically builds and generates a client implementation based on what is defined in the [hotspot=17-22 file=2]`SystemClient` interface. Thus, you don't waste time on setting up the client and connecting with the remote service.
 
-When the [hotspot=21 file=2]`getProperties()` method is invoked, the [hotspot=17-22 file=2]`SystemClient` instance sends a GET request to the `<baseUrl>/properties` endpoint.
+When the [hotspot=21 file=2]`getProperties()` method is invoked, the [hotspot=17-22 file=2]`SystemClient` instance sends a GET request to the `<baseUrl>/properties` endpoint, where `<baseUrl>` is the default base URL of the `system` service. You will see how to configure the base URL in the next section.
 
 The [hotspot=15 file=2]`@RegisterProvider` annotation tells the framework to register the provider classes to be used when the framework invokes the interface. You can add as many providers as necessary.
 In the [hotspot=17-22 file=2]`SystemClient` interface, add a response exception mapper as a provider to map the `404` response code with the [hotspot=21 file=2]`UnknownUrlException` exception.
