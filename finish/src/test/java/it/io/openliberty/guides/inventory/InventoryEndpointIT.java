@@ -38,7 +38,7 @@ public class InventoryEndpointTest {
 
   @BeforeClass
   public static void oneTimeSetup() {
-    port = System.getProperty("liberty.test.port");
+    port = System.getProperty("liberty.test.port", "9080");
     baseUrl = "http://localhost:" + port + "/";
   }
 

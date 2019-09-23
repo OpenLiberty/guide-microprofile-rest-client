@@ -25,7 +25,7 @@ public class SystemEndpointTest {
 
  @Test
  public void testGetProperties() {
-     String port = System.getProperty("liberty.test.port");
+     String port = System.getProperty("liberty.test.port", "9080");
      String url = "http://localhost:" + port + "/";
 
      Client client = ClientBuilder.newClient();
