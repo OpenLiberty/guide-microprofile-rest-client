@@ -27,7 +27,7 @@ import org.junit.Test;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-public class RestClientTest {
+public class RestClientIT {
 
   private static String port;
 

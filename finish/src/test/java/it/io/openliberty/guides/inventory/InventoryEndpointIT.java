@@ -26,7 +26,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class InventoryEndpointTest {
+public class InventoryEndpointIT {
 
   private static String port;
   private static String baseUrl;
