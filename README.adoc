@@ -95,7 +95,7 @@ The MicroProfile Rest Client API is included in the MicroProfile dependency spec
 pom.xml
 [source,xml,linenums,role="code_column"]
 ----
-include::finish/pom.xml[tags=**]
+include::finish/pom.xml[]
 ----
 
 This dependency provides a library that is required to implement the MicroProfile Rest Client interface.
@@ -105,7 +105,7 @@ The [hotspot=mpRestClient file=1]`mpRestClient` feature is also enabled in the [
 server.xml
 [source,xml,linenums,role="code_column"]
 ----
-include::finish/src/main/liberty/config/server.xml[tags=**]
+include::finish/src/main/liberty/config/server.xml[]
 ----
 
 The code for the `system` service in the `src/main/java/io/openliberty/guides/system` directory is provided for you. It simulates a remote RESTful service that the `inventory` service invokes.
@@ -119,9 +119,9 @@ The template interface describes the remote service that you want to access. The
 `src/main/java/io/openliberty/guides/inventory/client/SystemClient.java`
 ----
 SystemClient.java
-[source, Java, linenums, role='code_column']
+[source, Java, linenums, role='code_column hide_tags=copyright']
 ----
-include::finish/src/main/java/io/openliberty/guides/inventory/client/SystemClient.java[tags=**;!copyright]
+include::finish/src/main/java/io/openliberty/guides/inventory/client/SystemClient.java[]
 ----
 
 The MicroProfile Rest Client feature automatically builds and generates a client implementation based on what is defined in the [hotspot=systemClient file=2]`SystemClient` interface. Thus, you don't waste time on setting up the client and connecting with the remote service.
@@ -142,9 +142,9 @@ Look at the client interface again, the [hotspot=registerProvider file=0]`@Regis
 An exception mapper maps various response codes from the remote service to throwable exceptions.
 
 SystemClient.java
-[source, Java, linenums, role='code_column']
+[source, Java, linenums, role='code_column hide_tags=copyright']
 ----
-include::finish/src/main/java/io/openliberty/guides/inventory/client/SystemClient.java[tags=**;!copyright]
+include::finish/src/main/java/io/openliberty/guides/inventory/client/SystemClient.java[]
 ----
 
 Implement the actual exception class and the mapper class to see how this mechanism works.
@@ -155,9 +155,9 @@ Implement the actual exception class and the mapper class to see how this mechan
 `src/main/java/io/openliberty/guides/inventory/client/UnknownUrlException.java`
 ----
 UnknownUrlException.java
-[source, Java, linenums, role='code_column']
+[source, Java, linenums, role='code_column hide_tags=copyright']
 ----
-include::finish/src/main/java/io/openliberty/guides/inventory/client/UnknownUrlException.java[tags=**;!copyright]
+include::finish/src/main/java/io/openliberty/guides/inventory/client/UnknownUrlException.java[]
 ----
 
 Now, link the [hotspot=exception file=1]`UnknownUrlException` class with the corresponding response code through a `ResponseExceptionMapper` mapper class.
@@ -168,9 +168,9 @@ Now, link the [hotspot=exception file=1]`UnknownUrlException` class with the cor
 `src/main/java/io/openliberty/guides/inventory/client/UnknownUrlExceptionMapper.java`
 ----
 UnknownUrlExceptionMapper.java
-[source, Java, linenums, role='code_column']
+[source, Java, linenums, role='code_column hide_tags=copyright']
 ----
-include::finish/src/main/java/io/openliberty/guides/inventory/client/UnknownUrlExceptionMapper.java[tags=**;!copyright]
+include::finish/src/main/java/io/openliberty/guides/inventory/client/UnknownUrlExceptionMapper.java[]
 ----
 
 The [hotspot=handles file=2]`handles()` method inspects the HTTP response code to determine whether an exception is thrown for the specific response, and the [hotspot=toThrowable file=2]`toThrowable()` method returns the mapped exception.
@@ -193,7 +193,7 @@ Configure the default base URL with the MicroProfile Config feature. This featur
 microprofile-config.properties
 [source, properties, linenums, role='code_column']
 ----
-include::finish/src/main/webapp/META-INF/microprofile-config.properties[tags=**;!copyright]
+include::finish/src/main/webapp/META-INF/microprofile-config.properties[]
 ----
 
 The config property [hotspot=1 file=0]`io.openliberty.guides.inventory.client.SystemClient/mp-rest/url` is configured to the default [hotspot=2 file=0]`\http://localhost:9080/system` base URL.
@@ -203,9 +203,9 @@ This configuration is automatically picked up by the MicroProfile Config API.
 Look at the annotations in the [hotspot=systemClient file=1]`SystemClient` interface again.
 
 SystemClient.java
-[source, Java, linenums, role='code_column']
+[source, Java, linenums, role='code_column hide_tags=copyright']
 ----
-include::finish/src/main/java/io/openliberty/guides/inventory/client/SystemClient.java[tags=**;!copyright]
+include::finish/src/main/java/io/openliberty/guides/inventory/client/SystemClient.java[]
 ----
 
 The [hotspot=dependent file=1]`@Dependent` annotation tells the service that the scope of the interface depends on the class that it is injected into.
@@ -223,9 +223,9 @@ Inject the [hotspot=systemClient file=1]`SystemClient` interface into the [hotsp
 `src/main/java/io/openliberty/guides/inventory/InventoryManager.java`
 ----
 InventoryManager.java
-[source, Java, linenums, role='code_column']
+[source, Java, linenums, role='code_column hide_tags=copyright']
 ----
-include::finish/src/main/java/io/openliberty/guides/inventory/InventoryManager.java[tags=**;!copyright]
+include::finish/src/main/java/io/openliberty/guides/inventory/InventoryManager.java[]
 ----
 
 [hotspot=inject file=2]`@Inject` and [hotspot=restClient file=2]`@RestClient` annotations inject an instance of the [hotspot=defaultrestClient file=2]`SystemClient` called `defaultRestClient` to the [hotspot file=2]`InventoryManager` class.
@@ -246,9 +246,9 @@ Therefore, set the host name as a variable and build the client by using the `Re
 Look at the [hotspot=builder]`getPropertiesWithGivenHostName()` method in the `src/main/java/io/openliberty/guides/inventory/InventoryManager.java` file.
 
 InventoryManager.java
-[source, Java, linenums, role='code_column']
+[source, Java, linenums, role='code_column hide_tags=copyright']
 ----
-include::finish/src/main/java/io/openliberty/guides/inventory/InventoryManager.java[tags=**;!copyright]
+include::finish/src/main/java/io/openliberty/guides/inventory/InventoryManager.java[]
 ----
 
 The host name is provided as a parameter. This method first assembles the base URL that consists of the new host name.
@@ -281,9 +281,9 @@ When the server is running, select either approach to fetch your system properti
 `src/test/java/it/io/openliberty/guides/client/RestClientIT.java`
 ----
 RestClientIT.java
-[source, Java, linenums, role='code_column']
+[source, Java, linenums, role='code_column hide_tags=copyright']
 ----
-include::finish/src/test/java/it/io/openliberty/guides/client/RestClientIT.java[tags=**;!copyright]
+include::finish/src/test/java/it/io/openliberty/guides/client/RestClientIT.java[]
 ----
 
 Each test case tests one of the methods for instantiating a RESTful client.
