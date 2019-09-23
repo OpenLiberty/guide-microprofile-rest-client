@@ -37,7 +37,7 @@ public class RestClientTest {
 
   @BeforeClass
   public static void oneTimeSetup() {
-    port = System.getProperty("liberty.test.port");
+    port = System.getProperty("liberty.test.port", "9080");
   }
 
   @Before
@@ -57,6 +57,7 @@ public class RestClientTest {
     this.testRestClientBuilder();
   }
 
+  // tag::testDefaultLocalhost[]
   public void testDefaultLocalhost() {
     String hostname = "localhost";
 
@@ -68,7 +69,9 @@ public class RestClientTest {
                  System.getProperty("os.name"),
                  obj.getString("os.name"));
   }
+  // end::testDefaultLocalhost[]
 
+  // tag::testRestClientBuilder[]
   public void testRestClientBuilder() {
     String hostname = null;
     try{
@@ -85,6 +88,7 @@ public class RestClientTest {
                  System.getProperty("os.name"),
                  obj.getString("os.name"));
   }
+  // end::testRestClientBuilder[]
 
   private JsonObject fetchProperties(String url) {
     WebTarget target = client.target(url);

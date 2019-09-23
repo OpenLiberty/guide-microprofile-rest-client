@@ -34,15 +34,23 @@ import io.openliberty.guides.inventory.client.SystemClient;
 import io.openliberty.guides.inventory.client.UnknownUrlException;
 import io.openliberty.guides.inventory.client.UnknownUrlExceptionMapper;
 
+// tag::applicationScoped[]
 @ApplicationScoped
+// end::applicationScoped[]
 public class InventoryManager {
 
   private List<SystemData> systems = Collections.synchronizedList(new ArrayList<>());
   private final String DEFAULT_PORT = System.getProperty("default.http.port");
 
+  // tag::inject[]
   @Inject
+  // end::inject[]
+  // tag::restClient[]
   @RestClient
+  // end::restClient[]
+  // tag::defaultrestClient[]
   private SystemClient defaultRestClient;
+  // end::defaultrestClient[]
 
   public Properties get(String hostname) {
     Properties properties = null;
@@ -69,9 +77,12 @@ public class InventoryManager {
     return new InventoryList(systems);
   }
 
+  // tag::getPropertiesWithDefault[]
   private Properties getPropertiesWithDefaultHostName() {
     try {
+      // tag::defaultGetProperties[]
       return defaultRestClient.getProperties();
+      // end::defaultGetProperties[]
     } catch (UnknownUrlException e) {
       System.err.println("The given URL is unreachable.");
     } catch (ProcessingException ex) {
@@ -79,6 +90,7 @@ public class InventoryManager {
     }
     return null;
   }
+  // end::getPropertiesWithDefault[]
 
   // tag::builder[]
   private Properties getPropertiesWithGivenHostName(String hostname) {
@@ -86,11 +98,15 @@ public class InventoryManager {
     URL customURL = null;
     try {
       customURL = new URL(customURLString);
+      // tag::restClientBuilder[]
       SystemClient customRestClient = RestClientBuilder.newBuilder()
                                          .baseUrl(customURL)
                                          .register(UnknownUrlExceptionMapper.class)
                                          .build(SystemClient.class);
+      // end::restClientBuilder[]
+      // tag::customGetProperties[]
       return customRestClient.getProperties();
+      // end::customGetProperties[]
     } catch (ProcessingException ex) {
       handleProcessingException(ex);
     } catch (UnknownUrlException e) {

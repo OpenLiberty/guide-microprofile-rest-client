@@ -23,16 +23,24 @@ import javax.ws.rs.core.MediaType;
 import org.eclipse.microprofile.rest.client.annotation.RegisterProvider;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
-// tag::annotations[]
+// tag::dependent[]
 @Dependent
+// end::dependent[]
+// tag::registerRestClient[]
 @RegisterRestClient
+// end::registerRestClient[]
+// tag::registerProvider[]
 @RegisterProvider(UnknownUrlExceptionMapper.class)
+// end::registerProvider[]
 @Path("/properties")
+// tag::systemClient[]
 public interface SystemClient {
-  // end::annotations[]
 
   @GET
   @Produces(MediaType.APPLICATION_JSON)
+  // tag::getProperties[]
   public Properties getProperties() throws UnknownUrlException, ProcessingException;
+  // end::getProperties[]
 }
+// end::systemClient[]
 // end::client[]
