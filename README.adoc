@@ -73,7 +73,7 @@ After you start the application, you can access the following microservices:
 * The \http://localhost:9080/inventory/systems/{your_hostname} microservice is the `inventory` service that invokes the \http://{your_hostname}:9080/system/properties microservice. In Windows, Mac OS, and Linux, get your fully qualified domain name (FQDN) by entering `hostname` from your terminal. Visit the URL by replacing `{your_hostname}` with your FQDN.
 You will see the same system property information, but the process of getting the information is different.
 
-After you are done checking out the application, stop the Open Liberty server by simply pressing `CTRL+C` in the shell session.
+After you are done checking out the application, stop the Open Liberty server by simply typing `q` in the shell session and then press the `enter/return` key.
 
 
 // =================================================================================================
@@ -316,7 +316,8 @@ Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
 To see whether the tests detect a failure, change the base URL in the configuration file so that when the `inventory` service tries to access the invalid URL, an `UnknownUrlException` is thrown.
 Rerun the Maven build. You see a test failure occur.
 
-When you are done checking out the service, stop the Open Liberty server by simply pressing `CTRL+C` in the shell session where you ran development mode.
+When you are done checking out the service, stop the Open Liberty server by simply typing `q`
+in the shell session where you ran development mode and then press the `enter/return` key.
 
 == Great work! You're done!
 
