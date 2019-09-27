@@ -151,7 +151,7 @@ Implement the actual exception class and the mapper class to see how this mechan
 
 [role="code_command hotspot file=1", subs="quotes"]
 ----
-#Replace the `UnknownUrlException` class.#
+#Create the `UnknownUrlException` class.#
 `src/main/java/io/openliberty/guides/inventory/client/UnknownUrlException.java`
 ----
 UnknownUrlException.java
@@ -164,7 +164,7 @@ Now, link the [hotspot=exception file=1]`UnknownUrlException` class with the cor
 
 [role="code_command hotspot file=2", subs="quotes"]
 ----
-#Replace the `UnknownUrlExceptionMapper` class.#
+#Create the `UnknownUrlExceptionMapper` class.#
 `src/main/java/io/openliberty/guides/inventory/client/UnknownUrlExceptionMapper.java`
 ----
 UnknownUrlExceptionMapper.java
