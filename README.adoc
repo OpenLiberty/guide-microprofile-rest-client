@@ -61,7 +61,7 @@ Maven goal to build the application and deploy it to Open Liberty:
 
 [role=command]
 ```
-mvn package liberty:dev
+mvn liberty:dev
 ```
 
 After you start the application, you can access the following microservices:
