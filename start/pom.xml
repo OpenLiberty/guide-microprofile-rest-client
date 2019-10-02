@@ -23,6 +23,26 @@
     </properties>
 
     <dependencies>
+    	  <!-- Provided dependencies -->
+        <dependency>
+            <groupId>jakarta.platform</groupId>
+            <artifactId>jakarta.jakartaee-web-api</artifactId>
+            <version>8.0.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.microprofile</groupId>
+            <artifactId>microprofile</artifactId>
+            <version>3.0</version>
+            <type>pom</type>
+            <scope>provided</scope>
+        </dependency>
+        <!-- Java utility classes -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.0</version>
+        </dependency>
         <!-- For tests-->
         <dependency>
             <groupId>junit</groupId>
@@ -47,26 +67,6 @@
             <artifactId>javax.json</artifactId>
             <version>1.0.4</version>
             <scope>test</scope>
-        </dependency>
-        <!-- Open Liberty features -->
-        <dependency>
-            <groupId>jakarta.platform</groupId>
-            <artifactId>jakarta.jakartaee-web-api</artifactId>
-            <version>8.0.0</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.microprofile</groupId>
-            <artifactId>microprofile</artifactId>
-            <version>3.0</version>
-            <type>pom</type>
-            <scope>provided</scope>
-        </dependency>
-        <!-- Java utility classes -->
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>3.0</version>
         </dependency>
         <!-- Support for JDK 9 and above -->
         <dependency>
