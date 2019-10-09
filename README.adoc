@@ -18,6 +18,8 @@
 :page-permalink: /guides/{projectid}
 :page-related-guides: ['rest-intro', 'cdi-intro', 'microprofile-config']
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
+:page-seo-title: Consuming REST services with template interfaces
+:page-seo-description: A tutorial and an example on how to consume REST services using MicroProfile Rest Client.
 :source-highlighter: prettify
 = Consuming RESTful services with template interfaces
 
@@ -213,7 +215,7 @@ The [hotspot=14 file=1]`@RegisterRestClient` annotation registers the interface 
 
 The [hotspot=13 file=1]`@Dependent` and [hotspot=14 file=1]`@RegisterRestClient` annotations imply that the interface is manageable through CDI. You must have them in order to inject the client.
 
-Inject the [hotspot=17-22 file=1]`SystemClient` interface into the [hotspot=25-102 file=2]`InventoryManager` class, which is another CDI managed bean. 
+Inject the [hotspot=17-22 file=1]`SystemClient` interface into the [hotspot=25-102 file=2]`InventoryManager` class, which is another CDI managed bean.
 
 [role="code_command hotspot", subs="quotes"]
 ----

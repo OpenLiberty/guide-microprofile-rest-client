@@ -13,26 +13,27 @@
 // tag::manager[]
 package io.openliberty.guides.inventory;
 
-import java.net.URL;
 import java.net.ConnectException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.UnknownHostException;
-import java.net.MalformedURLException;
-import javax.ws.rs.ProcessingException;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
-import javax.inject.Inject;
+
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+import javax.ws.rs.ProcessingException;
+
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.eclipse.microprofile.rest.client.RestClientBuilder;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
+
+import io.openliberty.guides.inventory.client.SystemClient;
+import io.openliberty.guides.inventory.client.UnknownUrlExceptionMapper;
 import io.openliberty.guides.inventory.model.InventoryList;
 import io.openliberty.guides.inventory.model.SystemData;
-import io.openliberty.guides.inventory.client.SystemClient;
-import io.openliberty.guides.inventory.client.UnknownUrlException;
-import io.openliberty.guides.inventory.client.UnknownUrlExceptionMapper;
 
 @ApplicationScoped
 public class InventoryManager {
@@ -72,8 +73,8 @@ public class InventoryManager {
   private Properties getPropertiesWithDefaultHostName() {
     try {
       return defaultRestClient.getProperties();
-    } catch (UnknownUrlException e) {
-      System.err.println("The given URL is unreachable.");
+    } catch (URISyntaxException e) {
+        System.err.println("The given URI is not formatted correctly.");
     } catch (ProcessingException ex) {
       handleProcessingException(ex);
     }
@@ -82,21 +83,19 @@ public class InventoryManager {
 
   // tag::builder[]
   private Properties getPropertiesWithGivenHostName(String hostname) {
-    String customURLString = "http://" + hostname + ":" + DEFAULT_PORT + "/system";
-    URL customURL = null;
+    String customURIString = "http://" + hostname + ":" + DEFAULT_PORT + "/system";
+    URI customURI = null;
     try {
-      customURL = new URL(customURLString);
+      customURI = new URI(customURIString);
       SystemClient customRestClient = RestClientBuilder.newBuilder()
-                                         .baseUrl(customURL)
+                                         .baseUri(customURI)
                                          .register(UnknownUrlExceptionMapper.class)
                                          .build(SystemClient.class);
       return customRestClient.getProperties();
     } catch (ProcessingException ex) {
       handleProcessingException(ex);
-    } catch (UnknownUrlException e) {
-      System.err.println("The given URL is unreachable.");
-    } catch (MalformedURLException e) {
-      System.err.println("The given URL is not formatted correctly.");
+    } catch (URISyntaxException e) {
+      System.err.println("The given URI is not formatted correctly.");
     }
     return null;
   }
