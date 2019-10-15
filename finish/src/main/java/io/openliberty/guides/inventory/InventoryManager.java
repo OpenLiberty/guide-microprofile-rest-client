@@ -33,7 +33,7 @@ import io.openliberty.guides.inventory.model.SystemData;
 import io.openliberty.guides.inventory.client.SystemClient;
 import io.openliberty.guides.inventory.client.UnknownUrlException;
 import io.openliberty.guides.inventory.client.UnknownUrlExceptionMapper;
-// tag:ApplicationScoped[]
+// tag::ApplicationScoped[]
 @ApplicationScoped
 // end::ApplicationScoped[]
 // tag::InventoryManager[]
@@ -41,6 +41,7 @@ public class InventoryManager {
 
   private List<SystemData> systems = Collections.synchronizedList(new ArrayList<>());
   private final String DEFAULT_PORT = System.getProperty("default.http.port");
+  
   // tag::Inject[]
   @Inject
   // end::Inject[]
