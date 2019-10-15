@@ -33,17 +33,23 @@ import io.openliberty.guides.inventory.model.SystemData;
 import io.openliberty.guides.inventory.client.SystemClient;
 import io.openliberty.guides.inventory.client.UnknownUrlException;
 import io.openliberty.guides.inventory.client.UnknownUrlExceptionMapper;
-
+// tag:ApplicationScoped[]
 @ApplicationScoped
+// end::ApplicationScoped[]
+// tag::InventoryManager[]
 public class InventoryManager {
 
   private List<SystemData> systems = Collections.synchronizedList(new ArrayList<>());
   private final String DEFAULT_PORT = System.getProperty("default.http.port");
-
+  // tag::Inject[]
   @Inject
+  // end::Inject[]
+  // tag::RestClient[]
   @RestClient
+  // end::RestClient[]
+  // tag::default-SystemClient[]
   private SystemClient defaultRestClient;
-
+  // end::default-SystemClient[]
   public Properties get(String hostname) {
     Properties properties = null;
     if (hostname.equals("localhost")) {
@@ -68,10 +74,12 @@ public class InventoryManager {
   public InventoryList list() {
     return new InventoryList(systems);
   }
-
+  // tag::getPropertiesWithDefaultHostName[]
   private Properties getPropertiesWithDefaultHostName() {
     try {
+      // tag::defaultRestClient.getProperties[]
       return defaultRestClient.getProperties();
+      // end::defaultRestClient.getProperties[]
     } catch (UnknownUrlException e) {
       System.err.println("The given URL is unreachable.");
     } catch (ProcessingException ex) {
@@ -79,18 +87,24 @@ public class InventoryManager {
     }
     return null;
   }
+  // end::getPropertiesWithDefaultHostName[]
 
   // tag::builder[]
+  // tag::getPropertiesWithGivenHostName[]
   private Properties getPropertiesWithGivenHostName(String hostname) {
     String customURLString = "http://" + hostname + ":" + DEFAULT_PORT + "/system";
     URL customURL = null;
     try {
       customURL = new URL(customURLString);
+      // tag::RestClientBuilder[]
       SystemClient customRestClient = RestClientBuilder.newBuilder()
                                          .baseUrl(customURL)
                                          .register(UnknownUrlExceptionMapper.class)
                                          .build(SystemClient.class);
+      // end::RestClientBuilder[]
+      // tag::customRestClient-getProperties[]
       return customRestClient.getProperties();
+      // end::customRestClient-getProperties[]
     } catch (ProcessingException ex) {
       handleProcessingException(ex);
     } catch (UnknownUrlException e) {
@@ -100,6 +114,7 @@ public class InventoryManager {
     }
     return null;
   }
+  // end::getPropertiesWithGivenHostName[]
   // end::builder[]
 
   private void handleProcessingException(ProcessingException ex) {
@@ -113,4 +128,5 @@ public class InventoryManager {
   }
 
 }
+// end::InventoryManager[]
 // end::manager[]

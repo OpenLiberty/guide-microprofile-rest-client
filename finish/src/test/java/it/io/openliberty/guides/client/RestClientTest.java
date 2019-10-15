@@ -56,7 +56,7 @@ public class RestClientTest {
     this.testDefaultLocalhost();
     this.testRestClientBuilder();
   }
-
+  // tag::testDefaultLocalhost[]
   public void testDefaultLocalhost() {
     String hostname = "localhost";
 
@@ -68,7 +68,9 @@ public class RestClientTest {
                  System.getProperty("os.name"),
                  obj.getString("os.name"));
   }
+  // end::testDefaultLocalhost[]
 
+  // tag::testRestClientBuilder[]
   public void testRestClientBuilder() {
     String hostname = null;
     try{
@@ -85,6 +87,7 @@ public class RestClientTest {
                  System.getProperty("os.name"),
                  obj.getString("os.name"));
   }
+  // end::testRestClientBuilder[]
 
   private JsonObject fetchProperties(String url) {
     WebTarget target = client.target(url);

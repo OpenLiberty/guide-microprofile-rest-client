@@ -12,7 +12,7 @@
 // end::copyright[]
 // tag::exception[]
 package io.openliberty.guides.inventory.client;
-
+// tag::UnknownUrlException[]
 public class UnknownUrlException extends Exception {
 
   private static final long serialVersionUID = 1L;
@@ -25,4 +25,5 @@ public class UnknownUrlException extends Exception {
     super(message);
   }
 }
+// end::UnknownUrlException[]
 // end::exception[]
