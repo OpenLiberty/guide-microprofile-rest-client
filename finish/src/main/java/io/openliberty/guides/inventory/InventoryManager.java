@@ -29,6 +29,7 @@ import javax.ws.rs.ProcessingException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.eclipse.microprofile.rest.client.RestClientBuilder;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import io.openliberty.guides.inventory.client.SystemClient;
 import io.openliberty.guides.inventory.client.UnknownUrlExceptionMapper;
@@ -41,7 +42,10 @@ import io.openliberty.guides.inventory.model.SystemData;
 public class InventoryManager {
 
   private List<SystemData> systems = Collections.synchronizedList(new ArrayList<>());
-  private final String DEFAULT_PORT = System.getProperty("default.http.port");
+
+  @Inject
+  @ConfigProperty(name = "default.http.port")
+  String DEFAULT_PORT;
 
   // tag::inject[]
   @Inject
