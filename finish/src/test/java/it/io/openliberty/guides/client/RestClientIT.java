@@ -37,7 +37,7 @@ public class RestClientIT {
 
   @BeforeClass
   public static void oneTimeSetup() {
-    port = System.getProperty("liberty.test.port", "9080");
+    port = System.getProperty("http.port");
   }
 
   @Before
