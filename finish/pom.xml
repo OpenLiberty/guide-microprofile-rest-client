@@ -6,7 +6,7 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
         <groupId>net.wasdev.wlp.maven.parent</groupId>
-        <artifactId>guide-microprofile-rest-client</artifactId>
+        <artifactId>liberty-maven-app-parent</artifactId>
         <version>RELEASE</version>
   </parent>
   <groupId>io.openliberty.guides</groupId>
