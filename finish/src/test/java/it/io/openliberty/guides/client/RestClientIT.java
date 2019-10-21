@@ -1,6 +1,6 @@
 // tag::copyright[]
 /*******************************************************************************
- * Copyright (c) 2018 IBM Corporation and others.
+ * Copyright (c) 2018, 2019 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -27,7 +27,7 @@ import org.junit.Test;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-public class RestClientTest {
+public class RestClientIT {
 
   private static String port;
 
@@ -37,7 +37,7 @@ public class RestClientTest {
 
   @BeforeClass
   public static void oneTimeSetup() {
-    port = System.getProperty("liberty.test.port");
+    port = System.getProperty("liberty.test.port", "9080");
   }
 
   @Before
@@ -57,6 +57,7 @@ public class RestClientTest {
     this.testRestClientBuilder();
   }
 
+  // tag::testDefaultLocalhost[]
   public void testDefaultLocalhost() {
     String hostname = "localhost";
 
@@ -68,7 +69,9 @@ public class RestClientTest {
                  System.getProperty("os.name"),
                  obj.getString("os.name"));
   }
+  // end::testDefaultLocalhost[]
 
+  // tag::testRestClientBuilder[]
   public void testRestClientBuilder() {
     String hostname = null;
     try{
@@ -85,6 +88,7 @@ public class RestClientTest {
                  System.getProperty("os.name"),
                  obj.getString("os.name"));
   }
+  // end::testRestClientBuilder[]
 
   private JsonObject fetchProperties(String url) {
     WebTarget target = client.target(url);

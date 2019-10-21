@@ -35,15 +35,23 @@ import io.openliberty.guides.inventory.client.UnknownUrlExceptionMapper;
 import io.openliberty.guides.inventory.model.InventoryList;
 import io.openliberty.guides.inventory.model.SystemData;
 
+// tag::applicationScoped[]
 @ApplicationScoped
+// end::applicationScoped[]
 public class InventoryManager {
 
   private List<SystemData> systems = Collections.synchronizedList(new ArrayList<>());
   private final String DEFAULT_PORT = System.getProperty("default.http.port");
 
+  // tag::inject[]
   @Inject
+  // end::inject[]
+  // tag::restClient[]
   @RestClient
+  // end::restClient[]
+  // tag::defaultrestClient[]
   private SystemClient defaultRestClient;
+  // end::defaultrestClient[]
 
   public Properties get(String hostname) {
     Properties properties = null;
@@ -70,9 +78,12 @@ public class InventoryManager {
     return new InventoryList(systems);
   }
 
+  // tag::getPropertiesWithDefault[]
   private Properties getPropertiesWithDefaultHostName() {
     try {
+      // tag::defaultGetProperties[]
       return defaultRestClient.getProperties();
+      // end::defaultGetProperties[]
     } catch (URISyntaxException e) {
         System.err.println("The given URI is not formatted correctly.");
     } catch (ProcessingException ex) {
@@ -80,6 +91,7 @@ public class InventoryManager {
     }
     return null;
   }
+  // end::getPropertiesWithDefault[]
 
   // tag::builder[]
   private Properties getPropertiesWithGivenHostName(String hostname) {
@@ -87,11 +99,15 @@ public class InventoryManager {
     URI customURI = null;
     try {
       customURI = new URI(customURIString);
+      // tag::restClientBuilder[]
       SystemClient customRestClient = RestClientBuilder.newBuilder()
                                          .baseUri(customURI)
                                          .register(UnknownUrlExceptionMapper.class)
                                          .build(SystemClient.class);
+      // end::restClientBuilder[]
+      // tag::customGetProperties[]
       return customRestClient.getProperties();
+      // end::customGetProperties[]
     } catch (ProcessingException ex) {
       handleProcessingException(ex);
     } catch (URISyntaxException e) {

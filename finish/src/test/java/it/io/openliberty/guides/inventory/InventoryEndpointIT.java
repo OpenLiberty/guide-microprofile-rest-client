@@ -1,6 +1,6 @@
 // tag::copyright[]
 /*******************************************************************************
- * Copyright (c) 2017, 2018 IBM Corporation and others.
+ * Copyright (c) 2017, 2019 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -26,7 +26,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class InventoryEndpointTest {
+public class InventoryEndpointIT {
 
   private static String port;
   private static String baseUrl;
@@ -38,7 +38,7 @@ public class InventoryEndpointTest {
 
   @BeforeClass
   public static void oneTimeSetup() {
-    port = System.getProperty("liberty.test.port");
+    port = System.getProperty("liberty.test.port", "9080");
     baseUrl = "http://localhost:" + port + "/";
   }
 
@@ -57,28 +57,11 @@ public class InventoryEndpointTest {
   // tag::testSuite[]
   @Test
   public void testSuite() {
-    this.testEmptyInventory();
     this.testHostRegistration();
     this.testSystemPropertiesMatch();
     this.testUnknownHost();
   }
   // end::testSuite[]
-
-  // tag::testEmptyInventory[]
-  public void testEmptyInventory() {
-    Response response = this.getResponse(baseUrl + INVENTORY_SYSTEMS);
-    this.assertResponse(baseUrl, response);
-
-    JsonObject obj = response.readEntity(JsonObject.class);
-
-    int expected = 0;
-    int actual = obj.getInt("total");
-    assertEquals("The inventory should be empty on application start but it wasn't",
-                 expected, actual);
-
-    response.close();
-  }
-  // end::testEmptyInventory[]
 
   // tag::testHostRegistration[]
   public void testHostRegistration() {
@@ -88,11 +71,6 @@ public class InventoryEndpointTest {
     this.assertResponse(baseUrl, response);
 
     JsonObject obj = response.readEntity(JsonObject.class);
-
-    int expected = 1;
-    int actual = obj.getInt("total");
-    assertEquals("The inventory should have one entry for localhost", expected,
-                 actual);
 
     boolean localhostExists = obj.getJsonArray("systems").getJsonObject(0)
                                  .get("hostname").toString()
