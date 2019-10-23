@@ -31,19 +31,28 @@ import org.eclipse.microprofile.rest.client.RestClientBuilder;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import io.openliberty.guides.inventory.client.SystemClient;
-import io.openliberty.guides.inventory.client.UnknownUrlExceptionMapper;
+import io.openliberty.guides.inventory.client.UnknownUriException;
+import io.openliberty.guides.inventory.client.UnknownUriExceptionMapper;
 import io.openliberty.guides.inventory.model.InventoryList;
 import io.openliberty.guides.inventory.model.SystemData;
 
+// tag::ApplicationScoped[]
 @ApplicationScoped
+// end::ApplicationScoped[]
 public class InventoryManager {
 
   private List<SystemData> systems = Collections.synchronizedList(new ArrayList<>());
   private final String DEFAULT_PORT = System.getProperty("default.http.port");
 
+  // tag::Inject[]
   @Inject
+  // end::Inject[]
+  // tag::RestClient[]
   @RestClient
+  // end::RestClient[]
+  // tag::SystemClient[]
   private SystemClient defaultRestClient;
+  // end::SystemClient[]
 
   public Properties get(String hostname) {
     Properties properties = null;
@@ -70,40 +79,50 @@ public class InventoryManager {
     return new InventoryList(systems);
   }
 
+  // tag::getPropertiesWithDefaultHostName[]
   private Properties getPropertiesWithDefaultHostName() {
     try {
+      // tag::defaultRCGetProperties[]
       return defaultRestClient.getProperties();
-    } catch (URISyntaxException e) {
+      // end::defaultRCGetProperties[]
+    } catch (UnknownUriException e) {
         System.err.println("The given URI is not formatted correctly.");
     } catch (ProcessingException ex) {
       handleProcessingException(ex);
     }
     return null;
   }
+  // end::getPropertiesWithDefaultHostName[]
 
-  // tag::builder[]
+  // tag::getPropertiesWithGivenHostName[]
   private Properties getPropertiesWithGivenHostName(String hostname) {
     String customURIString = "http://" + hostname + ":" + DEFAULT_PORT + "/system";
     URI customURI = null;
     try {
       customURI = new URI(customURIString);
+      // tag::customRestClientBuilder[]
       SystemClient customRestClient = RestClientBuilder.newBuilder()
                                          .baseUri(customURI)
-                                         .register(UnknownUrlExceptionMapper.class)
+                                         .register(UnknownUriExceptionMapper.class)
                                          .build(SystemClient.class);
+      // end::customRestClientBuilder[]
+      // tag::customRCGetProperties[]
       return customRestClient.getProperties();
+      // end::customRCGetProperties[]
     } catch (ProcessingException ex) {
       handleProcessingException(ex);
-    } catch (URISyntaxException e) {
+    } catch (UnknownUriException e) {
       System.err.println("The given URI is not formatted correctly.");
+    } catch (URISyntaxException e) {
+        System.err.println("The given URI syntax is not correct.");
     }
     return null;
   }
-  // end::builder[]
+  // end::getPropertiesWithGivenHostName[]
 
   private void handleProcessingException(ProcessingException ex) {
     Throwable rootEx = ExceptionUtils.getRootCause(ex);
-    if (rootEx != null && (rootEx instanceof UnknownHostException || 
+    if (rootEx != null && (rootEx instanceof UnknownHostException ||
         rootEx instanceof ConnectException)) {
       System.err.println("The specified host is unknown.");
     } else {

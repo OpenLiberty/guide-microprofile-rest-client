@@ -119,17 +119,22 @@ The template interface describes the remote service that you want to access. The
 `src/main/java/io/openliberty/guides/inventory/client/SystemClient.java`
 ----
 SystemClient.java
-[source, Java, linenums, role='code_column']
+[source, Java, linenums, role='code_column hide_tags=copyright']
 ----
-include::finish/src/main/java/io/openliberty/guides/inventory/client/SystemClient.java[tags=**;!copyright]
+include::finish/src/main/java/io/openliberty/guides/inventory/client/SystemClient.java[]
 ----
 
-The MicroProfile Rest Client feature automatically builds and generates a client implementation based on what is defined in the [hotspot=17-22 file=2]`SystemClient` interface. Thus, you don't waste time on setting up the client and connecting with the remote service.
+The MicroProfile Rest Client feature automatically builds and generates a client implementation based on what is defined in the [hotspot=SystemClient file=2]`SystemClient` interface. Thus, you don't waste time on setting up the client and connecting with the remote service.
 
-When the [hotspot=21 file=2]`getProperties()` method is invoked, the [hotspot=17-22 file=2]`SystemClient` instance sends a GET request to the `<baseUrl>/properties` endpoint, where `<baseUrl>` is the default base URL of the `system` service. You will see how to configure the base URL in the next section.
+Notice the [hotspot=SystemClient file=2]`SystemClient` interface inherits the [hotspot=AutoCloseable file=2]`AutoCloseable` interface.
+The client service will automatically close after its invocation, and the underlying resources are cleaned up.
 
-The [hotspot=15 file=2]`@RegisterProvider` annotation tells the framework to register the provider classes to be used when the framework invokes the interface. You can add as many providers as necessary.
-In the [hotspot=17-22 file=2]`SystemClient` interface, add a response exception mapper as a provider to map the `404` response code with the [hotspot=21 file=2]`UnknownUrlException` exception.
+When the [hotspot=getProperties file=2]`getProperties()` method is invoked, the [hotspot=SystemClient file=2]`SystemClient` instance sends a GET request to the `<baseUrl>/properties` endpoint, where `<baseUrl>` is the default base URL of the `system` service. You will see how to configure the base URL in the next section.
+
+The [hotspot=Produces file=2]`@Produces` annotation specifies the media (MIME) type of the expected response. The default value is `MediaType.APPLICATION_JSON`.
+
+The [hotspot=RegisterProvider file=2]`@RegisterProvider` annotation tells the framework to register the provider classes to be used when the framework invokes the interface. You can add as many providers as necessary.
+In the [hotspot=SystemClient file=2]`SystemClient` interface, add a response exception mapper as a provider to map the `404` response code with the [hotspot=getProperties file=2]`UnknownUriException` exception.
 
 // =================================================================================================
 // Handling exceptions through ResponseExceptionMappers
@@ -138,39 +143,39 @@ In the [hotspot=17-22 file=2]`SystemClient` interface, add a response exception 
 
 Error handling is an important step to ensure that the application can fail safely. If there is an error response such as `404 NOT FOUND` when invoking the remote service, you need to handle it. First, define an exception, and map the exception with the error response code. Then, register the exception mapper in the client interface.
 
-Look at the client interface again, the [hotspot=15 file=0]`@RegisterProvider(UnknownUrlExceptionMapper.class)` annotation registers the `UnknownUrlExceptionMapper` response exception mapper.
+Look at the client interface again, the [hotspot=RegisterProvider file=0]`@RegisterProvider(UnknownUriExceptionMapper.class)` annotation registers the `UnknownUriExceptionMapper` response exception mapper.
 An exception mapper maps various response codes from the remote service to throwable exceptions.
 
 SystemClient.java
-[source, Java, linenums, role='code_column']
+[source, Java, linenums, role='code_column hide_tags=copyright']
 ----
-include::finish/src/main/java/io/openliberty/guides/inventory/client/SystemClient.java[tags=**;!copyright]
+include::finish/src/main/java/io/openliberty/guides/inventory/client/SystemClient.java[]
 ----
 
 Implement the actual exception class and the mapper class to see how this mechanism works.
 
-[role="code_command hotspot", subs="quotes"]
+[role="code_command hotspot file=1", subs="quotes"]
 ----
-#Create the `UnknownUrlException` class.#
-`src/main/java/io/openliberty/guides/inventory/client/UnknownUrlException.java`
+#Create the `UnknownUriException` class.#
+`src/main/java/io/openliberty/guides/inventory/client/UnknownUriException.java`
 ----
-UnknownUrlException.java
+UnknownUriException.java
 [source, Java, linenums, role='code_column']
 ----
-include::finish/src/main/java/io/openliberty/guides/inventory/client/UnknownUrlException.java[tags=**;!copyright]
+include::finish/src/main/java/io/openliberty/guides/inventory/client/UnknownUriException.java[tags=**;!copyright]
 ----
 
-Now, link the [hotspot=3-14 file=1]`UnknownUrlException` class with the corresponding response code through a `ResponseExceptionMapper` mapper class.
+Now, link the [hotspot=3-14 file=1]`UnknownUriException` class with the corresponding response code through a `ResponseExceptionMapper` mapper class.
 
-[role="code_command hotspot", subs="quotes"]
+[role="code_command hotspot file=2", subs="quotes"]
 ----
-#Create the `UnknownUrlExceptionMapper` class.#
-`src/main/java/io/openliberty/guides/inventory/client/UnknownUrlExceptionMapper.java`
+#Create the `UnknownUriExceptionMapper` class.#
+`src/main/java/io/openliberty/guides/inventory/client/UnknownUriExceptionMapper.java`
 ----
-UnknownUrlExceptionMapper.java
+UnknownUriExceptionMapper.java
 [source, Java, linenums, role='code_column']
 ----
-include::finish/src/main/java/io/openliberty/guides/inventory/client/UnknownUrlExceptionMapper.java[tags=**;!copyright]
+include::finish/src/main/java/io/openliberty/guides/inventory/client/UnknownUriExceptionMapper.java[tags=**;!copyright]
 ----
 
 The [hotspot=15-18 file=2]`handles()` method inspects the HTTP response code to determine whether an exception is thrown for the specific response, and the [hotspot=21-23 file=2]`toThrowable()` method returns the mapped exception.
@@ -180,9 +185,9 @@ The [hotspot=15-18 file=2]`handles()` method inspects the HTTP response code to 
 // =================================================================================================
 == Injecting the client with dependency injection
 
-Now, instantiate the [hotspot=17-22 file=1]`SystemClient` interface and use it in the `inventory` service. If you want to connect only with the default host name, you can easily instantiate the `SystemClient` with CDI annotations. CDI injection simplifies the process of bootstrapping the client.
+Now, instantiate the [hotspot=SystemClient file=1]`SystemClient` interface and use it in the `inventory` service. If you want to connect only with the default host name, you can easily instantiate the `SystemClient` with CDI annotations. CDI injection simplifies the process of bootstrapping the client.
 
-First, you need to define the base URL of the [hotspot=17-22 file=1]`SystemClient` instance.
+First, you need to define the base URL of the [hotspot=SystemClient file=1]`SystemClient` instance.
 Configure the default base URL with the MicroProfile Config feature. This feature is enabled for you in both `server.xml` and `pom.xml` files.
 
 [role="code_command hotspot", subs="quotes"]
@@ -191,49 +196,54 @@ Configure the default base URL with the MicroProfile Config feature. This featur
 `src/main/webapp/META-INF/microprofile-config.properties`
 ----
 microprofile-config.properties
-[source, properties, linenums, role='code_column']
+[source, properties, linenums, role='code_column hide_tags=copyright']
 ----
-include::finish/src/main/webapp/META-INF/microprofile-config.properties[tags=**;!copyright]
+include::finish/src/main/webapp/META-INF/microprofile-config.properties[]
 ----
 
-The config property [hotspot=1 file=0]`io.openliberty.guides.inventory.client.SystemClient/mp-rest/url` is configured to the default [hotspot=2 file=0]`\http://localhost:9080/system` base URL.
+The config property [hotspot=baseUri file=0]`systemClient/mp-rest/url` is configured to the default [hotspot=baseUri file=0]`\http://localhost:9080/system` base URL.
 
 This configuration is automatically picked up by the MicroProfile Config API.
 
-Look at the annotations in the [hotspot=17-22 file=1]`SystemClient` interface again.
+Look at the annotations in the [hotspot=SystemClient file=1]`SystemClient` interface again.
 
 SystemClient.java
-[source, Java, linenums, role='code_column']
+[source, Java, linenums, role='code_column hide_tags=copyright']
 ----
-include::finish/src/main/java/io/openliberty/guides/inventory/client/SystemClient.java[tags=**;!copyright]
+include::finish/src/main/java/io/openliberty/guides/inventory/client/SystemClient.java[]
 ----
 
-The [hotspot=13 file=1]`@Dependent` annotation tells the service that the scope of the interface depends on the class that it is injected into.
+The [hotspot=Dependent file=1]`@Dependent` annotation tells the service that the scope of the interface depends on the class that it is injected into.
 By default, interfaces have a `@Dependent` scope unless another scope is defined on the interface.
 
-The [hotspot=14 file=1]`@RegisterRestClient` annotation registers the interface as a RESTful client. The runtime creates a CDI managed bean for every interface that is annotated with the `@RegisterRestClient` annotation.
+The [hotspot=RegisterRestClient file=1]`@RegisterRestClient` annotation registers the interface as a RESTful client. The runtime creates a CDI managed bean for every interface that is annotated with the `@RegisterRestClient` annotation.
 
-The [hotspot=13 file=1]`@Dependent` and [hotspot=14 file=1]`@RegisterRestClient` annotations imply that the interface is manageable through CDI. You must have them in order to inject the client.
+The [hotspot=RegisterRestClient file=1]`configKey` value in the [hotspot=RegisterRestClient file=1]`@RegisterRestClient` annotation replaces the fully-qualified classname of the [hotspot=baseUri file=0]`mp-rest/url` property in the MP Config file.
+The benefit of using Config Keys is when multiple client interfaces have the same `configKey` value, the interfaces can be configured with a single MP config property.
 
-Inject the [hotspot=17-22 file=1]`SystemClient` interface into the [hotspot=25-102 file=2]`InventoryManager` class, which is another CDI managed bean.
+The [hotspot=RegisterRestClient file=1]`baseUri` value can also be set in the [hotspot=RegisterRestClient file=1]`@RegisterRestClient` annotation. However, this value will be overridden by the [hotspot=baseUri file=0]`mp-rest/url` value defined in the MP Config, as the property defined in the MP Config takes precedence. In a real development and production environment, you can specify a different URI than the production URI just for development and testing purposes. For this guide, try to specify an invalid URI value for the [hotspot=RegisterRestClient file=1]`baseUri` variable and comment out the [hotspot=baseUri file=0]`systemClient/mp-rest/url` property in the [hotspot file=0]`microprofile-config.properties` file. Then, run the `mvn install` command to verify that the `InventoryEndpointTest` fails to connect to the `system` service.
 
-[role="code_command hotspot", subs="quotes"]
+The [hotspot=Dependent file=1]`@Dependent` and [hotspot=RegisterRestClient file=1]`@RegisterRestClient` annotations imply that the interface is manageable through CDI. You must have them in order to inject the client.
+
+Inject the [hotspot=SystemClient file=1]`SystemClient` interface into the [hotspot file=2]`InventoryManager` class, which is another CDI managed bean.
+
+[role="code_command hotspot file=2", subs="quotes"]
 ----
 #Create the `InventoryManager` class.#
 `src/main/java/io/openliberty/guides/inventory/InventoryManager.java`
 ----
 InventoryManager.java
-[source, Java, linenums, role='code_column']
+[source, Java, linenums, role='code_column hide_tags=copyright']
 ----
-include::finish/src/main/java/io/openliberty/guides/inventory/InventoryManager.java[tags=**;!copyright]
+include::finish/src/main/java/io/openliberty/guides/inventory/InventoryManager.java[]
 ----
 
-[hotspot=30 file=2]`@Inject` and [hotspot=31 file=2]`@RestClient` annotations inject an instance of the [hotspot=32 file=2]`SystemClient` called `defaultRestClient` to the [hotspot=25-99 file=2]`InventoryManager` class.
+[hotspot=Inject file=2]`@Inject` and [hotspot=RestClient file=2]`@RestClient` annotations inject an instance of the [hotspot=SystemClient file=2]`SystemClient` called `defaultRestClient` to the [hotspot file=2]`InventoryManager` class.
 
-Since the [hotspot=25-102 file=2]`InventoryManager` class is [hotspot=24 file=2]`@ApplicationScoped`, and the [hotspot=17-22 file=1]`SystemClient` CDI bean maintains the same scope through the [hotspot=13 file=1]`@Dependent` annotation, the client is initialized once per application.
+Since the [hotspot file=2]`InventoryManager` class is [hotspot=ApplicationScoped file=2]`@ApplicationScoped`, and the [hotspot=SystemClient file=1]`SystemClient` CDI bean maintains the same scope through the [hotspot=Dependent file=1]`@Dependent` annotation, the client is initialized once per application.
 
-If the `hostname` parameter is `localhost`, the service runs the [hotspot=59-68 file=2]`getPropertiesWithDefaultHostName()` helper function to fetch system properties.
-The helper function invokes the `system` service by calling the [hotspot=61 file=2]`defaultRestClient.getProperties()` method.
+If the `hostname` parameter is `localhost`, the service runs the [hotspot=getPropertiesWithDefaultHostName file=2]`getPropertiesWithDefaultHostName()` helper function to fetch system properties.
+The helper function invokes the `system` service by calling the [hotspot=defaultRCGetProperties file=2]`defaultRestClient.getProperties()` method.
 
 // =================================================================================================
 // Building the client with RestClientBuilder
@@ -243,18 +253,18 @@ The helper function invokes the `system` service by calling the [hotspot=61 file
 The `inventory` service might also connect with a host other than the default `localhost` host. Then, you cannot configure a base URL that is not yet known.
 Therefore, set the host name as a variable and build the client by using the `RestClientBuilder` method. You can customize the base URL from the host name attribute.
 
-Look at the [hotspot=70-88]`getPropertiesWithGivenHostName()` method in the `src/main/java/io/openliberty/guides/inventory/InventoryManager.java` file.
+Look at the [hotspot=getPropertiesWithGivenHostName]`getPropertiesWithGivenHostName()` method in the `src/main/java/io/openliberty/guides/inventory/InventoryManager.java` file.
 
 InventoryManager.java
-[source, Java, linenums, role='code_column']
+[source, Java, linenums, role='code_column hide_tags=copyright']
 ----
-include::finish/src/main/java/io/openliberty/guides/inventory/InventoryManager.java[tags=**;!copyright]
+include::finish/src/main/java/io/openliberty/guides/inventory/InventoryManager.java[]
 ----
 
 The host name is provided as a parameter. This method first assembles the base URL that consists of the new host name.
-Then, the method instantiates a [hotspot=75-78]`RestClientBuilder` builder with the new URL, registers the response exception mapper, and builds the `SystemClient` instance.
+Then, the method instantiates a [hotspot=customRestClientBuilder]`RestClientBuilder` builder with the new URL, registers the response exception mapper, and builds the `SystemClient` instance.
 
-Similarly, call the [hotspot=79]`customRestClient.getProperties()` method to invoke the `system` service.
+Similarly, call the [hotspot=customRCGetProperties]`customRestClient.getProperties()` method to invoke the `system` service.
 
 // =================================================================================================
 // Building and running the application
@@ -318,12 +328,15 @@ Results :
 Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
 ----
 
-To see whether the tests detect a failure, change the base URL in the configuration file so that when the `inventory` service tries to access the invalid URL, an UnknownUrlException is thrown.
+To see whether the tests detect a failure, change the base URL in the configuration file so that when the `inventory` service tries to access the invalid URL, an UnknownUriException is thrown.
 Rerun the Maven build. You see a test failure occur.
 
 == Great work! You're done!
 
 You just invoked a remote service by using a template interface with MicroProfile Rest Client in Open Liberty.
+
+Although not covered in this guide, MicroProfile Rest Client provides a uniform way to configure SSL for the client.
+You can learn more in the https://openliberty.io/blog/2019/06/21/microprofile-rest-client-19006.html#ssl[Hostname verification with SSL on Open Liberty and MicroProfile Rest Client^] blog and the https://github.com/eclipse/microprofile-rest-client/releases[MicroProfile Rest Client specification^].
 
 Feel free to try one of the related guides. They demonstrate more technologies that you can learn and
 expand on what you built here.

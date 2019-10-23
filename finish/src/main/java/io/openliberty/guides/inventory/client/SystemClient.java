@@ -27,15 +27,29 @@ import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 import java.lang.AutoCloseable;
 
 // tag::annotations[]
+// tag::Dependent[]
 @Dependent
+// end::Dependent[]
+// tag::RegisterRestClient[]
 @RegisterRestClient(configKey="systemClient", baseUri="http://localhost:9080/system")
-@RegisterProvider(UnknownUrlExceptionMapper.class)
+// end::RegisterRestClient[]
+// tag::RegisterProvider[]
+@RegisterProvider(UnknownUriExceptionMapper.class)
+// end::RegisterProvider[]
 @Path("/properties")
+// tag::SystemClient[]
+// tag::AutoCloseable[]
 public interface SystemClient extends AutoCloseable {
-  // end::annotations[]
+// end::AutoCloseable[]
+// end::annotations[]
 
   @GET
+  // tag::Produces[]
   @Produces(MediaType.APPLICATION_JSON)
-  public Properties getProperties() throws URISyntaxException, ProcessingException;
+  // end::Produces[]
+  // tag::getProperties[]
+  public Properties getProperties() throws UnknownUriException, ProcessingException;
+  // end::getProperties[]
 }
+// end::SystemClient[]
 // end::client[]

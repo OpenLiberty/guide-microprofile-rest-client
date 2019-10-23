@@ -1,6 +1,6 @@
 // tag::copyright[]
 /*******************************************************************************
- * Copyright (c) 2018 IBM Corporation and others.
+ * Copyright (c) 2018, 2019 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -20,9 +20,9 @@ import javax.ws.rs.ext.Provider;
 import org.eclipse.microprofile.rest.client.ext.ResponseExceptionMapper;
 
 @Provider
-public class UnknownUrlExceptionMapper
-    implements ResponseExceptionMapper<UnknownUrlException> {
-  Logger LOG = Logger.getLogger(UnknownUrlExceptionMapper.class.getName());
+public class UnknownUriExceptionMapper
+    implements ResponseExceptionMapper<UnknownUriException> {
+  Logger LOG = Logger.getLogger(UnknownUriExceptionMapper.class.getName());
 
   @Override
   public boolean handles(int status, MultivaluedMap<String, Object> headers) {
@@ -31,8 +31,8 @@ public class UnknownUrlExceptionMapper
   }
 
   @Override
-  public UnknownUrlException toThrowable(Response response) {
-    return new UnknownUrlException();
+  public UnknownUriException toThrowable(Response response) {
+    return new UnknownUriException();
   }
 }
 // end::mapper[]
