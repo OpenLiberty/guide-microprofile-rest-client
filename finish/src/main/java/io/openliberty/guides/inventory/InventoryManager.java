@@ -86,7 +86,7 @@ public class InventoryManager {
       return defaultRestClient.getProperties();
       // end::defaultRCGetProperties[]
     } catch (UnknownUriException e) {
-        System.err.println("The given URI is not formatted correctly.");
+      System.err.println("The given URI is not formatted correctly.");
     } catch (ProcessingException ex) {
       handleProcessingException(ex);
     }
@@ -101,10 +101,8 @@ public class InventoryManager {
     try {
       customURI = new URI(customURIString);
       // tag::customRestClientBuilder[]
-      SystemClient customRestClient = RestClientBuilder.newBuilder()
-                                         .baseUri(customURI)
-                                         .register(UnknownUriExceptionMapper.class)
-                                         .build(SystemClient.class);
+      SystemClient customRestClient = RestClientBuilder.newBuilder().baseUri(customURI)
+          .register(UnknownUriExceptionMapper.class).build(SystemClient.class);
       // end::customRestClientBuilder[]
       // tag::customRCGetProperties[]
       return customRestClient.getProperties();
@@ -114,7 +112,7 @@ public class InventoryManager {
     } catch (UnknownUriException e) {
       System.err.println("The given URI is unreachable.");
     } catch (URISyntaxException e) {
-        System.err.println("The given URI syntax is not correct.");
+      System.err.println("The given URI syntax is not correct.");
     }
     return null;
   }
@@ -122,8 +120,8 @@ public class InventoryManager {
 
   private void handleProcessingException(ProcessingException ex) {
     Throwable rootEx = ExceptionUtils.getRootCause(ex);
-    if (rootEx != null && (rootEx instanceof UnknownHostException ||
-        rootEx instanceof ConnectException)) {
+    if (rootEx != null && (rootEx instanceof UnknownHostException
+        || rootEx instanceof ConnectException)) {
       System.err.println("The specified host is unknown.");
     } else {
       throw ex;

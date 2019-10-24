@@ -13,7 +13,6 @@
 // tag::client[]
 package io.openliberty.guides.inventory.client;
 
-import java.net.URISyntaxException;
 import java.util.Properties;
 import javax.enterprise.context.Dependent;
 import javax.ws.rs.ProcessingException;
@@ -24,6 +23,8 @@ import javax.ws.rs.core.MediaType;
 
 import org.eclipse.microprofile.rest.client.annotation.RegisterProvider;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
+import io.openliberty.guides.inventory.client.UnknownUriException;
+import io.openliberty.guides.inventory.client.UnknownUriExceptionMapper;
 import java.lang.AutoCloseable;
 
 // tag::annotations[]
@@ -31,7 +32,7 @@ import java.lang.AutoCloseable;
 @Dependent
 // end::Dependent[]
 // tag::RegisterRestClient[]
-@RegisterRestClient(configKey="systemClient", baseUri="http://localhost:9080/system")
+@RegisterRestClient(configKey = "systemClient", baseUri = "http://localhost:9080/system")
 // end::RegisterRestClient[]
 // tag::RegisterProvider[]
 @RegisterProvider(UnknownUriExceptionMapper.class)
