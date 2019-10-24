@@ -112,7 +112,7 @@ public class InventoryManager {
     } catch (ProcessingException ex) {
       handleProcessingException(ex);
     } catch (UnknownUriException e) {
-      System.err.println("The given URI is not formatted correctly.");
+      System.err.println("The given URI is unreachable.");
     } catch (URISyntaxException e) {
         System.err.println("The given URI syntax is not correct.");
     }

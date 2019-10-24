@@ -190,7 +190,7 @@ Now, instantiate the [hotspot=SystemClient file=1]`SystemClient` interface and u
 First, you need to define the base URL of the [hotspot=SystemClient file=1]`SystemClient` instance.
 Configure the default base URL with the MicroProfile Config feature. This feature is enabled for you in both `server.xml` and `pom.xml` files.
 
-[role="code_command hotspot", subs="quotes"]
+[role="code_command hotspot file=0", subs="quotes"]
 ----
 #Create the configuration file.#
 `src/main/webapp/META-INF/microprofile-config.properties`
@@ -201,7 +201,7 @@ microprofile-config.properties
 include::finish/src/main/webapp/META-INF/microprofile-config.properties[]
 ----
 
-The config property [hotspot=baseUri file=0]`systemClient/mp-rest/url` is configured to the default [hotspot=baseUri file=0]`\http://localhost:9080/system` base URL.
+The config property [hotspot=baseUri file=0]`mp-rest/uri` is configured to the default [hotspot=baseUri file=0]`\http://localhost:9080/system` base URL.
 
 This configuration is automatically picked up by the MicroProfile Config API.
 
@@ -218,10 +218,11 @@ By default, interfaces have a `@Dependent` scope unless another scope is defined
 
 The [hotspot=RegisterRestClient file=1]`@RegisterRestClient` annotation registers the interface as a RESTful client. The runtime creates a CDI managed bean for every interface that is annotated with the `@RegisterRestClient` annotation.
 
-The [hotspot=RegisterRestClient file=1]`configKey` value in the [hotspot=RegisterRestClient file=1]`@RegisterRestClient` annotation replaces the fully-qualified classname of the [hotspot=baseUri file=0]`mp-rest/url` property in the MP Config file.
+The [hotspot=RegisterRestClient file=1]`configKey` value in the [hotspot=RegisterRestClient file=1]`@RegisterRestClient` annotation replaces the fully-qualified classname of the properties in the [hotspot file=0]`microprofile-config.properties` configuration file.
+For example, the `<fully-qualified classname>/mp-rest/uri` property becomes `systemClient/mp-rest/uri`.
 The benefit of using Config Keys is when multiple client interfaces have the same `configKey` value, the interfaces can be configured with a single MP config property.
 
-The [hotspot=RegisterRestClient file=1]`baseUri` value can also be set in the [hotspot=RegisterRestClient file=1]`@RegisterRestClient` annotation. However, this value will be overridden by the [hotspot=baseUri file=0]`mp-rest/url` value defined in the MP Config, as the property defined in the MP Config takes precedence. In a real development and production environment, you can specify a different URI than the production URI just for development and testing purposes. For this guide, try to specify an invalid URI value for the [hotspot=RegisterRestClient file=1]`baseUri` variable and comment out the [hotspot=baseUri file=0]`systemClient/mp-rest/url` property in the [hotspot file=0]`microprofile-config.properties` file. Then, run the `mvn install` command to verify that the `InventoryEndpointTest` fails to connect to the `system` service.
+The [hotspot=RegisterRestClient file=1]`baseUri` value can also be set in the [hotspot=RegisterRestClient file=1]`@RegisterRestClient` annotation. However, this value will be overridden by the base URI property defined in the [hotspot file=0]`microprofile-config.properties` configuration file. The property defined in the MicroProfile Config file takes precedence. In a production environment, you can use the `baseUri` variable to specify a different URI than the production URI for development and testing purposes. For this guide, try to specify an invalid URI value for the [hotspot=RegisterRestClient file=1]`baseUri` variable and comment out the [hotspot=baseUri file=0]`mp-rest/uri` property in the [hotspot file=0]`microprofile-config.properties` file. Then, run the `mvn install` command to verify that the `InventoryEndpointTest` fails to connect to the `system` service.
 
 The [hotspot=Dependent file=1]`@Dependent` and [hotspot=RegisterRestClient file=1]`@RegisterRestClient` annotations imply that the interface is manageable through CDI. You must have them in order to inject the client.
 
