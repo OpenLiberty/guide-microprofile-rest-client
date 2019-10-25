@@ -143,7 +143,7 @@ In the [hotspot=SystemClient file=2]`SystemClient` interface, add a response exc
 
 Error handling is an important step to ensure that the application can fail safely. If there is an error response such as `404 NOT FOUND` when invoking the remote service, you need to handle it. First, define an exception, and map the exception with the error response code. Then, register the exception mapper in the client interface.
 
-Look at the client interface again, the [hotspot=RegisterProvider file=0]`@RegisterProvider(UnknownUriExceptionMapper.class)` annotation registers the `UnknownUriExceptionMapper` response exception mapper.
+Look at the client interface again, the [hotspot=RegisterProvider file=0]`@RegisterProvider` annotation registers the `UnknownUriExceptionMapper` response exception mapper.
 An exception mapper maps various response codes from the remote service to throwable exceptions.
 
 SystemClient.java
