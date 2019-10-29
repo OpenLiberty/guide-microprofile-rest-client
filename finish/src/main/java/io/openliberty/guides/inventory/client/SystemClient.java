@@ -14,23 +14,16 @@
 package io.openliberty.guides.inventory.client;
 
 import java.util.Properties;
-import javax.enterprise.context.Dependent;
-import javax.ws.rs.ProcessingException;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.ProcessingException;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.eclipse.microprofile.rest.client.annotation.RegisterProvider;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
-import io.openliberty.guides.inventory.client.UnknownUriException;
-import io.openliberty.guides.inventory.client.UnknownUriExceptionMapper;
-import java.lang.AutoCloseable;
 
-// tag::annotations[]
-// tag::Dependent[]
-@Dependent
-// end::Dependent[]
 // tag::RegisterRestClient[]
 @RegisterRestClient(configKey = "systemClient", baseUri = "http://localhost:9080/system")
 // end::RegisterRestClient[]
@@ -42,7 +35,6 @@ import java.lang.AutoCloseable;
 // tag::AutoCloseable[]
 public interface SystemClient extends AutoCloseable {
 // end::AutoCloseable[]
-// end::annotations[]
 
   @GET
   // tag::Produces[]

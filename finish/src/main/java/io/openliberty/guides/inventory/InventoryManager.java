@@ -15,7 +15,6 @@ package io.openliberty.guides.inventory;
 
 import java.net.ConnectException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -99,10 +98,13 @@ public class InventoryManager {
     String customURIString = "http://" + hostname + ":" + DEFAULT_PORT + "/system";
     URI customURI = null;
     try {
-      customURI = new URI(customURIString);
+      //customURI = new URI(customURIString);
+      customURI = URI.create(customURIString);
       // tag::customRestClientBuilder[]
-      SystemClient customRestClient = RestClientBuilder.newBuilder().baseUri(customURI)
-          .register(UnknownUriExceptionMapper.class).build(SystemClient.class);
+      SystemClient customRestClient = RestClientBuilder.newBuilder()
+                                                       .baseUri(customURI)
+                                                       .register(UnknownUriExceptionMapper.class)
+                                                       .build(SystemClient.class);
       // end::customRestClientBuilder[]
       // tag::customRCGetProperties[]
       return customRestClient.getProperties();
@@ -111,8 +113,6 @@ public class InventoryManager {
       handleProcessingException(ex);
     } catch (UnknownUriException e) {
       System.err.println("The given URI is unreachable.");
-    } catch (URISyntaxException e) {
-      System.err.println("The given URI syntax is not correct.");
     }
     return null;
   }
