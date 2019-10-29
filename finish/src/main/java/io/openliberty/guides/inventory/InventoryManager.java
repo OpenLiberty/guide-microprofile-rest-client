@@ -98,13 +98,12 @@ public class InventoryManager {
     String customURIString = "http://" + hostname + ":" + DEFAULT_PORT + "/system";
     URI customURI = null;
     try {
-      //customURI = new URI(customURIString);
       customURI = URI.create(customURIString);
       // tag::customRestClientBuilder[]
       SystemClient customRestClient = RestClientBuilder.newBuilder()
-                                                       .baseUri(customURI)
-                                                       .register(UnknownUriExceptionMapper.class)
-                                                       .build(SystemClient.class);
+                                          .baseUri(customURI)
+                                          .register(UnknownUriExceptionMapper.class)
+                                          .build(SystemClient.class);
       // end::customRestClientBuilder[]
       // tag::customRCGetProperties[]
       return customRestClient.getProperties();
