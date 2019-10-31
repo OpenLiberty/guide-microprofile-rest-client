@@ -13,37 +13,36 @@
 // tag::client[]
 package io.openliberty.guides.inventory.client;
 
-import java.net.URISyntaxException;
 import java.util.Properties;
-import javax.enterprise.context.Dependent;
-import javax.ws.rs.ProcessingException;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.ProcessingException;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.eclipse.microprofile.rest.client.annotation.RegisterProvider;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
-import java.lang.AutoCloseable;
 
-// tag::dependent[]
-@Dependent
-// end::dependent[]
-// tag::registerRestClient[]
-@RegisterRestClient(configKey="systemClient", baseUri="http://localhost:9080/system")
-// end::registerRestClient[]
-// tag::registerProvider[]
-@RegisterProvider(UnknownUrlExceptionMapper.class)
-// end::registerProvider[]
+// tag::RegisterRestClient[]
+@RegisterRestClient(configKey = "systemClient", baseUri = "http://localhost:9080/system")
+// end::RegisterRestClient[]
+// tag::RegisterProvider[]
+@RegisterProvider(UnknownUriExceptionMapper.class)
+// end::RegisterProvider[]
 @Path("/properties")
-// tag::systemClient[]
+// tag::SystemClient[]
+// tag::AutoCloseable[]
 public interface SystemClient extends AutoCloseable {
+// end::AutoCloseable[]
 
   @GET
+  // tag::Produces[]
   @Produces(MediaType.APPLICATION_JSON)
+  // end::Produces[]
   // tag::getProperties[]
-  public Properties getProperties() throws URISyntaxException, ProcessingException;
+  public Properties getProperties() throws UnknownUriException, ProcessingException;
   // end::getProperties[]
 }
-// end::systemClient[]
+// end::SystemClient[]
 // end::client[]

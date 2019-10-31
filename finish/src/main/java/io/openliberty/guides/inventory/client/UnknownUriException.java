@@ -13,15 +13,15 @@
 package io.openliberty.guides.inventory.client;
 
 // tag::exception[]
-public class UnknownUrlException extends Exception {
+public class UnknownUriException extends Exception {
 
   private static final long serialVersionUID = 1L;
 
-  public UnknownUrlException() {
+  public UnknownUriException() {
     super();
   }
 
-  public UnknownUrlException(String message) {
+  public UnknownUriException(String message) {
     super(message);
   }
 }

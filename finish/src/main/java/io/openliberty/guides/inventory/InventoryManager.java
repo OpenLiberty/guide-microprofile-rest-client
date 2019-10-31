@@ -15,7 +15,6 @@ package io.openliberty.guides.inventory;
 
 import java.net.ConnectException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,13 +31,14 @@ import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import io.openliberty.guides.inventory.client.SystemClient;
-import io.openliberty.guides.inventory.client.UnknownUrlExceptionMapper;
+import io.openliberty.guides.inventory.client.UnknownUriException;
+import io.openliberty.guides.inventory.client.UnknownUriExceptionMapper;
 import io.openliberty.guides.inventory.model.InventoryList;
 import io.openliberty.guides.inventory.model.SystemData;
 
-// tag::applicationScoped[]
+// tag::ApplicationScoped[]
 @ApplicationScoped
-// end::applicationScoped[]
+// end::ApplicationScoped[]
 public class InventoryManager {
 
   private List<SystemData> systems = Collections.synchronizedList(new ArrayList<>());
@@ -46,16 +46,16 @@ public class InventoryManager {
   @Inject
   @ConfigProperty(name = "default.http.port")
   String DEFAULT_PORT;
-
-  // tag::inject[]
+  
+  // tag::Inject[]
   @Inject
-  // end::inject[]
-  // tag::restClient[]
+  // end::Inject[]
+  // tag::RestClient[]
   @RestClient
-  // end::restClient[]
-  // tag::defaultrestClient[]
+  // end::RestClient[]
+  // tag::SystemClient[]
   private SystemClient defaultRestClient;
-  // end::defaultrestClient[]
+  // end::SystemClient[]
 
   public Properties get(String hostname) {
     Properties properties = null;
@@ -82,49 +82,49 @@ public class InventoryManager {
     return new InventoryList(systems);
   }
 
-  // tag::getPropertiesWithDefault[]
+  // tag::getPropertiesWithDefaultHostName[]
   private Properties getPropertiesWithDefaultHostName() {
     try {
-      // tag::defaultGetProperties[]
+      // tag::defaultRCGetProperties[]
       return defaultRestClient.getProperties();
-      // end::defaultGetProperties[]
-    } catch (URISyntaxException e) {
-        System.err.println("The given URI is not formatted correctly.");
+      // end::defaultRCGetProperties[]
+    } catch (UnknownUriException e) {
+      System.err.println("The given URI is not formatted correctly.");
     } catch (ProcessingException ex) {
       handleProcessingException(ex);
     }
     return null;
   }
-  // end::getPropertiesWithDefault[]
+  // end::getPropertiesWithDefaultHostName[]
 
-  // tag::builder[]
+  // tag::getPropertiesWithGivenHostName[]
   private Properties getPropertiesWithGivenHostName(String hostname) {
     String customURIString = "http://" + hostname + ":" + DEFAULT_PORT + "/system";
     URI customURI = null;
     try {
-      customURI = new URI(customURIString);
-      // tag::restClientBuilder[]
+      customURI = URI.create(customURIString);
+      // tag::customRestClientBuilder[]
       SystemClient customRestClient = RestClientBuilder.newBuilder()
-                                         .baseUri(customURI)
-                                         .register(UnknownUrlExceptionMapper.class)
-                                         .build(SystemClient.class);
-      // end::restClientBuilder[]
-      // tag::customGetProperties[]
+                                          .baseUri(customURI)
+                                          .register(UnknownUriExceptionMapper.class)
+                                          .build(SystemClient.class);
+      // end::customRestClientBuilder[]
+      // tag::customRCGetProperties[]
       return customRestClient.getProperties();
-      // end::customGetProperties[]
+      // end::customRCGetProperties[]
     } catch (ProcessingException ex) {
       handleProcessingException(ex);
-    } catch (URISyntaxException e) {
-      System.err.println("The given URI is not formatted correctly.");
+    } catch (UnknownUriException e) {
+      System.err.println("The given URI is unreachable.");
     }
     return null;
   }
-  // end::builder[]
+  // end::getPropertiesWithGivenHostName[]
 
   private void handleProcessingException(ProcessingException ex) {
     Throwable rootEx = ExceptionUtils.getRootCause(ex);
-    if (rootEx != null && (rootEx instanceof UnknownHostException || 
-        rootEx instanceof ConnectException)) {
+    if (rootEx != null && (rootEx instanceof UnknownHostException
+        || rootEx instanceof ConnectException)) {
       System.err.println("The specified host is unknown.");
     } else {
       throw ex;

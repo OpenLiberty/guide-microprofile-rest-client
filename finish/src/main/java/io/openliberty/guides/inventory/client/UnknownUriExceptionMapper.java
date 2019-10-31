@@ -20,9 +20,9 @@ import javax.ws.rs.ext.Provider;
 import org.eclipse.microprofile.rest.client.ext.ResponseExceptionMapper;
 
 @Provider
-public class UnknownUrlExceptionMapper
-    implements ResponseExceptionMapper<UnknownUrlException> {
-  Logger LOG = Logger.getLogger(UnknownUrlExceptionMapper.class.getName());
+public class UnknownUriExceptionMapper
+    implements ResponseExceptionMapper<UnknownUriException> {
+  Logger LOG = Logger.getLogger(UnknownUriExceptionMapper.class.getName());
 
   @Override
   // tag::handles[]
@@ -34,8 +34,8 @@ public class UnknownUrlExceptionMapper
 
   @Override
   // tag::toThrowable[]
-  public UnknownUrlException toThrowable(Response response) {
-    return new UnknownUrlException();
+  public UnknownUriException toThrowable(Response response) {
+    return new UnknownUriException();
   }
   // end::toThrowable[]
 }
