@@ -13,8 +13,8 @@
 // tag::testClass[]
 package it.io.openliberty.guides.inventory;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.ws.rs.client.Client;
@@ -22,10 +22,10 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.MediaType;
 import org.apache.cxf.jaxrs.provider.jsrjsonp.JsrJsonpProvider;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 public class InventoryEndpointIT {
 
@@ -37,19 +37,19 @@ public class InventoryEndpointIT {
   private final String SYSTEM_PROPERTIES = "system/properties";
   private final String INVENTORY_SYSTEMS = "inventory/systems";
 
-  @BeforeClass
+  @BeforeAll
   public static void oneTimeSetup() {
     port = System.getProperty("http.port");
     baseUrl = "http://localhost:" + port + "/";
   }
 
-  @Before
+  @BeforeEach
   public void setup() {
     client = ClientBuilder.newClient();
     client.register(JsrJsonpProvider.class);
   }
 
-  @After
+  @AfterEach
   public void teardown() {
     client.close();
   }
@@ -84,8 +84,8 @@ public class InventoryEndpointIT {
         break;
       }
     }
-    assertTrue("A host was registered, but it was not localhost",
-               localhostExists);
+    assertTrue(localhostExists,
+               "A host was registered, but it was not localhost");
 
     response.close();
   }
@@ -131,8 +131,8 @@ public class InventoryEndpointIT {
     String obj = badResponse.readEntity(String.class);
 
     boolean isError = obj.contains("ERROR");
-    assertTrue("badhostname is not a valid host but it didn't raise an error",
-               isError);
+    assertTrue(isError,
+               "badhostname is not a valid host but it didn't raise an error");
 
     response.close();
     badResponse.close();
@@ -168,8 +168,7 @@ public class InventoryEndpointIT {
    */
   // end::javadoc[]
   private void assertResponse(String url, Response response) {
-    assertEquals("Incorrect response code from " + url, 200,
-                 response.getStatus());
+    assertEquals(200, response.getStatus(), "Incorrect response code from " + url);
   }
 
   // tag::javadoc[]
@@ -189,9 +188,9 @@ public class InventoryEndpointIT {
   // end::javadoc[]
   private void assertProperty(String propertyName, String hostname,
       String expected, String actual) {
-    assertEquals("JVM system property [" + propertyName + "] "
+    assertEquals(expected, actual, "JVM system property [" + propertyName + "] "
         + "in the system service does not match the one stored in "
-        + "the inventory service for " + hostname, expected, actual);
+        + "the inventory service for " + hostname);
   }
 
   // tag::javadoc[]
