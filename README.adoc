@@ -236,7 +236,7 @@ Inject the [hotspot=SystemClient file=1]`SystemClient` interface into the [hotsp
 
 [role="code_command hotspot file=2", subs="quotes"]
 ----
-#Create the `InventoryManager` class.#
+#Replace the `InventoryManager` class.#
 `src/main/java/io/openliberty/guides/inventory/InventoryManager.java`
 ----
 InventoryManager.java
