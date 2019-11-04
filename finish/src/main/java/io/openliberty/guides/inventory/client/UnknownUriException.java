@@ -1,6 +1,6 @@
 // tag::copyright[]
 /*******************************************************************************
- * Copyright (c) 2018 IBM Corporation and others.
+ * Copyright (c) 2018, 2019 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,15 +13,15 @@
 // tag::exception[]
 package io.openliberty.guides.inventory.client;
 
-public class UnknownUrlException extends Exception {
+public class UnknownUriException extends Exception {
 
   private static final long serialVersionUID = 1L;
 
-  public UnknownUrlException() {
+  public UnknownUriException() {
     super();
   }
 
-  public UnknownUrlException(String message) {
+  public UnknownUriException(String message) {
     super(message);
   }
 }
