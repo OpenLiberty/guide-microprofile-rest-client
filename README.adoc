@@ -18,8 +18,8 @@
 :page-permalink: /guides/{projectid}
 :page-related-guides: ['rest-intro', 'cdi-intro', 'microprofile-config']
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
-:page-seo-title: Consuming REST services with template interfaces
-:page-seo-description: A tutorial and an example on how to consume REST services using MicroProfile Rest Client.
+:page-seo-title: Consuming RESTful microservices with template interfaces using MicroProfile Rest Client
+:page-seo-description: A tutorial on how to consume RESTful Java microservices and instantiate the client with either Context and Dependency Injection (CDI) or RestClientBuilder from MicroProfile Rest Client.
 :source-highlighter: prettify
 = Consuming RESTful services with template interfaces
 
