@@ -1,6 +1,6 @@
 // tag::copyright[]
 /*******************************************************************************
- * Copyright (c) 2017, 2019 IBM Corporation and others.
+ * Copyright (c) 2017, 2020 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -28,6 +28,7 @@ import javax.ws.rs.ProcessingException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.eclipse.microprofile.rest.client.RestClientBuilder;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import io.openliberty.guides.inventory.client.SystemClient;
 import io.openliberty.guides.inventory.client.UnknownUriException;
@@ -41,7 +42,10 @@ import io.openliberty.guides.inventory.model.SystemData;
 public class InventoryManager {
 
   private List<SystemData> systems = Collections.synchronizedList(new ArrayList<>());
-  private final String DEFAULT_PORT = System.getProperty("default.http.port");
+  
+  @Inject
+  @ConfigProperty(name = "default.http.port")
+  String DEFAULT_PORT;
 
   // tag::Inject[]
   @Inject
