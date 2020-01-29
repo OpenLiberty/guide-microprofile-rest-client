@@ -94,6 +94,7 @@
             <plugin>
                 <groupId>io.openliberty.tools</groupId>
                 <artifactId>liberty-maven-plugin</artifactId>
+                <version>${version.liberty-maven-plugin}</version>
             </plugin>
             <!-- Plugin to run functional tests -->
             <plugin>
