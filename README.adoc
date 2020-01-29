@@ -1,4 +1,4 @@
-// Copyright (c) 2018, 2019 IBM Corporation and others.
+// Copyright (c) 2018, 2020 IBM Corporation and others.
 // Licensed under Creative Commons Attribution-NoDerivatives
 // 4.0 International (CC BY-ND 4.0)
 //   https://creativecommons.org/licenses/by-nd/4.0/
@@ -56,16 +56,7 @@ In this guide, you will explore both methods to handle scenarios for providing a
 [role=command]
 include::{common-includes}/gitclone.adoc[]
 
-=== Try what you'll build
-
-To try out the application, first navigate to the `finish` directory, which contains the complete `inventory` application. Then, run the following
-Maven goals to build the application and run it inside Open Liberty:
-
-[role=command]
-```
-cd finish
-mvn install liberty:start-server
-```
+include::{common-includes}/twyb-intro.adoc[]
 
 After you start the application, you can access the following microservices:
 
@@ -76,12 +67,8 @@ After you start the application, you can access the following microservices:
 * The \http://localhost:9080/inventory/systems/{your_hostname} microservice is the `inventory` service that invokes the \http://{your_hostname}:9080/system/properties microservice. In Windows, Mac OS, and Linux, get your fully qualified domain name (FQDN) by entering `hostname` from your terminal. Visit the URL by replacing `{your_hostname}` with your FQDN.
 You will see the same system property information, but the process of getting the information is different.
 
-When you are done checking out the application, stop the Open Liberty server. You must stop your running Open Liberty server before you re-install it next time.
-
 [role=command]
-```
-mvn liberty:stop-server
-```
+include::{common-includes}/twyb-end.adoc[]
 
 // =================================================================================================
 // Writing the RESTful client interface
