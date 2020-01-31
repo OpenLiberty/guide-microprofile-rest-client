@@ -175,10 +175,10 @@ The [hotspot=handles file=2]`handles()` method inspects the HTTP response code t
 // =================================================================================================
 == Injecting the client with dependency injection
 
-Now, instantiate the [hotspot=SystemClient file=1]`SystemClient` interface and use it in the `inventory` service. If you want to connect only with the default host name, you can easily instantiate the `SystemClient` with CDI annotations. CDI injection simplifies the process of bootstrapping the client.
+Now, instantiate the [hotspot=SystemClient file=1]`SystemClient` interface and use it in the `inventory` service. If you want to connect only with the default host name, you can easily instantiate the [hotspot=SystemClient file=1]`SystemClient` with CDI annotations. CDI injection simplifies the process of bootstrapping the client.
 
 First, you need to define the base URL of the [hotspot=SystemClient file=1]`SystemClient` instance.
-Configure the default base URL with the MicroProfile Config feature. This feature is enabled for you in the `server.xml` file.
+Configure the default base URL with the MicroProfile Config feature. This feature is enabled for you in the [hotspot=mpConfig file=3]`server.xml` file.
 
 [role="code_command hotspot file=0", subs="quotes"]
 ----
@@ -209,7 +209,7 @@ The [hotspot=RegisterRestClient file=1]`configKey` value in the [hotspot=Registe
 For example, the `<fully-qualified classname>/mp-rest/uri` property becomes `systemClient/mp-rest/uri`.
 The benefit of using Config Keys is when multiple client interfaces have the same `configKey` value, the interfaces can be configured with a single MP config property.
 
-The [hotspot=RegisterRestClient file=1]`baseUri` value can also be set in the [hotspot=RegisterRestClient file=1]`@RegisterRestClient` annotation. However, this value will be overridden by the base URI property defined in the [hotspot file=0]`microprofile-config.properties` configuration file, which takes precedence. In a production environment, you can use the `baseUri` variable to specify a different URI for development and testing purposes. For this guide, try to specify an invalid URI value for the [hotspot=RegisterRestClient file=1]`baseUri` variable and comment out the [hotspot=baseUri file=0]`mp-rest/uri` property in the [hotspot file=0]`microprofile-config.properties` file. Then, run the `mvn install` command to verify that the `InventoryEndpointIT` fails to connect to the `system` service.
+The [hotspot=RegisterRestClient file=1]`baseUri` value can also be set in the [hotspot=RegisterRestClient file=1]`@RegisterRestClient` annotation. However, this value will be overridden by the base URI property defined in the [hotspot file=0]`microprofile-config.properties` configuration file, which takes precedence. In a production environment, you can use the `baseUri` variable to specify a different URI for development and testing purposes.
 
 The [hotspot=RegisterRestClient file=1]`@RegisterRestClient` annotation, which is a bean defining annotation implies that the interface is manageable through CDI. You must have this annotation in order to inject the client.
 
@@ -233,6 +233,12 @@ Because the [hotspot file=2]`InventoryManager` class is [hotspot=ApplicationScop
 If the `hostname` parameter is `localhost`, the service runs the [hotspot=getPropertiesWithDefaultHostName file=2]`getPropertiesWithDefaultHostName()` helper function to fetch system properties.
 The helper function invokes the `system` service by calling the [hotspot=defaultRCGetProperties file=2]`defaultRestClient.getProperties()` method.
 
+server.xml
+[source,xml,linenums,role="code_column"]
+----
+include::finish/src/main/liberty/config/server.xml[]
+----
+
 // =================================================================================================
 // Building the client with RestClientBuilder
 // =================================================================================================
@@ -241,7 +247,7 @@ The helper function invokes the `system` service by calling the [hotspot=default
 The `inventory` service can also connect with a host other than the default `localhost` host, but you cannot configure a base URL that is not yet known.
 In this case, set the host name as a variable and build the client by using the `RestClientBuilder` method. You can customize the base URL from the host name attribute.
 
-Look at the [hotspot=getPropertiesWithGivenHostName]`getPropertiesWithGivenHostName()` method in the `src/main/java/io/openliberty/guides/inventory/InventoryManager.java` file.
+Look at the [hotspot=getPropertiesWithGivenHostName]`getPropertiesWithGivenHostName()` method in the [hotspot file=0]`src/main/java/io/openliberty/guides/inventory/InventoryManager.java` file.
 
 InventoryManager.java
 [source, Java, linenums, role='code_column hide_tags=copyright']
@@ -304,16 +310,16 @@ include::{common-includes}/devmode-test.adoc[]
 Running it.io.openliberty.guides.system.SystemEndpointIT
 Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.377 sec - in it.io.openliberty.guides.system.SystemEndpointIT
 Running it.io.openliberty.guides.inventory.InventoryEndpointIT
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.379 sec - in it.io.openliberty.guides.inventory.InventoryEndpointIT
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.379 sec - in it.io.openliberty.guides.inventory.InventoryEndpointIT
 Running it.io.openliberty.guides.client.RestClientIT
 Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.121 sec - in it.io.openliberty.guides.client.RestClientIT
 
 Results :
 
-Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
+Tests run: 5, Failures: 0, Errors: 0, Skipped: 0
 ----
 
-To see whether the tests detect a failure, change the base URL in the configuration file so that when the `inventory` service tries to access the invalid URL, an UnknownUriException is thrown.
+To see whether the tests detect a failure, change the base URL in the configuration file so that when the `inventory` service tries to access the invalid URL, an `UnknownUriException` is thrown.
 Rerun the tests to see a test failure occur.
 
 [role=command]
