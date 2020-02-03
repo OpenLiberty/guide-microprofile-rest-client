@@ -160,9 +160,9 @@ include::finish/src/main/java/io/openliberty/guides/inventory/client/UnknownUrlE
 
 Now, link the [hotspot=UnknownUrlException file=1]`UnknownUrlException` class with the corresponding response code through a `ResponseExceptionMapper` mapper class.
 
-[role="code_command hotspot", subs="quotes"]
+[role="code_command hotspot file=2", subs="quotes"]
 ----
-#Create the `UnknownUrlExceptionMapper file=2` class.#
+#Create the `UnknownUrlExceptionMapper` class.#
 `src/main/java/io/openliberty/guides/inventory/client/UnknownUrlExceptionMapper.java`
 ----
 UnknownUrlExceptionMapper.java
