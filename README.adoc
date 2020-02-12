@@ -117,7 +117,7 @@ include::finish/src/main/java/io/openliberty/guides/inventory/client/SystemClien
 The MicroProfile Rest Client feature automatically builds and generates a client implementation based on what is defined in the [hotspot=SystemClient file=2]`SystemClient` interface. There is no need to set up the client and connect with the remote service.
 
 Notice the [hotspot=SystemClient file=2]`SystemClient` interface inherits the [hotspot=AutoCloseable file=2]`AutoCloseable` interface.
-This allows the user to explicitly close the client instance by invoking the `close()` method or to implicitly close the client instance using a try-with-resources block. When the client instance is closed, all underlying resources associated with the client instance are cleaned up. Refer to the https://github.com/eclipse/microprofile-rest-client/releases[MicroProfile Rest Client specification^] for more detail.
+This allows the user to explicitly close the client instance by invoking the `close()` method or to implicitly close the client instance using a try-with-resources block. When the client instance is closed, all underlying resources associated with the client instance are cleaned up. Refer to the https://github.com/eclipse/microprofile-rest-client/releases[MicroProfile Rest Client specification^] for more details.
 
 When the [hotspot=getProperties file=2]`getProperties()` method is invoked, the [hotspot=SystemClient file=2]`SystemClient` instance sends a GET request to the `<baseUrl>/properties` endpoint, where `<baseUrl>` is the default base URL of the `system` service. You will see how to configure the base URL in the next section.
 
