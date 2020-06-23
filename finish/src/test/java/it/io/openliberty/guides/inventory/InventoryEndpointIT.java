@@ -128,14 +128,16 @@ public class InventoryEndpointIT {
     Response response = this.getResponse(baseUrl + INVENTORY_SYSTEMS);
     this.assertResponse(baseUrl, response);
 
-    Response badResponse = client.target(baseUrl + INVENTORY_SYSTEMS + "/"
-        + "badhostname").request(MediaType.APPLICATION_JSON).get();
+    Response badResponse = client
+        .target(baseUrl + INVENTORY_SYSTEMS + "/" + "badhostname")
+        .request(MediaType.APPLICATION_JSON).get();
 
-    String obj = badResponse.readEntity(String.class);
+    assertEquals(404, badResponse.getStatus(),
+    "BadResponse expected status: 404. Response code not as expected.");
 
-    boolean isError = obj.contains("ERROR");
-    assertTrue(isError,
-               "badhostname is not a valid host but it didn't raise an error");
+    String stringObj = badResponse.readEntity(String.class);
+    assertTrue(stringObj.contains("error"), 
+    "badhostname is not a valid host but it didn't raise an error");
 
     response.close();
     badResponse.close();
