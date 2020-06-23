@@ -41,7 +41,8 @@ import io.openliberty.guides.inventory.model.SystemData;
 // end::ApplicationScoped[]
 public class InventoryManager {
 
-  private List<SystemData> systems = Collections.synchronizedList(new ArrayList<SystemData>());
+  private List<SystemData> systems = Collections.synchronizedList
+  (new ArrayList<SystemData>());
 
   @Inject
   @ConfigProperty(name = "default.http.port")
