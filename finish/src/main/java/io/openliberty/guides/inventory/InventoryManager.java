@@ -41,8 +41,9 @@ import io.openliberty.guides.inventory.model.SystemData;
 // end::ApplicationScoped[]
 public class InventoryManager {
 
-  private List<SystemData> systems = Collections.synchronizedList(new ArrayList<>());
-  
+  private List<SystemData> systems = Collections.synchronizedList(
+                                       new ArrayList<SystemData>());
+
   @Inject
   @ConfigProperty(name = "default.http.port")
   String DEFAULT_PORT;
@@ -105,9 +106,9 @@ public class InventoryManager {
       customURI = URI.create(customURIString);
       // tag::customRestClientBuilder[]
       SystemClient customRestClient = RestClientBuilder.newBuilder()
-                                          .baseUri(customURI)
-                                          .register(UnknownUriExceptionMapper.class)
-                                          .build(SystemClient.class);
+                                        .baseUri(customURI)
+                                        .register(UnknownUriExceptionMapper.class)
+                                        .build(SystemClient.class);
       // end::customRestClientBuilder[]
       // tag::customRCGetProperties[]
       return customRestClient.getProperties();
