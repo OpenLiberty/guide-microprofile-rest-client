@@ -83,6 +83,8 @@ public class InventoryEndpointIT {
         break;
       }
     }
+
+    assertTrue(systems.size() > 0, "No hosts registered");
     assertTrue(localhostExists,
                "A host was registered, but it was not localhost");
 

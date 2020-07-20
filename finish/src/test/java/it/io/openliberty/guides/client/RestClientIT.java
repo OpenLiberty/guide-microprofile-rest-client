@@ -76,7 +76,7 @@ public class RestClientIT {
     try{
       hostname = InetAddress.getLocalHost().getHostAddress();
     } catch (UnknownHostException e) {
-      System.err.println("Unknown Host.");
+      System.err.println(e.getMessage());
     }
 
     String url = "http://localhost:" + port + "/" + INVENTORY_SYSTEMS + "/" + hostname;

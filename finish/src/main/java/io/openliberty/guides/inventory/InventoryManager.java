@@ -116,7 +116,7 @@ public class InventoryManager {
     } catch (ProcessingException ex) {
       handleProcessingException(ex);
     } catch (UnknownUriException e) {
-      System.err.println("The given URI is unreachable.");
+      System.err.println("The given URI " + customURIString + " is unreachable.");
     }
     return null;
   }
