@@ -126,7 +126,7 @@ public class InventoryManager {
     Throwable rootEx = ExceptionUtils.getRootCause(ex);
     if (rootEx != null && (rootEx instanceof UnknownHostException
         || rootEx instanceof ConnectException)) {
-      System.err.println("The specified host is unknown.");
+      System.err.println(ex.getMessage());
     } else {
       throw ex;
     }
