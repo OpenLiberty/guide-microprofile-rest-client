@@ -16,7 +16,7 @@
 :guide-author: Open Liberty
 :page-tags: ['MicroProfile']
 :page-permalink: /guides/{projectid}
-:page-related-guides: ['rest-intro', 'cdi-intro', 'microprofile-config']
+:page-related-guides: ['rest-intro', 'cdi-intro', 'microprofile-config', 'microprofile-rest-client-async']
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
 :page-seo-title: Consuming RESTful Java microservices with template interfaces using Eclipse MicroProfile Rest Client
 :page-seo-description: A getting started tutorial and an example on how to consume RESTful Java microservices using template interfaces and Context and Dependency Injection (CDI) or a builder with MicroProfile Rest Client.
