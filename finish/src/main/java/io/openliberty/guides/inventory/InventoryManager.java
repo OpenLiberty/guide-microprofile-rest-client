@@ -92,7 +92,7 @@ public class InventoryManager {
     } catch (UnknownUriException e) {
       System.err.println("The given URI is not formatted correctly.");
     } catch (ProcessingException ex) {
-      handleProcessingException(ex);
+      return handleProcessingException(ex);
     }
     return null;
   }
@@ -114,7 +114,7 @@ public class InventoryManager {
       return customRestClient.getProperties();
       // end::customRCGetProperties[]
     } catch (ProcessingException ex) {
-      handleProcessingException(ex);
+      return handleProcessingException(ex);
     } catch (UnknownUriException e) {
       System.err.println("The given URI " + customURIString + " is unreachable.");
     }
@@ -122,11 +122,13 @@ public class InventoryManager {
   }
   // end::getPropertiesWithGivenHostName[]
 
-  private void handleProcessingException(ProcessingException ex) {
+  private Properties handleProcessingException(ProcessingException ex) {
     Throwable rootEx = ExceptionUtils.getRootCause(ex);
     if (rootEx != null && (rootEx instanceof UnknownHostException
         || rootEx instanceof ConnectException)) {
-      System.err.println(ex.getMessage());
+      Properties error = new Properties();
+      error.setProperty("error", ex.getMessage());
+      return error;
     } else {
       throw ex;
     }

@@ -40,10 +40,10 @@ public class InventoryResource {
   public Response getPropertiesForHost(@PathParam("hostname") String hostname) {
     // Get properties
     Properties props = manager.get(hostname);
-    if (props == null) {
+    String error = props.getProperty("error", null);
+    if (error != null) {
       return Response.status(Response.Status.NOT_FOUND)
-                     .entity("{ \"error\" : \"Unknown hostname or the system service " 
-                     + "may not be running on " + hostname + "\" }")
+                     .entity("{ \"error\" : \"" + error + "\" }")
                      .build();
     }
 
