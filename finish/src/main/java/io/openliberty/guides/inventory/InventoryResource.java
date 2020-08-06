@@ -43,7 +43,7 @@ public class InventoryResource {
     String error = props.getProperty("error", null);
     if (error != null) {
       return Response.status(Response.Status.NOT_FOUND)
-                     .entity("{ \"error\" : \"" + error + "\" }")
+                     .entity(props)
                      .build();
     }
 
