@@ -134,5 +134,11 @@ public class InventoryManager {
     }
   }
 
+  private Properties handleUnknownUriException(UnknownUriException e) {
+    Properties error = new Properties();
+    error.setProperty("error", e.getMessage());
+    return error;
+  }
+
 }
 // end::manager[]
