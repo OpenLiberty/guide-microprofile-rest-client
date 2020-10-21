@@ -293,11 +293,17 @@ include::finish/src/test/java/it/io/openliberty/guides/client/RestClientIT.java[
 
 Each test case tests one of the methods for instantiating a RESTful client.
 
-The [hotspot=testDefaultLocalhost]`testDefaultLocalhost()` test fetches and compares system properties from the \http://localhost:9080/inventory/systems/localhost URL.
+The [hotspot=testDefaultLocalhost file=0]`testDefaultLocalhost()` test fetches and compares system properties from the \http://localhost:9080/inventory/systems/localhost URL.
 
-The [hotspot=testRestClientBuilder]`testRestClientBuilder()` test gets your IP address. Then, use your IP address as the host name to fetch your system properties and compare them.
+The [hotspot=testRestClientBuilder file=0]`testRestClientBuilder()` test gets your IP address. Then, use your IP address as the host name to fetch your system properties and compare them.
 
 In addition, a few endpoint tests are provided for you to test the basic functionality of the `inventory` and `system` services. If a test failure occurs, you might have introduced a bug into the code.
+
+InventoryEndpointIT.java
+[source, properties, linenums, role='code_column hide_tags=copyright']
+----
+include::finish/src/test/java/it/io/openliberty/guides/inventory/InventoryEndpointIT.java[]
+----
 
 [role=command]
 include::{common-includes}/devmode-test.adoc[]
@@ -322,16 +328,11 @@ Results :
 Tests run: 5, Failures: 0, Errors: 0, Skipped: 0
 ----
 
-The warning and error messages are expected and result from a request to a bad or an unknown host name. This request is made in the test [hotspot=testUnknownHost file=2]`testUnknownHost()` from [hotspot file=2]`InventoryEndpointIT`.
+The warning and error messages are expected and result from a request to a bad or an unknown host name. This request is made in the test [hotspot=testUnknownHost file=1]`testUnknownHost()` from [hotspot file=1]`InventoryEndpointIT`.
 
 To see whether the tests detect a failure, change the base URL in the configuration file so that when the `inventory` service tries to access the invalid URL, an `UnknownUriException` is thrown.
 Rerun the tests to see a test failure occur.
 
-InventoryEndpointIT.java
-[source, properties, linenums, role='code_column hide_tags=copyright']
-----
-include::finish/src/test/java/it/io/openliberty/guides/inventory/InventoryEndpointIT.java[]
-----
 
 [role=command]
 include::{common-includes}/devmode-quit.adoc[]
