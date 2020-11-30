@@ -41,7 +41,7 @@ jobs:
       - run: unset _JAVA_OPTIONS
 
       - name: Run tests
-        run: sudo ../scripts/testApp.sh
+        run: chmod +x ../scripts/testApp.sh && sudo ../scripts/testApp.sh
 
       - name: Post tests
         if: always()
