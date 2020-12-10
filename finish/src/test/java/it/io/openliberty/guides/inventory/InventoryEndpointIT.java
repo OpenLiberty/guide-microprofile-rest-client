@@ -126,6 +126,7 @@ public class InventoryEndpointIT {
 
   @Test
   @Order(3)
+  // tag::testUnknownHost[]
   public void testUnknownHost() {
     Response response = this.getResponse(baseUrl + INVENTORY_SYSTEMS);
     this.assertResponse(baseUrl, response);
@@ -144,6 +145,7 @@ public class InventoryEndpointIT {
     response.close();
     badResponse.close();
   }
+  // end::testUnknownHost[]
   // end::tests[]
 
   // tag::helpers[]

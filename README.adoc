@@ -293,11 +293,12 @@ include::finish/src/test/java/it/io/openliberty/guides/client/RestClientIT.java[
 
 Each test case tests one of the methods for instantiating a RESTful client.
 
-The [hotspot=testDefaultLocalhost]`testDefaultLocalhost()` test fetches and compares system properties from the \http://localhost:9080/inventory/systems/localhost URL.
+The [hotspot=testDefaultLocalhost file=0]`testDefaultLocalhost()` test fetches and compares system properties from the \http://localhost:9080/inventory/systems/localhost URL.
 
-The [hotspot=testRestClientBuilder]`testRestClientBuilder()` test gets your IP address. Then, use your IP address as the host name to fetch your system properties and compare them.
+The [hotspot=testRestClientBuilder file=0]`testRestClientBuilder()` test gets your IP address. Then, use your IP address as the host name to fetch your system properties and compare them.
 
 In addition, a few endpoint tests are provided for you to test the basic functionality of the `inventory` and `system` services. If a test failure occurs, you might have introduced a bug into the code.
+
 
 [role=command]
 include::{common-includes}/devmode-test.adoc[]
@@ -310,6 +311,9 @@ include::{common-includes}/devmode-test.adoc[]
 Running it.io.openliberty.guides.system.SystemEndpointIT
 Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.377 sec - in it.io.openliberty.guides.system.SystemEndpointIT
 Running it.io.openliberty.guides.inventory.InventoryEndpointIT
+Interceptor for {http://client.inventory.guides.openliberty.io/}SystemClient has thrown exception, unwinding now
+Could not send Message.
+[err] The specified host is unknown.
 Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.379 sec - in it.io.openliberty.guides.inventory.InventoryEndpointIT
 Running it.io.openliberty.guides.client.RestClientIT
 Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.121 sec - in it.io.openliberty.guides.client.RestClientIT
@@ -318,6 +322,8 @@ Results :
 
 Tests run: 5, Failures: 0, Errors: 0, Skipped: 0
 ----
+
+The warning and error messages are expected and result from a request to a bad or an unknown hostname. This request is made in the `testUnknownHost()` test from the `InventoryEndpointIT` integration test.
 
 To see whether the tests detect a failure, change the base URL in the configuration file so that when the `inventory` service tries to access the invalid URL, an `UnknownUriException` is thrown.
 Rerun the tests to see a test failure occur.
