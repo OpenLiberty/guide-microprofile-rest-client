@@ -2,7 +2,7 @@ name: Test application
 
 on:
   pull_request:
-    branches: [qa]
+    branches: [ master, qa ]
 
 jobs:
   needTest:
@@ -23,11 +23,11 @@ jobs:
              echo "Need to run test"           
              echo "::set-output name=canSkip::false"
            fi
+
   java8build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        jdk: [8]
+    needs: [needTest]
+    if: "!contains(needs.needTest.outputs.canSkip, 'true')"
     defaults:
       run:
         working-directory: finish
