@@ -271,7 +271,7 @@ When the server is running, select either approach to fetch your system properti
 
 - Visit the http://localhost:9080/inventory/systems/localhost[http://localhost:9080/inventory/systems/localhost^] URL. The URL retrieves the system property information for `localhost` host name by invoking the http://localhost:9080/system/properties[http://localhost:9080/system/properties^] service.
 
-- Get your FQDN first. Then, visit the \http://localhost:9080/inventory/systems/{your_hostname} URL by replacing `{your_hostname}` with your FQDN, which retrieves your system properties by invoking the \http://{your_hostname}:9080/system/properties service.
+- Get your FQDN first. Then, visit the http://localhost:9080/inventory/systems/{your_hostname} URL by replacing `{your_hostname}` with your FQDN, which retrieves your system properties by invoking the http://{your_hostname}:9080/system/properties service.
 
 
 // =================================================================================================
@@ -293,7 +293,7 @@ include::finish/src/test/java/it/io/openliberty/guides/client/RestClientIT.java[
 
 Each test case tests one of the methods for instantiating a RESTful client.
 
-The [hotspot=testDefaultLocalhost file=0]`testDefaultLocalhost()` test fetches and compares system properties from the \http://localhost:9080/inventory/systems/localhost URL.
+The [hotspot=testDefaultLocalhost file=0]`testDefaultLocalhost()` test fetches and compares system properties from the http://localhost:9080/inventory/systems/localhost URL.
 
 The [hotspot=testRestClientBuilder file=0]`testRestClientBuilder()` test gets your IP address. Then, use your IP address as the host name to fetch your system properties and compare them.
 
