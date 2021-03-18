@@ -1,4 +1,4 @@
-// Copyright (c) 2018, 2020 IBM Corporation and others.
+// Copyright (c) 2018, 2021 IBM Corporation and others.
 // Licensed under Creative Commons Attribution-NoDerivatives
 // 4.0 International (CC BY-ND 4.0)
 //   https://creativecommons.org/licenses/by-nd/4.0/
@@ -56,10 +56,10 @@ https://openliberty.io/blog/2018/01/31/mpRestClient.html[RestClientBuilder^]
 method. In this guide, you will explore both methods to handle scenarios for
 providing a valid base URL.
 
- - When the base URL of the remote service is static and known, define the
+ * When the base URL of the remote service is static and known, define the
  default base URL in the configuration file. Inject the client with CDI method.
 
- - When the base URL is not yet known and needs to be determined during the run
+ * When the base URL is not yet known and needs to be determined during the run
  time, set the base URL as a variable. Build the client with the more verbose
  `RestClientBuilder` method.
 
@@ -377,14 +377,14 @@ include::{common-includes}/devmode-build.adoc[]
 When the server is running, select either approach to fetch your system
 properties:
 
-- Visit the
+* Visit the
 http://localhost:9080/inventory/systems/localhost[http://localhost:9080/inventory/systems/localhost^]
 URL. The URL retrieves the system property information for `localhost` host name
 by invoking the
 http://localhost:9080/system/properties[http://localhost:9080/system/properties^]
 service.
 
-- Get your FQDN first. Then, visit the
+* Get your FQDN first. Then, visit the
 \http://localhost:9080/inventory/systems/{your_hostname} URL by replacing
 `{your_hostname}` with your FQDN, which retrieves your system properties by
 invoking the \http://{your_hostname}:9080/system/properties service.
