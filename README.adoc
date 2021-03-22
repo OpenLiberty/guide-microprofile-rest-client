@@ -50,8 +50,8 @@ host. The `system` service simulates a remote service in the application.
 
 You will instantiate the client and use it in the `inventory` service. You can
 choose from two different approaches,
-https://openliberty.io/docs/ref/general/#contexts_dependency_injection.html[Context
-and Dependency Injection (CDI)^] with the help of MicroProfile Config or the
+https://openliberty.io/docs/ref/general/#contexts_dependency_injection.html[Context and Dependency Injection (CDI)^]
+with the help of MicroProfile Config or the
 https://openliberty.io/blog/2018/01/31/mpRestClient.html[RestClientBuilder^]
 method. In this guide, you will explore both methods to handle scenarios for
 providing a valid base URL.
@@ -158,8 +158,8 @@ explicitly close the client instance by invoking the `close()` method or to
 implicitly close the client instance using a try-with-resources block. When the
 client instance is closed, all underlying resources associated with the client
 instance are cleaned up. Refer to the
-https://github.com/eclipse/microprofile-rest-client/releases[MicroProfile Rest
-Client specification^] for more details.
+https://github.com/eclipse/microprofile-rest-client/releases[MicroProfile Rest Client specification^]
+for more details.
 
 When the [hotspot=getProperties file=2]`getProperties()` method is invoked, the
 [hotspot=SystemClient file=2]`SystemClient` instance sends a GET request to the
@@ -189,8 +189,8 @@ remote service, you need to handle it. First, define an exception, and map the
 exception with the error response code. Then, register the exception mapper in
 the client interface.
 
-Look at the client interface again, the [hotspot=RegisterProvider
-file=0]`@RegisterProvider` annotation registers the `UnknownUriExceptionMapper`
+Look at the client interface again, the [hotspot=RegisterProvider file=0]`@RegisterProvider`
+annotation registers the `UnknownUriExceptionMapper`
 response exception mapper. An exception mapper maps various response codes from
 the remote service to throwable exceptions.
 
@@ -243,10 +243,10 @@ host name, you can easily instantiate the [hotspot=SystemClient
 file=1]`SystemClient` with CDI annotations. CDI injection simplifies the process
 of bootstrapping the client.
 
-First, you need to define the base URL of the [hotspot=SystemClient
-file=1]`SystemClient` instance. Configure the default base URL with the
-MicroProfile Config feature. This feature is enabled for you in the
-[hotspot=mpConfig file=3]`server.xml` file.
+First, you need to define the base URL of the 
+[hotspot=SystemClient file=1]`SystemClient` instance. Configure the 
+default base URL with the MicroProfile Config feature. This feature is enabled
+for you in the [hotspot=mpConfig file=3]`server.xml` file.
 
 [role="code_command hotspot file=0", subs="quotes"]
 ----
@@ -288,8 +288,8 @@ configured with a single MP config property.
 
 The [hotspot=RegisterRestClient file=1]`baseUri` value can also be set in the
 [hotspot=RegisterRestClient file=1]`@RegisterRestClient` annotation. However,
-this value will be overridden by the base URI property defined in the [hotspot
-file=0]`microprofile-config.properties` configuration file, which takes
+this value will be overridden by the base URI property defined in the 
+[hotspot file=0]`microprofile-config.properties` configuration file, which takes
 precedence. In a production environment, you can use the `baseUri` variable to
 specify a different URI for development and testing purposes.
 
@@ -312,9 +312,8 @@ include::finish/src/main/java/io/openliberty/guides/inventory/InventoryManager.j
 ----
 
 [hotspot=Inject file=2]`@Inject` and [hotspot=RestClient file=2]`@RestClient`
-annotations inject an instance of the [hotspot=SystemClient
-file=2]`SystemClient` called `defaultRestClient` to the [hotspot
-file=2]`InventoryManager` class.
+annotations inject an instance of the [hotspot=SystemClient file=2]`SystemClient`
+called `defaultRestClient` to the [hotspot file=2]`InventoryManager` class.
 
 Because the [hotspot file=2]`InventoryManager` class is
 [hotspot=ApplicationScoped file=2]`@ApplicationScoped`, and the
@@ -323,11 +322,10 @@ through the default dependent scope, the client is initialized once per
 application.
 
 If the `hostname` parameter is `localhost`, the service runs the
-[hotspot=getPropertiesWithDefaultHostName
-file=2]`getPropertiesWithDefaultHostName()` helper function to fetch system
-properties. The helper function invokes the `system` service by calling the
-[hotspot=defaultRCGetProperties file=2]`defaultRestClient.getProperties()`
-method.
+[hotspot=getPropertiesWithDefaultHostName file=2]`getPropertiesWithDefaultHostName()`
+helper function to fetch system properties. The helper function invokes the
+`system` service by calling the 
+[hotspot=defaultRCGetProperties file=2]`defaultRestClient.getProperties()` method.
 
 server.xml
 [source,xml,linenums,role="code_column"]
@@ -348,8 +346,8 @@ attribute.
 
 Look at the
 [hotspot=getPropertiesWithGivenHostName]`getPropertiesWithGivenHostName()`
-method in the [hotspot
-file=0]`src/main/java/io/openliberty/guides/inventory/InventoryManager.java`
+method in the 
+[hotspot file=0]`src/main/java/io/openliberty/guides/inventory/InventoryManager.java`
 file.
 
 InventoryManager.java
@@ -464,10 +462,8 @@ MicroProfile Rest Client in Open Liberty.
 
 MicroProfile Rest Client also provides a uniform way to configure SSL for the
 client. You can learn more in the
-https://openliberty.io/blog/2019/06/21/microprofile-rest-client-19006.html#ssl[Hostname
-verification with SSL on Open Liberty and MicroProfile Rest Client^] blog and
-the https://github.com/eclipse/microprofile-rest-client/releases[MicroProfile
-Rest Client specification^].
+https://openliberty.io/blog/2019/06/21/microprofile-rest-client-19006.html#ssl[Hostname verification with SSL on Open Liberty and MicroProfile Rest Client^]
+blog and the https://github.com/eclipse/microprofile-rest-client/releases[MicroProfile Rest Client specification^].
 
 Feel free to try one of the related guides where you can learn more technologies
 and expand on what you built here.
