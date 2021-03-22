@@ -58,7 +58,11 @@ include::{common-includes}/gitclone.adoc[]
 
 include::{common-includes}/twyb-intro.adoc[]
 
-You can access the following microservices:
+The `system` microservice simulates a remote service that retrieves the system
+property information for a specific host. The `system` service is accessible at
+the
+http://localhost:9080/system/properties[http://localhost:9080/system/properties^]
+URL. In this case, `localhost` is the host name.
 
 The `inventory` microservice makes a request to the `system` microservice and
 stores the system property information. To fetch and store your system's
