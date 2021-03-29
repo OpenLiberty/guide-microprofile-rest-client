@@ -274,8 +274,15 @@ When the server is running, select either approach to fetch your system properti
 
 * Visit the http://localhost:9080/inventory/systems/localhost[http://localhost:9080/inventory/systems/localhost^] URL. The URL retrieves the system property information for the `localhost` host name by making a request to the `system` service at `\http://localhost:9080/system/properties`.
 
+// static guide instructions:
+ifndef::cloud-hosted[]
 * Get your FQDN first. Then, visit the `\http://localhost:9080/inventory/systems/{your_hostname}` URL by replacing `{your_hostname}` with your FQDN, which retrieves your system properties by making a request to the `system` service at `\http://{your_hostname}:9080/system/properties`.
+endif::[]
 
+// cloud-hosted guide instructions:
+ifdef::cloud-hosted[]
+Or, get your FQDN first. Then, visit the **http://localhost:9080/inventory/systems/{your_hostname}** URL by replacing **{your_hostname}** with your FQDN, which retrieves your system properties by making a request to the **system** service at **http://{your_hostname}:9080/system/properties**.
+endif::[]
 
 // =================================================================================================
 // Testing the application
