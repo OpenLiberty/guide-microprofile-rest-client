@@ -65,10 +65,23 @@ The `system` service is accessible at the http://localhost:9080/system/propertie
 The `inventory` microservice makes a request to the `system` microservice and
 stores the system property information. 
 To fetch and store your system information, enter the http://localhost:9080/inventory/systems/localhost[http://localhost:9080/inventory/systems/localhost^] URL into your browser. 
+
+// static guide instructions:
+ifndef::cloud-hosted[]
 You can also use the `\http://localhost:9080/inventory/systems/{your_hostname}` URL. In Windows,
 MacOS, and Linux, get your fully qualified domain name (FQDN) by entering
 `hostname` into your command-line. Visit the URL by replacing `{your_hostname}`
 with your FQDN.
+endif::[]
+
+// cloud-hosted guide instructions:
+ifdef::cloud-hosted[]
+You can also use the **http://localhost:9080/inventory/systems/{your_hostname}** URL. In Windows,
+MacOS, and Linux, get your fully qualified domain name (FQDN) by entering
+**hostname** into your command-line. Visit the URL by replacing **{your_hostname}**
+with your FQDN.
+endif::[]
+
 
 [role=command]
 include::{common-includes}/twyb-end.adoc[]
