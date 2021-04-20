@@ -64,18 +64,7 @@ The `system` service is accessible at the http://localhost:9080/system/propertie
 
 The `inventory` microservice makes a request to the `system` microservice and
 stores the system property information. 
-// static guide instructions:
-ifndef::cloud-hosted[]
-To fetch and store your system information, enter the http://localhost:9080/inventory/systems/localhost[http://localhost:9080/inventory/systems/localhost^] URL into your browser. 
-endif::[]
-// cloud-hosted guide instructions:
-ifdef::cloud-hosted[]
-To fetch and store your system information, run the following curl command: 
-```
-curl http://localhost:9080/inventory/systems/localhost
-```
-{: codeblock}
-endif::[]
+To fetch and store your system information, enter the http://localhost:9080/inventory/systems/localhost[http://localhost:9080/inventory/systems/localhost^] URL.
 
 // static guide instructions:
 ifndef::cloud-hosted[]
