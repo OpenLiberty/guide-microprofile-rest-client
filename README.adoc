@@ -94,7 +94,7 @@ include::{common-includes}/twyb-end.adoc[]
 Now, navigate to the `start` directory to begin.
 
 [role=command]
-include::{common-includes}/devmode-start.adoc[]
+include::{common-includes}/devmode-lmp33-start.adoc[]
 
 The MicroProfile Rest Client API is included in the MicroProfile dependency specified by your [hotspot file=0]`pom.xml` file. Look for the dependency with the [hotspot=microprofile file=0]`microprofile` artifact ID.
 
