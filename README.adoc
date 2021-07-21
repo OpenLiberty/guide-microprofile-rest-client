@@ -68,17 +68,17 @@ To fetch and store your system information, visit the http://localhost:9080/inve
 
 // static guide instructions:
 ifndef::cloud-hosted[]
-You can also use the `\http://localhost:9080/inventory/systems/{your_hostname}` URL. In Windows,
+You can also use the `\http://localhost:9080/inventory/systems/{your-hostname}` URL. In Windows,
 MacOS, and Linux, get your fully qualified domain name (FQDN) by entering
-`hostname` into your command-line. Visit the URL by replacing `{your_hostname}`
+`hostname` into your command-line. Visit the URL by replacing `{your-hostname}`
 with your FQDN.
 endif::[]
 
 // cloud-hosted guide instructions:
 ifdef::cloud-hosted[]
-You can also use the **http://localhost:9080/inventory/systems/{your_hostname}** URL. In Windows,
+You can also use the **http://localhost:9080/inventory/systems/{your-hostname}** URL. In Windows,
 MacOS, and Linux, get your fully qualified domain name (FQDN) by entering
-**hostname** into your command-line. Visit the URL by replacing **{your_hostname}**
+**hostname** into your command-line. Visit the URL by replacing **{your-hostname}**
 with your FQDN.
 endif::[]
 
@@ -289,14 +289,14 @@ When the server is running, select either approach to fetch your system properti
 
 // static guide instructions:
 ifndef::cloud-hosted[]
-* Get your FQDN first. Then, visit the `\http://localhost:9080/inventory/systems/{your_hostname}` URL by replacing `{your_hostname}` with your FQDN, which retrieves your system properties by making a request to the `system` service at `\http://{your_hostname}:9080/system/properties`.
-endif::[]
+* Get your FQDN first. Then, visit the `\http://localhost:9080/inventory/systems/{your-hostname}` URL by replacing `{your-hostname}` with your FQDN, which retrieves your system properties by making a request to the `system` service at `\http://{your-hostname}:9080/system/properties`.
+endif::[]-
 
 // cloud-hosted guide instructions:
 ifdef::cloud-hosted[]
-Or, get your FQDN first. Then, visit the **http://localhost:9080/inventory/systems/{your_hostname}** URL 
-by replacing **{your_hostname}** with your FQDN, which retrieves your system properties 
-by making a request to the **system** service at **http://{your_hostname}:9080/system/properties**.
+Or, get your FQDN first. Then, visit the **http://localhost:9080/inventory/systems/{your-hostname}** URL 
+by replacing **{your-hostname}** with your FQDN, which retrieves your system properties 
+by making a request to the **system** service at **http://{your-hostname}:9080/system/properties**.
 endif::[]
 
 // =================================================================================================
