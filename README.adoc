@@ -290,7 +290,7 @@ When the server is running, select either approach to fetch your system properti
 // static guide instructions:
 ifndef::cloud-hosted[]
 * Get your FQDN first. Then, visit the `\http://localhost:9080/inventory/systems/{your-hostname}` URL by replacing `{your-hostname}` with your FQDN, which retrieves your system properties by making a request to the `system` service at `\http://{your-hostname}:9080/system/properties`.
-endif::[]-
+endif::[]
 
 // cloud-hosted guide instructions:
 ifdef::cloud-hosted[]
