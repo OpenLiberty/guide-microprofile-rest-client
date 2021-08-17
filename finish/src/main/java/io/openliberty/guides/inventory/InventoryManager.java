@@ -108,6 +108,7 @@ public class InventoryManager {
       SystemClient customRestClient = RestClientBuilder.newBuilder()
                                         .baseUri(customURI)
                                         .register(UnknownUriExceptionMapper.class)
+                                        .followRedirects(true)
                                         .build(SystemClient.class);
       // end::customRestClientBuilder[]
       // tag::customRCGetProperties[]
