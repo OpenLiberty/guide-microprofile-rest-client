@@ -29,6 +29,7 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.eclipse.microprofile.rest.client.RestClientBuilder;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.eclipse.microprofile.rest.client.ext.QueryParamStyle;
 
 import io.openliberty.guides.inventory.client.SystemClient;
 import io.openliberty.guides.inventory.client.UnknownUriException;
@@ -58,25 +59,29 @@ public class InventoryManager {
   private SystemClient defaultRestClient;
   // end::SystemClient[]
 
-  public Properties get(String hostname) {
+  public Properties get(String hostname, List<String> listproperties) {
     Properties properties = null;
     if (hostname.equals("localhost")) {
-      properties = getPropertiesWithDefaultHostName();
+      properties = getPropertiesWithDefaultHostName(listproperties);
     } else {
-      properties = getPropertiesWithGivenHostName(hostname);
+      properties = getPropertiesWithGivenHostName(hostname, listproperties);
     }
 
     return properties;
   }
 
-  public void add(String hostname, Properties systemProps) {
+  public void add(String hostname,  List<String> listproperties, Properties systemProps) {
     Properties props = new Properties();
-    props.setProperty("os.name", systemProps.getProperty("os.name"));
-    props.setProperty("user.name", systemProps.getProperty("user.name"));
+
+    if (listproperties.size() == 0) {
+      props.setProperty("os.name", systemProps.getProperty("os.name"));
+      props.setProperty("user.name", systemProps.getProperty("user.name"));
+    }
 
     SystemData host = new SystemData(hostname, props);
-    if (!systems.contains(host))
-      systems.add(host);
+      if (!systems.contains(host)) {
+        systems.add(host);
+      }
   }
 
   public InventoryList list() {
@@ -84,11 +89,17 @@ public class InventoryManager {
   }
 
   // tag::getPropertiesWithDefaultHostName[]
-  private Properties getPropertiesWithDefaultHostName() {
+  private Properties getPropertiesWithDefaultHostName(List<String> listproperties) {
     try {
-      // tag::defaultRCGetProperties[]
-      return defaultRestClient.getProperties();
-      // end::defaultRCGetProperties[]
+      if (listproperties.size() == 0) {
+        // tag::defaultRCGetProperties[]
+        return defaultRestClient.getProperties();
+        // end::defaultRCGetProperties[]
+      } else {
+        // tag::defaultRCGetListProperties[]
+        return defaultRestClient.getListProperties(listproperties);
+        // end::defaultRCGetListProperties[]
+      }
     } catch (UnknownUriException e) {
       System.err.println("The given URI is not formatted correctly.");
     } catch (ProcessingException ex) {
@@ -99,7 +110,7 @@ public class InventoryManager {
   // end::getPropertiesWithDefaultHostName[]
 
   // tag::getPropertiesWithGivenHostName[]
-  private Properties getPropertiesWithGivenHostName(String hostname) {
+  private Properties getPropertiesWithGivenHostName(String hostname, List<String> listproperties) {
     String customURIString = "http://" + hostname + ":" + DEFAULT_PORT + "/system";
     URI customURI = null;
     try {
@@ -108,12 +119,23 @@ public class InventoryManager {
       SystemClient customRestClient = RestClientBuilder.newBuilder()
                                         .baseUri(customURI)
                                         .register(UnknownUriExceptionMapper.class)
+                                        // tag::followRedirects[]
                                         .followRedirects(true)
+                                        // end::followRedirects[]
+                                        // tag::queryParam[]
+                                        .queryParamStyle(QueryParamStyle.COMMA_SEPARATED)
+                                        // end::queryParam[]
                                         .build(SystemClient.class);
       // end::customRestClientBuilder[]
-      // tag::customRCGetProperties[]
-      return customRestClient.getProperties();
-      // end::customRCGetProperties[]
+      if (listproperties.size() == 0) {
+        // tag::customRCGetProperties[]
+        return customRestClient.getProperties();
+        // end::customRCGetProperties[]
+      } else {
+        // tag::customRCGetListProperties[]
+        return customRestClient.getListProperties(listproperties);
+        // end::customRCGetListProperties[]
+      }
     } catch (ProcessingException ex) {
       handleProcessingException(ex);
     } catch (UnknownUriException e) {

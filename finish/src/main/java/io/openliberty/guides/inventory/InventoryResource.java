@@ -12,6 +12,7 @@
 // end::copyright[]
 package io.openliberty.guides.inventory;
 
+import java.util.List;
 import java.util.Properties;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -22,6 +23,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import io.openliberty.guides.inventory.model.InventoryList;
+import javax.ws.rs.QueryParam;
 
 // tag::RequestScoped[]
 @RequestScoped
@@ -37,9 +39,9 @@ public class InventoryResource {
   @GET
   @Path("/{hostname}")
   @Produces(MediaType.APPLICATION_JSON)
-  public Response getPropertiesForHost(@PathParam("hostname") String hostname) {
+  public Response getPropertiesForHost(@PathParam("hostname") String hostname, @QueryParam("listproperties") List<String> listproperties) {
     // Get properties
-    Properties props = manager.get(hostname);
+    Properties props = manager.get(hostname, listproperties);
     if (props == null) {
       return Response.status(Response.Status.NOT_FOUND)
                      .entity("{ \"error\" : \"Unknown hostname or the system service " 
@@ -48,7 +50,7 @@ public class InventoryResource {
     }
 
     // Add to inventory
-    manager.add(hostname, props);
+    manager.add(hostname, listproperties, props);
     return Response.ok(props).build();
   }
 

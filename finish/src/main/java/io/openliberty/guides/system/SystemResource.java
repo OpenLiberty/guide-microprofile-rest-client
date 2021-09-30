@@ -12,12 +12,14 @@
 // end::copyright[]
 package io.openliberty.guides.system;
 
+import java.util.List;
 import java.util.Properties;
 import javax.enterprise.context.RequestScoped;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.QueryParam;
 
 @RequestScoped
 @Path("/properties")
@@ -28,4 +30,24 @@ public class SystemResource {
   public Properties getProperties() {
     return System.getProperties();
   }
-}
+
+  @GET 
+  @Path("/listproperties")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Properties getListProperties(@QueryParam("properties") String listproperties) {
+
+    String[] params = listproperties.split(",");
+    Properties properties = new Properties();
+    for (String param: params) {     
+      String property = System.getProperty(param);
+      if (property == null) {
+        Properties error = new Properties();
+        error.put("Unknown property:", param);
+        return error;
+      }
+      properties.put(param, property);
+    }
+    return properties;
+  }
+
+}    
