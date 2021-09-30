@@ -70,7 +70,9 @@ public class InventoryManager {
     return properties;
   }
 
-  public void add(String hostname,  List<String> listproperties, Properties systemProps) {
+  public void add(String hostname,  
+                  List<String> listproperties, 
+                  Properties systemProps) {
     Properties props = new Properties();
 
     if (listproperties.size() == 0) {
@@ -110,7 +112,8 @@ public class InventoryManager {
   // end::getPropertiesWithDefaultHostName[]
 
   // tag::getPropertiesWithGivenHostName[]
-  private Properties getPropertiesWithGivenHostName(String hostname, List<String> listproperties) {
+  private Properties getPropertiesWithGivenHostName(String hostname, 
+                                                    List<String> listproperties) {
     String customURIString = "http://" + hostname + ":" + DEFAULT_PORT + "/system";
     URI customURI = null;
     try {
@@ -123,7 +126,8 @@ public class InventoryManager {
                                         .followRedirects(true)
                                         // end::followRedirects[]
                                         // tag::queryParam[]
-                                        .queryParamStyle(QueryParamStyle.COMMA_SEPARATED)
+                                        .queryParamStyle(
+                                          QueryParamStyle.COMMA_SEPARATED)
                                         // end::queryParam[]
                                         .build(SystemClient.class);
       // end::customRestClientBuilder[]
