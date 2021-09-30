@@ -65,7 +65,7 @@ The `system` service is accessible at the http://localhost:9080/system/propertie
 The 'system' service returns specific system properties when a multi-valued query is made to the 
 http://localhost:9080/system/properties/listproperties[http://localhost:9080/system/properties/listproperties^] URL. 
 For example, the 
-[http://localhost:9080/system/properties?properties=os.name,user.timezone](http://localhost:9080/system/properties?properties=os.name,user.timezone) query URL provides the `os.name` and `user.timezone` system properties.
+http://localhost:9080/system/properties?properties=os.name,user.timezone[http://localhost:9080/system/properties?properties=os.name,user.timezone^] query URL provides the `os.name` and `user.timezone` system properties.
 
 The `inventory` microservice makes a request to the `system` microservice and
 stores the system property information. 
@@ -74,7 +74,7 @@ To fetch and store all your system information, visit the http://localhost:9080/
 To fetch and store specific properties, specify the properties in the
 http://localhost:9080/inventory/systems/localhost[http://localhost:9080/inventory/systems/localhost^] URL. 
 For example, to fetch the `os.name` and `user.timezone` system properties, visit the 
-[http://localhost:9080/inventory/systems/localhost?properties=os.name&properties=user.timezone](http://localhost:9080/inventory/systems/localhost?properties=os.name&properties=user.timezone) URL.
+http://localhost:9080/inventory/systems/localhost?properties=os.name&properties=user.timezone[http://localhost:9080/inventory/systems/localhost?properties=os.name&properties=user.timezone^] URL.
 
 // static guide instructions:
 ifndef::cloud-hosted[]
@@ -245,10 +245,10 @@ If the RESTFUL resource is relocated, this property allows the client to automat
 
 The [hotspot=queryParamStyle file=0]`queryParamStyle` property allows multi-valued query parameters to be formatted such that they meet the requirements of the server. 
 The `system` service expects the request to be a single key with a comma-seperated list of values such as the 
-[http://localhost:9080/system/properties?properties=os.name,user.timezone](http://localhost:9080/system/properties?properties=os.name,user.timezone) URL. 
+http://localhost:9080/system/properties?properties=os.name,user.timezone[http://localhost:9080/system/properties?properties=os.name,user.timezone^] URL. 
 So, the [hotspot=queryParamStyle file=0]`queryParamStyle` property is configured to [hotspot=queryParamStyle file=0]`COMMA_SEPARATED`.
 When you visit the 
-[http://localhost:9080/inventory/systems/localhost?properties=os.name&properties=user.timezone](http://localhost:9080/inventory/systems/localhost?properties=os.name&properties=user.timezone) URL,
+http://localhost:9080/inventory/systems/localhost?properties=os.name&properties=user.timezone[http://localhost:9080/inventory/systems/localhost?properties=os.name&properties=user.timezone^] URL,
 the client reformats the request before invoking the `system` service.
 The client recieves requests as multiple key/value pairs such as `?properties=os.name&properties=user.timezone`
 and then it formats requests to `system` service as a single key with a comma-separated list such as `?properties=os.name,user.timezone`.
