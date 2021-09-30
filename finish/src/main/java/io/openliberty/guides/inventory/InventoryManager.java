@@ -70,8 +70,8 @@ public class InventoryManager {
     return properties;
   }
 
-  public void add(String hostname,  
-                  List<String> listproperties, 
+  public void add(String hostname,
+                  List<String> listproperties,
                   Properties systemProps) {
     Properties props = new Properties();
 
@@ -112,7 +112,7 @@ public class InventoryManager {
   // end::getPropertiesWithDefaultHostName[]
 
   // tag::getPropertiesWithGivenHostName[]
-  private Properties getPropertiesWithGivenHostName(String hostname, 
+  private Properties getPropertiesWithGivenHostName(String hostname,
                                                     List<String> listproperties) {
     String customURIString = "http://" + hostname + ":" + DEFAULT_PORT + "/system";
     URI customURI = null;
