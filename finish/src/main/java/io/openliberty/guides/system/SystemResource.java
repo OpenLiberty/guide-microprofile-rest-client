@@ -31,14 +31,14 @@ public class SystemResource {
     return System.getProperties();
   }
 
-  @GET 
+  @GET
   @Path("/listproperties")
   @Produces(MediaType.APPLICATION_JSON)
   public Properties getListProperties(@QueryParam("properties") String listproperties) {
 
     String[] params = listproperties.split(",");
     Properties properties = new Properties();
-    for (String param: params) {     
+    for (String param: params) {
       String property = System.getProperty(param);
       if (property == null) {
         Properties error = new Properties();
@@ -50,4 +50,4 @@ public class SystemResource {
     return properties;
   }
 
-}    
+}
