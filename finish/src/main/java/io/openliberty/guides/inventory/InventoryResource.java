@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Properties;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import javax.sound.midi.SysexMessage;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;

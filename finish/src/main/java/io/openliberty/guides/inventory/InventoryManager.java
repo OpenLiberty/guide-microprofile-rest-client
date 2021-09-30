@@ -81,9 +81,9 @@ public class InventoryManager {
     }
 
     SystemData host = new SystemData(hostname, props);
-      if (!systems.contains(host)) {
-        systems.add(host);
-      }
+    if (!systems.contains(host)) {
+      systems.add(host);
+    }
   }
 
   public InventoryList list() {
