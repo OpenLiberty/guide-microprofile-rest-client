@@ -27,7 +27,7 @@ import org.eclipse.microprofile.rest.client.annotation.RegisterProvider;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
 // tag::RegisterRestClient[]
-@RegisterRestClient(configKey = "systemClient", 
+@RegisterRestClient(configKey = "systemClient",
                     baseUri = "http://localhost:9080/system")
 // end::RegisterRestClient[]
 // tag::RegisterProvider[]
