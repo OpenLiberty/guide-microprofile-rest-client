@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Properties;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.sound.midi.SysexMessage;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -40,7 +41,7 @@ public class InventoryResource {
   @Path("/{hostname}")
   @Produces(MediaType.APPLICATION_JSON)
   public Response getPropertiesForHost(@PathParam("hostname") String hostname,
-                    @QueryParam("listproperties") List<String> listproperties) {
+                    @QueryParam("properties") List<String> listproperties) {
     // Get properties
     Properties props = manager.get(hostname, listproperties);
     if (props == null) {

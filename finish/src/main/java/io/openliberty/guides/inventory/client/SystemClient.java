@@ -44,16 +44,9 @@ public interface SystemClient extends AutoCloseable {
   @Produces(MediaType.APPLICATION_JSON)
   // end::Produces[]
   // tag::getProperties[]
-  Properties getProperties() throws UnknownUriException, ProcessingException;
+  Properties getProperties(@QueryParam("properties") List<String> listproperties)
+                            throws UnknownUriException, ProcessingException;
   // end::getProperties[]
-
-  @GET
-  // tag::getListProperties[]
-  @Path("/listproperties")
-  @Produces(MediaType.APPLICATION_JSON)
-  Properties getListProperties(@QueryParam("properties") List<String> listproperties)
-                               throws UnknownUriException, ProcessingException;
-  // end::getListProperties[]
 }
 // end::SystemClient[]
 // end::client[]

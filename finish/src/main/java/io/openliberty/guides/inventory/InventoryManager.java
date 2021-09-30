@@ -93,15 +93,9 @@ public class InventoryManager {
   // tag::getPropertiesWithDefaultHostName[]
   private Properties getPropertiesWithDefaultHostName(List<String> listproperties) {
     try {
-      if (listproperties.size() == 0) {
-        // tag::defaultRCGetProperties[]
-        return defaultRestClient.getProperties();
-        // end::defaultRCGetProperties[]
-      } else {
-        // tag::defaultRCGetListProperties[]
-        return defaultRestClient.getListProperties(listproperties);
-        // end::defaultRCGetListProperties[]
-      }
+      // tag::defaultRCGetProperties[]
+      return defaultRestClient.getProperties(listproperties);
+      // end::defaultRCGetProperties[]
     } catch (UnknownUriException e) {
       System.err.println("The given URI is not formatted correctly.");
     } catch (ProcessingException ex) {
@@ -131,15 +125,9 @@ public class InventoryManager {
                                         // end::queryParam[]
                                         .build(SystemClient.class);
       // end::customRestClientBuilder[]
-      if (listproperties.size() == 0) {
-        // tag::customRCGetProperties[]
-        return customRestClient.getProperties();
-        // end::customRCGetProperties[]
-      } else {
-        // tag::customRCGetListProperties[]
-        return customRestClient.getListProperties(listproperties);
-        // end::customRCGetListProperties[]
-      }
+      // tag::customRCGetProperties[]
+      return customRestClient.getProperties(listproperties);
+      // end::customRCGetProperties[]
     } catch (ProcessingException ex) {
       handleProcessingException(ex);
     } catch (UnknownUriException e) {

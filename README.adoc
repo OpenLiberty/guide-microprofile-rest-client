@@ -65,7 +65,7 @@ The `system` service is accessible at the http://localhost:9080/system/propertie
 The 'system' service returns specific system properties when a multi-valued query is made to the 
 http://localhost:9080/system/properties/listproperties[http://localhost:9080/system/properties/listproperties^] URL. 
 For example, the 
-[http://localhost:9080/system/properties/listproperties?properties=awt.toolkit,file.encoding.pkg](http://localhost:9080/system/properties/listproperties?properties=awt.toolkit,file.encoding.pkg) query URL provides the `awt.toolkit` and `file.encoding.pkg` system properties.
+[http://localhost:9080/system/properties?properties=os.name,user.timezone](http://localhost:9080/system/properties?properties=os.name,user.timezone) query URL provides the `os.name` and `user.timezone` system properties.
 
 The `inventory` microservice makes a request to the `system` microservice and
 stores the system property information. 
@@ -74,7 +74,7 @@ To fetch and store all your system information, visit the http://localhost:9080/
 To fetch and store specific properties, specify the properties in the
 http://localhost:9080/inventory/systems/localhost[http://localhost:9080/inventory/systems/localhost^] URL. 
 For example, to fetch `awt.toolkit` and `file.encoding.pkg` system properties, visit the 
-[http://localhost:9080/inventory/systems/localhost?listproperties=awt.toolkit&listproperties=file.encoding.pkg](http://localhost:9080/inventory/systems/localhost?listproperties=awt.toolkit&listproperties=file.encoding.pkg) URL.
+[http://localhost:9080/inventory/systems/localhost?properties=os.name&properties=user.timezone](http://localhost:9080/inventory/systems/localhost?properties=os.name&properties=user.timezone) URL.
 
 // static guide instructions:
 ifndef::cloud-hosted[]
@@ -148,8 +148,6 @@ This allows the user to explicitly close the client instance by invoking the `cl
 When the [hotspot=getProperties file=2]`getProperties()` method is invoked, 
 the [hotspot=SystemClient file=2]`SystemClient` instance sends a GET request to the `<baseUrl>/properties` endpoint, 
 where `<baseUrl>` is the default base URL of the `system` service.
-Similarly, when the [hotspot=getListProperties file=2]`getListProperties()` method is invoked, 
-the [hotspot=SystemClient file=2]`SystemClient` instance sends a GET request to the `<baseUrl>/properties/listproperties` endpoint.
 You will see how to configure the base URL in the next section.
 
 The [hotspot=Produces file=2]`@Produces` annotation specifies the media (MIME) type of the expected response. The default value is `MediaType.APPLICATION_JSON`.
@@ -247,13 +245,13 @@ If the RESTFUL resource is relocated, this property allows the client to automat
 
 The [hotspot=queryParamStyle file=0]`queryParamStyle` property allows multi-valued query parameters to be formatted such that they meet the requirements of the server. 
 The `system` service expects the request to be a single key with a comma-seperated list of values such as the 
-[http://localhost:9080/system/properties/listproperties?properties=awt.toolkit,file.encoding.pkg](http://localhost:9080/system/properties/listproperties?properties=awt.toolkit,file.encoding.pkg) URL. 
+[http://localhost:9080/system/properties?properties=os.name,user.timezone](http://localhost:9080/system/properties?properties=os.name,user.timezone) URL. 
 So, the [hotspot=queryParamStyle file=0]`queryParamStyle` property is configured to [hotspot=queryParamStyle file=0]`COMMA_SEPARATED`.
 When you visit the 
-[http://localhost:9080/inventory/systems/localhost?listproperties=awt.toolkit&listproperties=file.encoding.pkg](http://localhost:9080/inventory/systems/localhost?listproperties=awt.toolkit&listproperties=file.encoding.pkg) URL,
+[http://localhost:9080/inventory/systems/localhost?properties=os.name&properties=user.timezone](http://localhost:9080/inventory/systems/localhost?properties=os.name&properties=user.timezone) URL,
 the client reformats the request before invoking the `system` service.
-The client recieve requests as multiple key/value pairs such as `?listproperties=awt.toolkit&listproperties=file.encoding.pkg`, 
-but it must format requests to `system` as a single key with a comma-separated list such as `?properties=awt.toolkit,file.encoding.pkg`.
+The client recieves requests as multiple key/value pairs such as `?properties=os.name&properties=user.timezone`
+and then it formats requests to `system` service as a single key with a comma-separated list such as `?properties=os.name,user.timezone`.
 
 The [hotspot=RegisterRestClient file=1]`@RegisterRestClient` annotation, which is a bean defining annotation implies that the interface is manageable through CDI. You must have this annotation in order to inject the client.
 
@@ -275,7 +273,7 @@ include::finish/src/main/java/io/openliberty/guides/inventory/InventoryManager.j
 Because the [hotspot file=2]`InventoryManager` class is [hotspot=ApplicationScoped file=2]`@ApplicationScoped`, and the [hotspot=SystemClient file=1]`SystemClient` CDI bean maintains the same scope through the default dependent scope, the client is initialized once per application.
 
 If the `hostname` parameter is `localhost`, the service runs the [hotspot=getPropertiesWithDefaultHostName file=2]`getPropertiesWithDefaultHostName()` helper function to fetch system properties.
-The helper function invokes the `system` service by calling the [hotspot=defaultRCGetProperties file=2]`defaultRestClient.getProperties()`  and [hotspot=defaultRCGetListProperties file=2]`defaultRestClient.getListProperties(listproperties)` methods.
+The helper function invokes the `system` service by calling the [hotspot=defaultRCGetProperties file=2]`defaultRestClient.getProperties()` method.
 
 server.xml
 [source,xml,linenums,role="code_column"]
@@ -304,7 +302,7 @@ Then, the method instantiates a [hotspot=customRestClientBuilder]`RestClientBuil
 The client is configured to automatically follow redirects using the [hotspot=followRedirects]`followRedirects(true)` method. Redirects occur when a RESTful resource has been relocated.
 The client is also configured to send requests to the `system` service with multi-valued query parameters as a single key with a comma-separated list of values.
 
-Similarly, call the [hotspot=customRCGetProperties]`customRestClient.getProperties()` and [hotspot=customRCGetListProperties]`customRestClient.getListProperties(listproperties)` methods to invoke the `system` service.
+Similarly, call the [hotspot=customRCGetProperties]`customRestClient.getProperties()` method to invoke the `system` service.
 
 // =================================================================================================
 // Building and running the application
