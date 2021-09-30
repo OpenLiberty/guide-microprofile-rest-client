@@ -73,7 +73,7 @@ To fetch and store all your system information, visit the http://localhost:9080/
 
 To fetch and store specific properties, specify the properties in the
 http://localhost:9080/inventory/systems/localhost[http://localhost:9080/inventory/systems/localhost^] URL. 
-For example, to fetch `awt.toolkit` and `file.encoding.pkg` system properties, visit the 
+For example, to fetch the `os.name` and `user.timezone` system properties, visit the 
 [http://localhost:9080/inventory/systems/localhost?properties=os.name&properties=user.timezone](http://localhost:9080/inventory/systems/localhost?properties=os.name&properties=user.timezone) URL.
 
 // static guide instructions:
