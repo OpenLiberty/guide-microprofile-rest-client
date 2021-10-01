@@ -250,8 +250,8 @@ So, the [hotspot=queryParamStyle file=0]`queryParamStyle` property is configured
 When you visit the 
 http://localhost:9080/inventory/systems/localhost?properties=os.name&properties=user.timezone[http://localhost:9080/inventory/systems/localhost?properties=os.name&properties=user.timezone^] URL,
 the client reformats the request before invoking the `system` service.
-The client recieves requests as multiple key/value pairs such as `?properties=os.name&properties=user.timezone`
-and then it formats requests to `system` service as a single key with a comma-separated list such as `?properties=os.name,user.timezone`.
+The client recieves the request as multiple key/value pairs such as `?properties=os.name&properties=user.timezone`
+and then it formats the request to `system` service as a single key with a comma-separated list such as `?properties=os.name,user.timezone`.
 
 The [hotspot=RegisterRestClient file=1]`@RegisterRestClient` annotation, which is a bean defining annotation implies that the interface is manageable through CDI. You must have this annotation in order to inject the client.
 
