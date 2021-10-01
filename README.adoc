@@ -300,7 +300,7 @@ include::finish/src/main/java/io/openliberty/guides/inventory/InventoryManager.j
 The host name is provided as a parameter. This method first assembles the base URL that consists of the new host name.
 Then, the method instantiates a [hotspot=customRestClientBuilder]`RestClientBuilder` builder with the new URL, registers the response exception mapper, and builds the `SystemClient` instance.
 The client is configured to automatically follow redirects using the [hotspot=followRedirects]`followRedirects(true)` method. Redirects occur when a RESTful resource has been relocated.
-The client is also configured to send requests to the `system` service with multi-valued query parameters as a single key with a comma-separated list of values.
+The client is also configured to send requests to the `system` service with multi-valued query parameters as a single key with a [hotspot=queryParam]'COMMA_SEPARATED' list of values.
 
 Similarly, call the [hotspot=customRCGetProperties]`customRestClient.getProperties()` method to invoke the `system` service.
 
