@@ -101,7 +101,7 @@ public class InventoryManager {
   // end::getPropertiesWithDefaultHostName[]
 
   // tag::getPropertiesWithGivenHostName[]
-  Properties getPropertiesWithGivenHostName(String hostname) {
+  private Properties getPropertiesWithGivenHostName(String hostname) {
     String customURIString = "http://" + hostname + ":" + DEFAULT_PORT + "/system";
     URI customURI = null;
     try {
