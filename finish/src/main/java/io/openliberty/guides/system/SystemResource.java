@@ -13,10 +13,12 @@
 package io.openliberty.guides.system;
 
 import java.util.Properties;
+
 import javax.enterprise.context.RequestScoped;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 @RequestScoped
@@ -27,5 +29,20 @@ public class SystemResource {
   @Produces(MediaType.APPLICATION_JSON)
   public Properties getProperties() {
     return System.getProperties();
+  }
+
+  @GET
+  @Path("/java")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Properties getJavaProperties(@QueryParam("key") String keysString) {
+    Properties properties = new Properties();
+    String[] keys = keysString.split(",");
+    for (String k : keys) {
+    	String javaPropertyKey = "java." + k;
+    	String value = System.getProperty(javaPropertyKey);
+    	if (value != null)
+          properties.setProperty(javaPropertyKey, value);
+    }
+    return properties;
   }
 }

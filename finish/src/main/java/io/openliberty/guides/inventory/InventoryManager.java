@@ -17,6 +17,7 @@ import java.net.ConnectException;
 import java.net.URI;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
@@ -27,6 +28,7 @@ import javax.ws.rs.ProcessingException;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.eclipse.microprofile.rest.client.RestClientBuilder;
+import org.eclipse.microprofile.rest.client.ext.QueryParamStyle;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
@@ -99,7 +101,7 @@ public class InventoryManager {
   // end::getPropertiesWithDefaultHostName[]
 
   // tag::getPropertiesWithGivenHostName[]
-  private Properties getPropertiesWithGivenHostName(String hostname) {
+  Properties getPropertiesWithGivenHostName(String hostname) {
     String customURIString = "http://" + hostname + ":" + DEFAULT_PORT + "/system";
     URI customURI = null;
     try {
@@ -121,7 +123,26 @@ public class InventoryManager {
     return null;
   }
   // end::getPropertiesWithGivenHostName[]
-
+  
+  public Properties getJavaPropertiesWithGivenHostName(String hostname) {
+	    String customURIString = "http://" + hostname + ":" + DEFAULT_PORT + "/system";
+	    URI customURI = null;
+	    try {
+	      customURI = URI.create(customURIString);
+	      SystemClient customRestClient = RestClientBuilder.newBuilder()
+	                                        .baseUri(customURI)
+	                                        .queryParamStyle(QueryParamStyle.COMMA_SEPARATED)
+	                                        .register(UnknownUriExceptionMapper.class)
+	                                        .build(SystemClient.class);
+          return customRestClient.getJavaProperties(Arrays.asList("version", "vendor", "home"));
+	    } catch (ProcessingException ex) {
+	      handleProcessingException(ex);
+	    } catch (UnknownUriException e) {
+	      System.err.println("The given URI is unreachable.");
+	    }
+	    return null;
+  }
+  
   private void handleProcessingException(ProcessingException ex) {
     Throwable rootEx = ExceptionUtils.getRootCause(ex);
     if (rootEx != null && (rootEx instanceof UnknownHostException

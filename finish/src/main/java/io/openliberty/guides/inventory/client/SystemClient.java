@@ -13,12 +13,14 @@
 // tag::client[]
 package io.openliberty.guides.inventory.client;
 
+import java.util.List;
 import java.util.Properties;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.ProcessingException;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.eclipse.microprofile.rest.client.annotation.RegisterProvider;
@@ -43,6 +45,12 @@ public interface SystemClient extends AutoCloseable {
   // tag::getProperties[]
   public Properties getProperties() throws UnknownUriException, ProcessingException;
   // end::getProperties[]
+  
+  @GET
+  @Path("/java")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Properties getJavaProperties(@QueryParam("key") List<String> keys) throws UnknownUriException, ProcessingException;
+  
 }
 // end::SystemClient[]
 // end::client[]
