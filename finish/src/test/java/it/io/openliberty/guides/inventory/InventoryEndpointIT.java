@@ -1,6 +1,6 @@
 // tag::copyright[]
 /*******************************************************************************
- * Copyright (c) 2017, 2020 IBM Corporation and others.
+ * Copyright (c) 2017, 2021 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -83,6 +83,8 @@ public class InventoryEndpointIT {
         break;
       }
     }
+
+    assertTrue(systems.size() > 0, "No hosts registered");
     assertTrue(localhostExists,
                "A host was registered, but it was not localhost");
 
@@ -137,7 +139,7 @@ public class InventoryEndpointIT {
     "BadResponse expected status: 404. Response code not as expected.");
 
     String stringObj = badResponse.readEntity(String.class);
-    assertTrue(stringObj.contains("error"), 
+    assertTrue(stringObj.contains("error"),
     "badhostname is not a valid host but it didn't raise an error");
 
     response.close();

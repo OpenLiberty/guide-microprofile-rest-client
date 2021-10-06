@@ -1,6 +1,6 @@
 // tag::copyright[]
 /*******************************************************************************
- * Copyright (c) 2017, 2020 IBM Corporation and others.
+ * Copyright (c) 2017, 2021 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -75,8 +75,9 @@ public class InventoryManager {
     props.setProperty("user.name", systemProps.getProperty("user.name"));
 
     SystemData host = new SystemData(hostname, props);
-    if (!systems.contains(host))
+    if (!systems.contains(host)) {
       systems.add(host);
+    }
   }
 
   public InventoryList list() {
@@ -92,7 +93,7 @@ public class InventoryManager {
     } catch (UnknownUriException e) {
       System.err.println("The given URI is not formatted correctly.");
     } catch (ProcessingException ex) {
-      handleProcessingException(ex);
+      return handleProcessingException(ex);
     }
     return null;
   }
@@ -114,22 +115,30 @@ public class InventoryManager {
       return customRestClient.getProperties();
       // end::customRCGetProperties[]
     } catch (ProcessingException ex) {
-      handleProcessingException(ex);
+      return handleProcessingException(ex);
     } catch (UnknownUriException e) {
-      System.err.println("The given URI is unreachable.");
+      System.err.println("The given URI " + customURIString + " is unreachable.");
     }
     return null;
   }
   // end::getPropertiesWithGivenHostName[]
 
-  private void handleProcessingException(ProcessingException ex) {
+  private Properties handleProcessingException(ProcessingException ex) {
     Throwable rootEx = ExceptionUtils.getRootCause(ex);
     if (rootEx != null && (rootEx instanceof UnknownHostException
         || rootEx instanceof ConnectException)) {
-      System.err.println("The specified host is unknown.");
+      Properties error = new Properties();
+      error.setProperty("error", ex.getMessage());
+      return error;
     } else {
       throw ex;
     }
+  }
+
+  private Properties handleUnknownUriException(UnknownUriException e) {
+    Properties error = new Properties();
+    error.setProperty("error", e.getMessage());
+    return error;
   }
 
 }
