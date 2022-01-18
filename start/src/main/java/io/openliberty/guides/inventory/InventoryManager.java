@@ -1,7 +1,7 @@
 package io.openliberty.guides.inventory;
 
 import java.util.Properties;
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 
 import io.openliberty.guides.inventory.model.InventoryList;
 
