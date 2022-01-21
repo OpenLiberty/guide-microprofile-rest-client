@@ -78,7 +78,6 @@ public class InventoryManager {
     if (!systems.contains(host)) {
       systems.add(host);
     }
-  
   }
 
   public InventoryList list() {
