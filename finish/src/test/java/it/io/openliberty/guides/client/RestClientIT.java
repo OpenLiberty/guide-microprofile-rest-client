@@ -73,7 +73,7 @@ public class RestClientIT {
   // tag::testRestClientBuilder[]
   public void testRestClientBuilder() {
     String hostname = null;
-    try{
+    try {
       hostname = InetAddress.getLocalHost().getHostAddress();
     } catch (UnknownHostException e) {
       System.err.println("Unknown Host.");

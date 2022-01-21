@@ -12,11 +12,10 @@ public class InventoryManager {
 		return null;
 	}
 
-	public void add(String hostname, Properties props) {	
+	public void add(String hostname, Properties props) {
 	}
 
 	public InventoryList list() {
 		return null;
 	}
-	
 }
