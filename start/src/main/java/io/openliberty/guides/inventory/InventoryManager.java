@@ -25,8 +25,7 @@ public class InventoryManager {
 	}
 
   public void add(String hostname, Properties props) {
-	  
-  }
+}
 
   public InventoryList list() {
 	  return null;
