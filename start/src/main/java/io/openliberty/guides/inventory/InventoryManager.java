@@ -20,7 +20,7 @@ import io.openliberty.guides.inventory.model.InventoryList;
 @ApplicationScoped
 public class InventoryManager {
   public Properties get(String hostname) {
-		return null;
+	  return null;
 	}
 
   public void add(String hostname, Properties props) {
@@ -28,6 +28,6 @@ public class InventoryManager {
 	}
 
   public InventoryList list() {
-		return null;
+	  return null;
 	}
 }
