@@ -16,10 +16,10 @@ package it.io.openliberty.guides.client;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import jakarta.json.JsonObject;
 import jakarta.ws.rs.client.Client;
-import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.client.WebTarget;
-import org.apache.cxf.jaxrs.provider.jsrjsonp.JsrJsonpProvider;
+import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
+import org.jboss.resteasy.plugins.providers.jsonb.JsonBindingProvider;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -42,8 +42,8 @@ public class RestClientIT {
 
   @BeforeEach
   public void setup() {
-    client = ClientBuilder.newClient();
-    client.register(JsrJsonpProvider.class);
+    client = ResteasyClientBuilder.newClient();
+    client.register(JsonBindingProvider.class);
   }
 
   @AfterEach
