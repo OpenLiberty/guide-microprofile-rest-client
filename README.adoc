@@ -64,7 +64,7 @@ endif::[]
 
 // cloud-hosted guide instructions:
 ifdef::cloud-hosted[]
-You can also use the **http://localhost:9080/inventory/systems/{your-hostname}** URL. In Windows, MacOS, and Linux, get your fully qualified domain name (FQDN) by entering **hostname** into your command-line. Visit the URL by replacing **{your-hostname}** with your FQDN.
+You can also use the ***http://localhost:9080/inventory/systems/{your-hostname}*** URL. In Windows, MacOS, and Linux, get your fully qualified domain name (FQDN) by entering **hostname** into your command-line. Visit the URL by replacing ***{your-hostname}*** with your FQDN.
 endif::[]
 
 
@@ -269,7 +269,7 @@ endif::[]
 
 // cloud-hosted guide instructions:
 ifdef::cloud-hosted[]
-Or, get your FQDN first. Then, visit the **http://localhost:9080/inventory/systems/{your-hostname}** URL by replacing **{your-hostname}** with your FQDN, which retrieves your system properties by making a request to the **system** service at **http://{your-hostname}:9080/system/properties**.
+Or, get your FQDN first. Then, visit the ***http://localhost:9080/inventory/systems/{your-hostname}*** URL by replacing ***{your-hostname}*** with your FQDN, which retrieves your system properties by making a request to the ***system*** service at ***http://{your-hostname}:9080/system/properties***.
 endif::[]
 
 // =================================================================================================
