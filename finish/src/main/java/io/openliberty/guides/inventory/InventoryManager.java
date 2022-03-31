@@ -1,6 +1,6 @@
 // tag::copyright[]
 /*******************************************************************************
- * Copyright (c) 2017, 2020 IBM Corporation and others.
+ * Copyright (c) 2017, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,9 +21,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.ws.rs.ProcessingException;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.ProcessingException;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.eclipse.microprofile.rest.client.RestClientBuilder;
@@ -75,8 +75,9 @@ public class InventoryManager {
     props.setProperty("user.name", systemProps.getProperty("user.name"));
 
     SystemData host = new SystemData(hostname, props);
-    if (!systems.contains(host))
+    if (!systems.contains(host)) {
       systems.add(host);
+    }
   }
 
   public InventoryList list() {
