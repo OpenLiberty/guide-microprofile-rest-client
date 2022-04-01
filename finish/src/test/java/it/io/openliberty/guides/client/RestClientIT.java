@@ -1,6 +1,6 @@
 // tag::copyright[]
 /*******************************************************************************
- * Copyright (c) 2018, 2020 IBM Corporation and others.
+ * Copyright (c) 2018, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,12 +14,11 @@
 package it.io.openliberty.guides.client;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import javax.json.JsonObject;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.client.WebTarget;
-import org.apache.cxf.jaxrs.provider.jsrjsonp.JsrJsonpProvider;
+import jakarta.json.JsonObject;
+import jakarta.ws.rs.client.Client;
+import jakarta.ws.rs.client.ClientBuilder;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.client.WebTarget;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -43,7 +42,6 @@ public class RestClientIT {
   @BeforeEach
   public void setup() {
     client = ClientBuilder.newClient();
-    client.register(JsrJsonpProvider.class);
   }
 
   @AfterEach
@@ -73,7 +71,7 @@ public class RestClientIT {
   // tag::testRestClientBuilder[]
   public void testRestClientBuilder() {
     String hostname = null;
-    try{
+    try {
       hostname = InetAddress.getLocalHost().getHostAddress();
     } catch (UnknownHostException e) {
       System.err.println("Unknown Host.");
