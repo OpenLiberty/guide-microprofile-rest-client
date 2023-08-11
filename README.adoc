@@ -1,4 +1,4 @@
-// Copyright (c) 2018, 2022 IBM Corporation and others.
+// Copyright (c) 2018, 2023 IBM Corporation and others.
 // Licensed under Creative Commons Attribution-NoDerivatives
 // 4.0 International (CC BY-ND 4.0)
 //   https://creativecommons.org/licenses/by-nd/4.0/
@@ -91,7 +91,7 @@ include::finish/pom.xml[]
 
 This dependency provides a library that is required to implement the MicroProfile Rest Client interface.
 
-The [hotspot=mpRestClient file=1]`mpRestClient` feature is also enabled in the [hotspot file=1]`src/main/liberty/config/server.xml` file. This feature enables your Open Liberty instance to use MicroProfile Rest Client to invoke RESTful microservices.
+The [hotspot=mpRestClient file=1]`mpRestClient` feature is also enabled in the [hotspot file=1]`src/main/liberty/config/server.xml` file. This feature enables your Open Liberty to use MicroProfile Rest Client to invoke RESTful microservices.
 
 server.xml
 [source,xml,linenums,role="code_column"]
@@ -258,7 +258,7 @@ Similarly, call the [hotspot=customRCGetProperties]`customRestClient.getProperti
 [role=command]
 include::{common-includes}/devmode-build.adoc[]
 
-When the server is running, select either approach to fetch your system properties:
+When the Liberty instance is running, select either approach to fetch your system properties:
 
 * Visit the http://localhost:9080/inventory/systems/localhost[http://localhost:9080/inventory/systems/localhost^] URL. The URL retrieves the system property information for the `localhost` host name by making a request to the `system` service at `\http://localhost:9080/system/properties`.
 
