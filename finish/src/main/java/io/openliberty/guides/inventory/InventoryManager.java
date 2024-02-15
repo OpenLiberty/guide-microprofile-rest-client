@@ -1,6 +1,6 @@
 // tag::copyright[]
 /*******************************************************************************
- * Copyright (c) 2017, 2022 IBM Corporation and others.
+ * Copyright (c) 2017, 2024 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -44,8 +44,8 @@ public class InventoryManager {
                                        new ArrayList<SystemData>());
 
   @Inject
-  @ConfigProperty(name = "default.http.port")
-  String DEFAULT_PORT;
+  @ConfigProperty(name = "http.port")
+  String HTTP_PORT;
 
   // tag::Inject[]
   @Inject
@@ -100,7 +100,7 @@ public class InventoryManager {
 
   // tag::getPropertiesWithGivenHostName[]
   private Properties getPropertiesWithGivenHostName(String hostname) {
-    String customURIString = "http://" + hostname + ":" + DEFAULT_PORT + "/system";
+    String customURIString = "http://" + hostname + ":" + HTTP_PORT + "/system";
     URI customURI = null;
     try {
       customURI = URI.create(customURIString);
