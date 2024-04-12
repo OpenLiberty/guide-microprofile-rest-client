@@ -1,4 +1,4 @@
-// Copyright (c) 2018, 2023 IBM Corporation and others.
+// Copyright (c) 2018, 2024 IBM Corporation and others.
 // Licensed under Creative Commons Attribution-NoDerivatives
 // 4.0 International (CC BY-ND 4.0)
 //   https://creativecommons.org/licenses/by-nd/4.0/
@@ -14,7 +14,7 @@
 :page-essential-order: 3
 :page-description: Learn how to use MicroProfile Rest Client to invoke RESTful services over HTTP in a type-safe way.
 :guide-author: Open Liberty
-:page-tags: ['MicroProfile']
+:page-tags: ['microprofile']
 :page-permalink: /guides/{projectid}
 :page-related-guides: ['rest-intro', 'cdi-intro', 'microprofile-config', 'microprofile-rest-client-async']
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/prod
@@ -179,12 +179,12 @@ First, you need to define the base URL of the [hotspot=SystemClient file=1]`Syst
 [role="code_command hotspot file=0", subs="quotes"]
 ----
 #Create the configuration file.#
-`src/main/webapp/META-INF/microprofile-config.properties`
+`src/main/resources/META-INF/microprofile-config.properties`
 ----
 microprofile-config.properties
 [source, properties, linenums, role='code_column hide_tags=copyright']
 ----
-include::finish/src/main/webapp/META-INF/microprofile-config.properties[]
+include::finish/src/main/resources/META-INF/microprofile-config.properties[]
 ----
 
 The [hotspot=baseUri file=0]`mp-rest/uri` base URL config property is configured to the default [hotspot=baseUri file=0]`\http://localhost:9080/system` URL.
