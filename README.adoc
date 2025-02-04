@@ -1,4 +1,4 @@
-// Copyright (c) 2018, 2024 IBM Corporation and others.
+// Copyright (c) 2018, 2025 IBM Corporation and others.
 // Licensed under Creative Commons Attribution-NoDerivatives
 // 4.0 International (CC BY-ND 4.0)
 //   https://creativecommons.org/licenses/by-nd/4.0/
@@ -77,6 +77,12 @@ include::{common-includes}/twyb-end.adoc[]
 == Writing the RESTful client interface
 
 Now, navigate to the `start` directory to begin.
+
+ifdef::cloud-hosted[]
+```bash
+cd /home/project/guide-microprofile-rest-client/start
+```
+endif::[]
 
 [role=command]
 include::{common-includes}/devmode-lmp33-start.adoc[]
