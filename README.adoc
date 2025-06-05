@@ -51,7 +51,7 @@ You will instantiate the client and use it in the `inventory` service. You can c
 [role=command]
 include::{common-includes}/gitclone.adoc[]
 
-include::{common-includes}/twyb-intro.adoc[]
+include::{common-includes}/twyb-intro-mvnw.adoc[]
 
 The `system` microservice simulates a service that returns the system property information for the host. The `system` service is accessible at the http://localhost:9080/system/properties[http://localhost:9080/system/properties^] URL. In this case, `localhost` is the host name.
 
@@ -69,7 +69,7 @@ endif::[]
 
 
 [role=command]
-include::{common-includes}/twyb-end.adoc[]
+include::{common-includes}/twyb-end-mvnw.adoc[]
 
 // =================================================================================================
 // Writing the RESTful client interface
@@ -85,7 +85,7 @@ cd /home/project/guide-microprofile-rest-client/start
 endif::[]
 
 [role=command]
-include::{common-includes}/devmode-lmp33-start.adoc[]
+include::{common-includes}/devmode-mvnw-start.adoc[]
 
 The MicroProfile Rest Client API is included in the MicroProfile dependency specified by your [hotspot file=0]`pom.xml` file. Look for the dependency with the [hotspot=microprofile file=0]`microprofile` artifact ID.
 
