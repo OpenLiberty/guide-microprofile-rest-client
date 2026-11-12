@@ -11,9 +11,12 @@
 // end::copyright[]
 package io.openliberty.guides.inventory.client;
 
+import java.io.Serial;
+
 // tag::exception[]
 public class UnknownUriException extends Exception {
 
+  @Serial
   private static final long serialVersionUID = 1L;
 
   public UnknownUriException() {
